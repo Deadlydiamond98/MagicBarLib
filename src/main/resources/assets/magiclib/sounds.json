@@ -1,0 +1,200 @@
+{
+  "emeraldshardpickedup": {
+    "subtitle": "sounds.magiclib.emeraldshardpickedup",
+    "sounds": [
+      "magiclib:emerald_shard_picked_up"
+    ]
+  },
+  "starpickedup": {
+    "subtitle": "sounds.magiclib.starpickedup",
+    "sounds": [
+      "magiclib:star_pickup"
+    ]
+  },
+  "star_used": {
+    "subtitle": "sounds.magiclib.star_used",
+    "sounds": [
+      "magiclib:star_used"
+    ]
+  },
+  "falling_star": {
+    "subtitle": "sounds.magiclib.falling_star",
+    "sounds": [
+      {
+        "name": "magiclib:falling_star",
+        "attenuation_distance": 100
+      }
+    ]
+  },
+
+  "transform": {
+    "subtitle": "sounds.magiclib.transform",
+    "sounds": [
+      "magiclib:transform"
+    ]
+  },
+
+  "upgrade_mana": {
+    "subtitle": "sounds.magiclib.upgrade_mana",
+    "sounds": [
+      "magiclib:upgrade_mana"
+    ]
+  },
+  "no_mana": {
+    "subtitle": "sounds.magiclib.no_mana",
+    "sounds": [
+      "magiclib:no_mana"
+    ]
+  },
+
+
+  "fire_magic": {
+    "subtitle": "sounds.magiclib.fire_magic",
+    "sounds": [
+      "magiclib:fire_magic"
+    ]
+  },
+  "ice_magic": {
+    "subtitle": "sounds.magiclib.ice_magic",
+    "sounds": [
+      "magiclib:ice_magic"
+    ]
+  },
+
+
+  "musicdisclegend": {
+    "subtitle": "sounds.magiclib.musicdisclegend",
+    "sounds": [
+      "magiclib:music_disc_legend"
+    ]
+  },
+
+
+  "swordshoot": {
+    "subtitle": "sounds.magiclib.sword_shoot",
+    "sounds": [
+      "magiclib:sword_shoot"
+    ]
+  },
+  "swordrecharge": {
+    "subtitle": "sounds.magiclib.sword_recharge",
+    "sounds": [
+      "magiclib:sword_recharge"
+    ]
+  },
+  "smaaash_sound": {
+    "subtitle": "sounds.magiclib.smaaash_sound",
+    "sounds": [
+      "magiclib:smaaash_sound"
+    ]
+  },
+
+
+  "secretroom": {
+    "subtitle": "sounds.magiclib.secret_room",
+    "sounds": [
+      "magiclib:secret"
+    ]
+  },
+
+
+  "fairy_ambient": {
+    "subtitle": "sounds.magiclib.fairy_ambient",
+    "sounds": [
+      "magiclib:fairy_ambient"
+    ]
+  },
+  "fairy_hurt": {
+    "subtitle": "sounds.magiclib.fairy_hurt",
+    "sounds": [
+      "magiclib:fairy_hurt"
+    ]
+  },
+  "fairy_death": {
+    "subtitle": "sounds.magiclib.fairy_death",
+    "sounds": [
+      "magiclib:fairy_death"
+    ]
+  },
+  "fairy_in": {
+    "subtitle": "sounds.magiclib.fairy_in",
+    "sounds": [
+      "magiclib:navi_in"
+    ]
+  },
+  "fairy_out": {
+    "subtitle": "sounds.magiclib.fairy_out",
+    "sounds": [
+      "magiclib:navi_out"
+    ]
+  },
+  "navi_hello": {
+    "subtitle": "sounds.magiclib.navi_hello",
+    "sounds": [
+      "magiclib:navi_hello",
+      "magiclib:navi_hey"
+    ]
+  },
+  "navi_attention": {
+    "subtitle": "sounds.magiclib.navi_attention",
+    "sounds": [
+      "magiclib:navi_hey",
+      "magiclib:navi_listen",
+      "magiclib:navi_look",
+      "magiclib:navi_watchout"
+    ]
+  },
+  "tatl_in": {
+    "subtitle": "sounds.magiclib.fairy_in",
+    "sounds": [
+      "magiclib:tatl_in"
+    ]
+  },
+  "tatl_out": {
+    "subtitle": "sounds.magiclib.fairy_out",
+    "sounds": [
+      "magiclib:tatl_out"
+    ]
+  },
+  "tatl_attention": {
+    "subtitle": "sounds.magiclib.tatl_attention",
+    "sounds": [
+      "magiclib:tatl_hey",
+      "magiclib:tatl_listen",
+      "magiclib:tatl_alarm"
+    ]
+  },
+  "tatl_sad": {
+    "subtitle": "sounds.magiclib.tatl_sad",
+    "sounds": [
+      "magiclib:tatl_sad"
+    ]
+  },
+  "tatl_bell_sound": {
+    "subtitle": "sounds.magiclib.tatl_hello",
+    "sounds": [
+      "magiclib:tatl_hey",
+      "magiclib:tatl_listen"
+    ]
+  },
+
+  "hookshot_active": {
+    "subtitle": "sounds.magiclib.hookshot_active",
+    "sounds": [
+      "magiclib:hookshot_active"
+    ]
+  },
+
+  "boomerang_in_air": {
+    "subtitle": "sounds.magiclib.boomerang_in_air",
+    "sounds": [
+      "magiclib:boomerang_in_air"
+    ]
+  },
+  "boomerang_caught": {
+    "subtitle": "sounds.magiclib.boomerang_caught",
+    "sounds": [
+      "magiclib:boomerang_caught"
+    ]
+  }
+}

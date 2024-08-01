@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"id": "magiclib",
+	"version": "${version}",
+	"name": "Magic Lib",
+	"description": "Library mod that adds magic",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/magiclib/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.deadlydiamond98.magiclib.MagicLib"
+		],
+		"client": [
+			"net.deadlydiamond98.magiclib.MagicLibClient"
+		]
+	},
+	"mixins": [
+		"zeldacraft.mixins.json",
+		{
+			"config": "zeldacraft.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"midnightlib": ">=1.4.0"
+	},
+	"suggests": {
+		"another-mod": "*"
+	},
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/class_1309": ["net/deadlydiamond98/magiclib/util/ManaEntityData"]
+		}
+	}
+}
