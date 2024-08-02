@@ -37,7 +37,13 @@ public class MagicConsumable extends MagicReplenisher {
             if (this.cooldown > 0) {
                 user.getItemCooldownManager().set(this, this.cooldown);
             }
+            afterUse(user);
+            return TypedActionResult.consume(user.getStackInHand(hand));
         }
         return super.use(world, user, hand);
+    }
+
+    protected void afterUse(PlayerEntity user) {
+
     }
 }

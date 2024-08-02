@@ -44,8 +44,8 @@ public interface ManaEntityData {
      */
     default void addMana(int amount) {}
     /**
-     * Removes Mana to entity, if the entity's mana isn't 0
-     * If the amount of mana removed is greater than the entity's current mana, the entity will have mana filled to max
+     * Removes Mana from the entity, if the entity's mana isn't 0
+     * If the amount of mana removed is greater than the entity's current mana, the mana won't be removed
      * If the amount of mana added is negative, addMana() will be called
      *
      * @param amount, amount to remove from the entity

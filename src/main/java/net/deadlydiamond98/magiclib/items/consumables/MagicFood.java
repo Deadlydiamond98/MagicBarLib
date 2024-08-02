@@ -30,12 +30,6 @@ public class MagicFood extends MagicReplenisher {
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-
-        return super.postHit(stack, target, attacker);
-    }
-
-    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient()) {
             if (user.canAddMana(this.amountToGive) || user.isCreative()) {

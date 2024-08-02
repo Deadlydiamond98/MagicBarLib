@@ -168,18 +168,27 @@ public abstract class LivingEntityMixin implements ManaEntityData {
 
     @Override
     public void increaseMaxMana(int amount, boolean replenish) {
-        this.setMaxMana(this.getMaxMana() + amount);
-        if (replenish) {
-            this.addMana(amount);
+        if (amount < 0) {
+            decreaseMaxMana(amount * -1);
+        }
+        else {
+            this.setMaxMana(this.getMaxMana() + amount);
+            if (replenish) {
+                this.addMana(amount);
+            }
         }
     }
 
     @Override
     public void decreaseMaxMana(int amount) {
-        if (this.canDecreaseMaxMana(amount)) {
-            this.setMaxMana(this.getMaxMana() - amount);
-            if (this.getMaxMana() < this.getMana()) {
-                this.setMana(this.getMaxMana());
+        if (amount < 0) {
+            increaseMaxMana(amount * -1, false);
+        } else {
+            if (this.canDecreaseMaxMana(amount)) {
+                this.setMaxMana(this.getMaxMana() - amount);
+                if (this.getMaxMana() < this.getMana()) {
+                    this.setMana(this.getMaxMana());
+                }
             }
         }
     }
