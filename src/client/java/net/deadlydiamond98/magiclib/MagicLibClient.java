@@ -22,7 +22,8 @@ public class MagicLibClient implements ClientModInitializer {
 	}
 
 	private void addMagicItemToolTips() {
-		ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
+
+		ItemTooltipCallback.EVENT.register((stack, tooltipContext, tooltipType, lines) -> {
 			if (stack.getItem() instanceof MagicItemData magicItem) {
 
 				int manaCost = magicItem.getManaCost();

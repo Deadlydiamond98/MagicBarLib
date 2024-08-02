@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -22,9 +23,9 @@ public class ManaHudOverlay implements HudRenderCallback {
 
     private static final ColorAndAlphaInterpolator colorInterpolator = new ColorAndAlphaInterpolator( 0xFF00FF5C, 0xFFFFFFFF,
             0.0f, 1.0f, 5.0f);
-    private static final Identifier Filled_Mana = new Identifier(MagicLib.MOD_ID, "textures/gui/mana_full.png");
-    private static final Identifier Filled_Mana_Second = new Identifier(MagicLib.MOD_ID, "textures/gui/mana_full_second.png");
-    private static final Identifier Empty_Mana = new Identifier(MagicLib.MOD_ID, "textures/gui/mana_empty.png");
+    private static final Identifier Filled_Mana = Identifier.of(MagicLib.MOD_ID, "textures/gui/mana_full.png");
+    private static final Identifier Filled_Mana_Second = Identifier.of(MagicLib.MOD_ID, "textures/gui/mana_full_second.png");
+    private static final Identifier Empty_Mana = Identifier.of(MagicLib.MOD_ID, "textures/gui/mana_empty.png");
 
 
     private static float displayedMana = 0.0f;
@@ -32,10 +33,11 @@ public class ManaHudOverlay implements HudRenderCallback {
     private static float currentAlpha = 1.0f;
     private static float globalAlpha = 1.0f;
     @Override
-    public void onHudRender(DrawContext drawContext, float tickDelta) {
+    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
         MinecraftClient client = MinecraftClient.getInstance();
         MatrixStack matrices = drawContext.getMatrices();
         TextRenderer textRenderer = client.textRenderer;
+        float tickDelta = tickCounter.getLastFrameDuration();
 
         // if not in survival or adventure, don't render the magic bar
         if (client.player == null || client.interactionManager.getCurrentGameMode() == GameMode.CREATIVE ||

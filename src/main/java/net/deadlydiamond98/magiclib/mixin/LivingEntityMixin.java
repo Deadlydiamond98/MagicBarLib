@@ -2,22 +2,18 @@ package net.deadlydiamond98.magiclib.mixin;
 
 import net.deadlydiamond98.magiclib.items.MagicItemData;
 import net.deadlydiamond98.magiclib.items.consumables.MagicReplenisher;
-import net.deadlydiamond98.magiclib.networking.ZeldaServerPackets;
+import net.deadlydiamond98.magiclib.networking.MagicServerPackets;
 import net.deadlydiamond98.magiclib.util.ManaEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements ManaEntityData {
@@ -52,7 +48,7 @@ public abstract class LivingEntityMixin implements ManaEntityData {
                 if (currentHandItem instanceof MagicItemData || currentHandItem instanceof MagicReplenisher) {
                     this.setWhenNeededRenderTime(100);
                 }
-                ZeldaServerPackets.sendPlayerStatsPacket((ServerPlayerEntity) player, this.manaLevelZelda, this.manaMaxLevelZelda, this.whenNeededRenderTime);
+                MagicServerPackets.sendPlayerStatsPacket((ServerPlayerEntity) player, this.manaLevelZelda, this.manaMaxLevelZelda, this.whenNeededRenderTime);
             }
 
             if (this.hasManaRegen() && getThisEntity().age % this.tickPause == 0) {
