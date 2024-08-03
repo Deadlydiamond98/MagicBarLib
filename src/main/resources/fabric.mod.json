@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "magiclib",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"name": "Magic Lib",
 	"description": "Library mod that adds magic",
 	"authors": [
@@ -23,9 +23,9 @@
 		]
 	},
 	"mixins": [
-		"zeldacraft.mixins.json",
+		"magicbarlib.mixins.json",
 		{
-			"config": "zeldacraft.client.mixins.json",
+			"config": "magicbarlib.client.mixins.json",
 			"environment": "client"
 		}
 	],

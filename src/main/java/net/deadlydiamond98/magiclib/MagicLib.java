@@ -2,6 +2,7 @@ package net.deadlydiamond98.magiclib;
 
 
 import eu.midnightdust.lib.config.MidnightConfig;
+import net.deadlydiamond98.magiclib.commands.MagicCommands;
 import net.deadlydiamond98.magiclib.events.AfterRespawnEvent;
 import net.deadlydiamond98.magiclib.items.TestingItems;
 import net.deadlydiamond98.magiclib.networking.MagicServerPackets;
@@ -25,6 +26,7 @@ public class MagicLib implements ModInitializer {
 		MagicServerPackets.registerServerPackets();
 		TestingItems.registerItems();
 		AfterRespawnEvent.register();
+		MagicCommands.register();
 
 		LOGGER.info("MagicLib finished Loading");
 	}

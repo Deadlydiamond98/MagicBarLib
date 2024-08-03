@@ -8,5 +8,8 @@
   "magiclib.midnightconfig.manaBarPositionX": "The X-Postion of the on-screen Magic Bar",
   "magiclib.midnightconfig.manaBarPositionY": "The Y-Postion of the on-screen Magic Bar",
   "magiclib.midnightconfig.manaBarTextOffsetX": "The X-Postion of the Magic Text Relative to the Magic Bar",
-  "magiclib.midnightconfig.manaBarTextOffsetY": "The Y-Postion of the Magic Text Relative to the Magic Bar"
+  "magiclib.midnightconfig.manaBarTextOffsetY": "The Y-Postion of the Magic Text Relative to the Magic Bar",
+
+  "commands.manaSet.success.single": "%s Mana set to %s",
+  "commands.manaSet.success.multiple": "%s Mana set to %s"
 }

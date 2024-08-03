@@ -12,13 +12,6 @@ import net.minecraft.util.Identifier;
 
 public class TestingItems {
 
-    public static final Item Crystal_Apple = registerItem("crystal_apple",
-            new MagicUpgrade(new Item.Settings(), 1000, 100, false, false, 0));
-    public static final Item Crystal_Applae = registerItem("crystal_apaple",
-            new MagicDowngrade(new Item.Settings(), 100, 100, false, 0));
-    public static final Item Crystal_Appdlae = registerItem("crystal_apaplde",
-            new MagicConsumable(new Item.Settings(), 100, true, 0));
-
     //Registration stuff
     private static Item registerItem(String itemName, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(MagicLib.MOD_ID, itemName), item);
