@@ -8,8 +8,8 @@
 		"Deadlydiamond98"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://legacy.curseforge.com/minecraft/mc-mods/magicbarlib",
+		"sources": "https://github.com/Deadlydiamond98/MagicBarLib"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/magiclib/icon.png",
@@ -23,9 +23,9 @@
 		]
 	},
 	"mixins": [
-		"zeldacraft.mixins.json",
+		"magicbarlib.mixins.json",
 		{
-			"config": "zeldacraft.client.mixins.json",
+			"config": "magicbarlib.client.mixins.json",
 			"environment": "client"
 		}
 	],

@@ -7,8 +7,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class TestingItems {
-
-
+    //Only for testing things, doesn't do anything for the mod
 
 
 
