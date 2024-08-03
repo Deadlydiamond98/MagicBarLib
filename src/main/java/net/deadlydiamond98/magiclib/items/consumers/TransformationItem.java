@@ -31,7 +31,7 @@ public class TransformationItem extends Item implements MagicItemData {
     private final int manaCost;
     private final boolean consumed;
     private final int cooldown;
-    private final LivingEntity defaultEntity;
+    private final EntityType defaultEntity;
     private final boolean hasDefault;
 
     /**
@@ -41,7 +41,7 @@ public class TransformationItem extends Item implements MagicItemData {
      * @param consumed,         Whether the item is consumed on use
      * @param cooldown,         Item use Cooldown, if any
      */
-    public TransformationItem(Settings settings, int manaCost, boolean consumed, int cooldown, boolean hasDefault, LivingEntity defaultEntity) {
+    public TransformationItem(Settings settings, int manaCost, boolean consumed, int cooldown, boolean hasDefault, EntityType defaultEntity) {
         super(settings);
         this.manaCost = manaCost;
         this.consumed = consumed;
@@ -187,7 +187,7 @@ public class TransformationItem extends Item implements MagicItemData {
                 return convertEntity(entity.getType(), replacementEntity, entity, user, stack);
             }
             if (this.hasDefault) {
-                return convertEntity(entity.getType(), this.defaultEntity.getType(), entity, user, stack);
+                return convertEntity(entity.getType(), this.defaultEntity, entity, user, stack);
             }
         }
         return super.useOnEntity(stack, user, entity, hand);
