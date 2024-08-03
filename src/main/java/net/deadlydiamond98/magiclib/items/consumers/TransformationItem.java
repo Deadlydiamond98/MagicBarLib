@@ -31,6 +31,8 @@ public class TransformationItem extends Item implements MagicItemData {
     private final int manaCost;
     private final boolean consumed;
     private final int cooldown;
+    private final LivingEntity defaultEntity;
+    private final boolean hasDefault;
 
     /**
      * The Transformation Item is used for transforming one thing to another, similar to Zelda's transformation powder
@@ -39,11 +41,13 @@ public class TransformationItem extends Item implements MagicItemData {
      * @param consumed,         Whether the item is consumed on use
      * @param cooldown,         Item use Cooldown, if any
      */
-    public TransformationItem(Settings settings, int manaCost, boolean consumed, int cooldown) {
+    public TransformationItem(Settings settings, int manaCost, boolean consumed, int cooldown, boolean hasDefault, LivingEntity defaultEntity) {
         super(settings);
         this.manaCost = manaCost;
         this.consumed = consumed;
         this.cooldown = cooldown;
+        this.hasDefault = hasDefault;
+        this.defaultEntity = defaultEntity;
 
         this.blockConversionMap = new HashMap<>();
         initializeBlockConversions();
@@ -77,6 +81,20 @@ public class TransformationItem extends Item implements MagicItemData {
      */
     protected void initializeItemConversions() {
     }
+
+    /**
+     * Do things once mana is consumed
+     */
+    protected void consumeMana(PlayerEntity user, ItemStack stack, World world) {
+        user.removeMana(this.manaCost);
+        if (this.consumed) {
+            stack.decrement(1);
+        }
+        if (this.cooldown > 0) {
+            user.getItemCooldownManager().set(this, this.cooldown);
+        }
+    }
+
     /**
      * displays the Mana cost of the item in a tooltip (think sword damage for example)
      */
@@ -106,13 +124,7 @@ public class TransformationItem extends Item implements MagicItemData {
             entity.discard();
             world.spawnEntity(newEntity);
 
-            user.removeMana(this.manaCost);
-            if (this.consumed) {
-                stack.decrement(1);
-            }
-            if (this.cooldown > 0) {
-                user.getItemCooldownManager().set(this, this.cooldown);
-            }
+            consumeMana(user, stack, world);
 
             return ActionResult.SUCCESS;
         }
@@ -160,17 +172,12 @@ public class TransformationItem extends Item implements MagicItemData {
                 }
             }
 
-            user.removeMana(this.manaCost);
-            if (this.consumed) {
-                context.getStack().decrement(1);
-            }
-            if (this.cooldown > 0) {
-                user.getItemCooldownManager().set(this, this.cooldown);
-            }
+            consumeMana(user, context.getStack(), world);
             return ActionResult.SUCCESS;
         }
         return super.useOnBlock(context);
     }
+
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
@@ -178,6 +185,9 @@ public class TransformationItem extends Item implements MagicItemData {
             EntityType replacementEntity = this.entityConversionMap.get(entity.getType());
             if (replacementEntity != null) {
                 return convertEntity(entity.getType(), replacementEntity, entity, user, stack);
+            }
+            if (this.hasDefault) {
+                return convertEntity(entity.getType(), this.defaultEntity.getType(), entity, user, stack);
             }
         }
         return super.useOnEntity(stack, user, entity, hand);

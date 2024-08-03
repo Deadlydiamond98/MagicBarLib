@@ -20,10 +20,15 @@ public class MagicItem extends Item implements MagicItemData {
     }
 
     /**
-     * Run when item is uses mana
+     * Run when item is using mana
      */
-    protected void doManaAction(PlayerEntity user) {
+    protected void doManaAction(PlayerEntity user, World world) {
         user.removeMana(this.manaCost);
+    }
+    /**
+     * Run when item can't use mana
+     */
+    protected void doNoManaEvent(PlayerEntity user, World world) {
     }
 
     /**
@@ -38,8 +43,11 @@ public class MagicItem extends Item implements MagicItemData {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (user.canRemoveMana(this.manaCost)) {
-            doManaAction(user);
+            doManaAction(user, world);
             return TypedActionResult.success(user.getStackInHand(hand));
+        }
+        else {
+            doNoManaEvent(user, world);
         }
         return super.use(world, user, hand);
     }
