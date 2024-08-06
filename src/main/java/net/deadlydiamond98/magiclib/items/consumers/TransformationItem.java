@@ -94,6 +94,11 @@ public class TransformationItem extends Item implements MagicItemData {
             user.getItemCooldownManager().set(this, this.cooldown);
         }
     }
+    /**
+     * Run when item can't use mana
+     */
+    protected void doNoManaEvent(PlayerEntity user, World world) {
+    }
 
     /**
      * displays the Mana cost of the item in a tooltip (think sword damage for example)
@@ -175,9 +180,11 @@ public class TransformationItem extends Item implements MagicItemData {
             consumeMana(user, context.getStack(), world);
             return ActionResult.SUCCESS;
         }
+        else {
+            doNoManaEvent(user, user.getWorld());
+        }
         return super.useOnBlock(context);
     }
-
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
@@ -190,6 +197,10 @@ public class TransformationItem extends Item implements MagicItemData {
                 return convertEntity(entity.getType(), this.defaultEntity, entity, user, stack);
             }
         }
+        else {
+            doNoManaEvent(user, user.getWorld());
+        }
+
         return super.useOnEntity(stack, user, entity, hand);
     }
 }

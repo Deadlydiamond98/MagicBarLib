@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "magiclib",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"name": "Magic Lib",
 	"description": "Library mod that adds magic",
 	"authors": [

@@ -85,7 +85,7 @@ public abstract class LivingEntityMixin implements ManaEntityData {
             this.tickPause = nbt.getInt("tickPause");
         }
         if (nbt.contains("amountToRegen")) {
-            this.tickPause = nbt.getInt("amountToRegen");
+            this.amountToRegen = nbt.getInt("amountToRegen");
         }
     }
 
