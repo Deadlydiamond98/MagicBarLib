@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +28,14 @@ import java.util.Map;
 public class TransformationItem extends Item implements MagicItemData {
     protected final Map<Block, Block> blockConversionMap;
     protected final Map<EntityType,  EntityType> entityConversionMap;
+    protected final List<EntityType> entityBlacklistConversionMap;
     protected final Map<Item,  Item> itemConversionMap;
     private final int manaCost;
     private final boolean consumed;
     private final int cooldown;
     private final EntityType defaultEntity;
     private final boolean hasDefault;
+    private final int entityHealthThreshold;
 
     /**
      * The Transformation Item is used for transforming one thing to another, similar to Zelda's transformation powder
@@ -41,13 +44,14 @@ public class TransformationItem extends Item implements MagicItemData {
      * @param consumed,         Whether the item is consumed on use
      * @param cooldown,         Item use Cooldown, if any
      */
-    public TransformationItem(Settings settings, int manaCost, boolean consumed, int cooldown, boolean hasDefault, EntityType defaultEntity) {
+    public TransformationItem(Settings settings, int manaCost, boolean consumed, int cooldown, boolean hasDefault, EntityType defaultEntity, int entityHealthThreshold) {
         super(settings);
         this.manaCost = manaCost;
         this.consumed = consumed;
         this.cooldown = cooldown;
         this.hasDefault = hasDefault;
         this.defaultEntity = defaultEntity;
+        this.entityHealthThreshold = entityHealthThreshold;
 
         this.blockConversionMap = new HashMap<>();
         initializeBlockConversions();
@@ -55,8 +59,16 @@ public class TransformationItem extends Item implements MagicItemData {
         initializeEntityConversions();
         this.itemConversionMap = new HashMap<>();
         initializeItemConversions();
+        this.entityBlacklistConversionMap = new ArrayList<>();
+        initializeEntityBlacklist();
     }
 
+    /**
+     * Anything Defined in here will be unabled to be transformed under any circumstance
+     *
+     */
+    protected void initializeEntityBlacklist() {
+    }
     /**
      * Anything Defined in here will be added to the Block Conversion Map, and used to transform Blocks
      * an example of this is: blockConversionMap.put(Blocks.GRASS_BLOCK, Blocks.MYCELIUM);
@@ -148,7 +160,7 @@ public class TransformationItem extends Item implements MagicItemData {
         BlockState state = world.getBlockState(pos);
         PlayerEntity user = context.getPlayer();
 
-        if (user != null && user.canRemoveMana(this.manaCost)) {
+        if (user != null && (user.canRemoveMana(this.manaCost) || user.isCreative())) {
             Block replacementBlock = this.blockConversionMap.get(state.getBlock());
             if (replacementBlock != null) {
                 BlockState newState = replacementBlock.getDefaultState();
@@ -188,12 +200,17 @@ public class TransformationItem extends Item implements MagicItemData {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        if (user.canRemoveMana(this.manaCost)) {
+        if (user.canRemoveMana(this.manaCost) || user.isCreative()) {
             EntityType replacementEntity = this.entityConversionMap.get(entity.getType());
+            boolean blackListed = this.entityBlacklistConversionMap.contains(entity.getType());
+
+            if (blackListed) {
+                return super.useOnEntity(stack, user, entity, hand);
+            }
             if (replacementEntity != null) {
                 return convertEntity(entity.getType(), replacementEntity, entity, user, stack);
             }
-            if (this.hasDefault) {
+            if (this.hasDefault && entity.getMaxHealth() <= this.entityHealthThreshold) {
                 return convertEntity(entity.getType(), this.defaultEntity, entity, user, stack);
             }
         }

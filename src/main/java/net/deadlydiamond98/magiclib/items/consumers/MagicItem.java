@@ -42,7 +42,7 @@ public class MagicItem extends Item implements MagicItemData {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (user.canRemoveMana(this.manaCost)) {
+        if (user.canRemoveMana(this.manaCost) || user.isCreative()) {
             doManaAction(user, world);
             return TypedActionResult.success(user.getStackInHand(hand));
         }
