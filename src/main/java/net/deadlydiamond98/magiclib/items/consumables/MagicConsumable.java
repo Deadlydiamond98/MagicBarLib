@@ -18,6 +18,7 @@ public class MagicConsumable extends MagicReplenisher {
      * @param cooldown, Item use Cooldown, if any
      *
      * Use this Item if you don't want to make the player eat the item like food, otherwise
+     *
      * @see net.deadlydiamond98.magiclib.items.consumables.MagicFood
      */
     public MagicConsumable(Settings settings, int amountToGive, boolean consumed, int cooldown) {
@@ -31,14 +32,14 @@ public class MagicConsumable extends MagicReplenisher {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient()) {
             user.addMana(this.amountToGive);
-            if (consumed) {
+            if (this.consumed) {
                 user.getStackInHand(hand).decrement(1);
             }
             if (this.cooldown > 0) {
                 user.getItemCooldownManager().set(this, this.cooldown);
             }
             afterUse(user);
-            return TypedActionResult.consume(user.getStackInHand(hand));
+            return TypedActionResult.success(user.getStackInHand(hand));
         }
         return super.use(world, user, hand);
     }

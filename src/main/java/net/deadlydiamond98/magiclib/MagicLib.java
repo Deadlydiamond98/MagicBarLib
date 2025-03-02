@@ -25,7 +25,6 @@ public class MagicLib implements ModInitializer {
 		TestingItems.registerItems();
 		AfterRespawnEvent.register();
 		MagicCommands.register();
-
 		LOGGER.info("MagicLib finished Loading");
 	}
 

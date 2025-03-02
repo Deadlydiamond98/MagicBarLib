@@ -11,7 +11,7 @@
 		"homepage": "https://legacy.curseforge.com/minecraft/mc-mods/magicbarlib",
 		"sources": "https://github.com/Deadlydiamond98/MagicBarLib"
 	},
-	"license": "CC0-1.0",
+	"license": "Custom",
 	"icon": "assets/magiclib/icon.png",
 	"environment": "*",
 	"entrypoints": {

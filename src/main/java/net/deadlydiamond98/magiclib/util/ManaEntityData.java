@@ -44,13 +44,22 @@ public interface ManaEntityData {
      */
     default void addMana(int amount) {}
     /**
-     * Removes Mana from the entity, if the entity's mana isn't 0
+     * Removes Mana from the entity, if the entity's mana isn't 0 and applies a delay before regenerating mana again
      * If the amount of mana removed is greater than the entity's current mana, the mana won't be removed
      * If the amount of mana added is negative, addMana() will be called
      *
      * @param amount, amount to remove from the entity
      */
     default void removeMana(int amount) {}
+    /**
+     * Removes Mana from the entity, if the entity's mana isn't 0
+     * If the amount of mana removed is greater than the entity's current mana, the mana won't be removed
+     * If the amount of mana added is negative, addMana() will be called
+     *
+     * @param amount, amount to remove from the entity
+     * @param addDelay, whether or no to add a delay before regenerating
+     */
+    default void removeMana(int amount, boolean addDelay) {}
 
     /**
      * Returns true if the entity's mana is less than max
@@ -66,45 +75,66 @@ public interface ManaEntityData {
 
     /**
      *
-     * @param amount, amount of mana you want to add to the entity's maximum Mana
-     * @param replenish, whether the entity recovers mana that is equal to the max increase
+     * @param amount amount of mana you want to add to the entity's maximum Mana
+     * @param replenish whether the entity recovers mana that is equal to the max increase
      */
     default void increaseMaxMana(int amount, boolean replenish) {}
 
     /**
      * If the amount of max mana - the amount removed is less than 1, nothing will happen
      *
-     * @param amount, amount of mana to remove from the entity's maximum Mana
+     * @param amount amount of mana to remove from the entity's maximum Mana
      */
     default void decreaseMaxMana(int amount) {}
 
     /**
      * Checks if the maximum amount of mana can be decreased
-     * @param amount, amount of mana you want to remove
+     * @param amount amount of mana you want to remove
      */
     default boolean canDecreaseMaxMana(int amount) {return false;}
 
     /**
-     * Enables Passive Mana Regeneration, this is used if you want mana to passively regen
-     * @param regen, If true, mana will regenerate over time
-     * @param tickPause, how many ticks that need to pass before mana will regenerate (ex: if tickPause is 40, the entity will regenerate mana every 40 ticks)
-     * @param amount, amount of mana that is regenerated per tickPause
-     */
-    default void enableManaRegen(boolean regen, int tickPause, int amount) {}
-
-    /**
-     * checks whether the entity is currently regenerating mana
+     * if true, allows the entity to regenerate Mana
      */
     default boolean hasManaRegen() {return false;}
 
+    /**
+     * Toggle an entities ability to regenerate Mana
+     * @param manaRegen
+     */
+    default void setManaRegen(boolean manaRegen) {}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Doesn't do anything, only persists to not cause crashes with Legend of Steve 1.0.3.1
+     */
+    @Deprecated
+    default void enableManaRegen(boolean regen, int tickPause, int amount) {}
 
     /**
      * The setWhenNeededRenderTime and getWhenNeededRenderTime should be left alone, they are purely for rendering the
      * Mana bar when it's set to only render when needed
      */
     default void setWhenNeededRenderTime(int whenNeededRenderTime) {}
+    /**
+     * The setWhenNeededRenderTime and getWhenNeededRenderTime should be left alone, they are purely for rendering the
+     * Mana bar when it's set to only render when needed
+     */
     default int getWhenNeededRenderTime() {return 0;}
 }

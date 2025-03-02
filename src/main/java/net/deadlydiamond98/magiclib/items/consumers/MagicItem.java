@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class MagicItem extends Item implements MagicItemData {
     private final int manaCost;
@@ -31,11 +32,8 @@ public class MagicItem extends Item implements MagicItemData {
     protected void doNoManaEvent(PlayerEntity user, World world) {
     }
 
-    /**
-     * displays the Mana cost of the item in a tooltip (think sword damage for example)
-     */
     @Override
-    public int getManaCost() {
+    public int getManaCost(ItemStack stack) {
         return this.manaCost;
     }
 

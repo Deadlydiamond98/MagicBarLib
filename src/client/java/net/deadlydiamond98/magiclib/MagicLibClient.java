@@ -25,7 +25,7 @@ public class MagicLibClient implements ClientModInitializer {
 		ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
 			if (stack.getItem() instanceof MagicItemData magicItem) {
 
-				int manaCost = magicItem.getManaCost();
+				int manaCost = magicItem.getManaCost(stack);
 				Text attributeText = Text.literal(" " + manaCost).append(Text.translatable("attribute.magiclib.magic_cost")).formatted(Formatting.DARK_GREEN);
 				int insertIndex = findInsertIndex(lines);
 				boolean hasMainHandText = lines.stream()

@@ -11,5 +11,4 @@ public class AfterRespawnEvent {
             newPlayer.setMaxMana(oldPlayer.getMaxMana());
         });
     }
-
 }

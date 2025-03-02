@@ -19,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,18 +115,10 @@ public class TransformationItem extends Item implements MagicItemData {
     protected void doNoManaEvent(PlayerEntity user, World world) {
     }
 
-
-    /**
-     * displays the Mana cost of the item in a tooltip (think sword damage for example)
-     */
     @Override
-    public int getManaCost() {
+    public int getManaCost(ItemStack stack) {
         return this.manaCost;
     }
-
-
-
-
 
     private static <T extends Comparable<T>> BlockState copyProperty(BlockState fromState, BlockState toState, Property<T> property) {
         return toState.with(property, fromState.get(property));

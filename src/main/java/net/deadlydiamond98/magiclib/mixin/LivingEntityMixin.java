@@ -1,23 +1,19 @@
 package net.deadlydiamond98.magiclib.mixin;
 
-import net.deadlydiamond98.magiclib.items.MagicItemData;
-import net.deadlydiamond98.magiclib.items.consumables.MagicReplenisher;
+import net.deadlydiamond98.magiclib.MagicLib;
+import net.deadlydiamond98.magiclib.items.ShowsManaBar;
 import net.deadlydiamond98.magiclib.networking.ZeldaServerPackets;
 import net.deadlydiamond98.magiclib.util.ManaEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements ManaEntityData {
@@ -34,6 +30,9 @@ public abstract class LivingEntityMixin implements ManaEntityData {
     @Unique
     private int whenNeededRenderTime;
 
+    @Unique
+    private int manaRegenDelay;
+
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onInit(CallbackInfo ci) {
         this.manaMaxLevelZelda = 100;
@@ -42,22 +41,16 @@ public abstract class LivingEntityMixin implements ManaEntityData {
         this.tickPause = 40;
         this.amountToRegen = 1;
         this.whenNeededRenderTime = 0;
+
+        this.manaRegenDelay = 0;
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo ci) {
-        if (!getThisEntity().getWorld().isClient()) {
-            if (getThisEntity() instanceof PlayerEntity player) {
-                Item currentHandItem = player.getStackInHand(player.getActiveHand()).getItem();
-                if (currentHandItem instanceof MagicItemData || currentHandItem instanceof MagicReplenisher) {
-                    this.setWhenNeededRenderTime(100);
-                }
-                ZeldaServerPackets.sendPlayerStatsPacket((ServerPlayerEntity) player, this.manaLevelZelda, this.manaMaxLevelZelda, this.whenNeededRenderTime);
-            }
+        if (!magicbarlib$self().getWorld().isClient()) {
 
-            if (this.hasManaRegen() && getThisEntity().age % this.tickPause == 0) {
-                this.addMana(this.amountToRegen);
-            }
+            updateManaBarClient();
+            regenManaBar();
 
             if (this.whenNeededRenderTime > 0) {
                 this.whenNeededRenderTime--;
@@ -65,13 +58,47 @@ public abstract class LivingEntityMixin implements ManaEntityData {
         }
     }
 
+    @Unique
+    private void updateManaBarClient() {
+        if (magicbarlib$self() instanceof PlayerEntity player) {
+            Item currentHandItem = player.getStackInHand(player.getActiveHand()).getItem();
+
+            if (currentHandItem instanceof ShowsManaBar) {
+                this.setWhenNeededRenderTime(100);
+            }
+
+            ZeldaServerPackets.sendPlayerStatsPacket((ServerPlayerEntity) player, this.manaLevelZelda, this.manaMaxLevelZelda, this.whenNeededRenderTime);
+        }
+    }
+
+    @Unique
+    private void regenManaBar() {
+
+        LivingEntity entity = magicbarlib$self();
+
+        if (this.manaRegenDelay < 0) {
+            this.manaRegenDelay++;
+            return;
+        }
+
+        if (entity.age % 12 == 0 && hasManaRegen()) {
+            if (entity instanceof PlayerEntity player && !player.getHungerManager().isNotFull()) {
+                return;
+            }
+
+            int regenRate = (int) Math.max(Math.floor(Math.min(Math.floor(Math.pow((this.getMana() / (double) this.getMaxMana()) *
+                    (this.getMaxMana() / 100.0) * 0.8, -1)), 5)), 1);
+            this.addMana(regenRate);
+        }
+    }
+
     @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
     public void onSave(NbtCompound nbt, CallbackInfo info) {
-        nbt.putInt("manaLevelZelda", manaLevelZelda);
-        nbt.putInt("manaMaxLevelZelda", manaMaxLevelZelda);
-        nbt.putBoolean("regenZelda", regen);
-        nbt.putInt("tickPause", tickPause);
-        nbt.putInt("amountToRegen", amountToRegen);
+        nbt.putInt("manaLevelZelda", this.manaLevelZelda);
+        nbt.putInt("manaMaxLevelZelda", this.manaMaxLevelZelda);
+        nbt.putBoolean("regenZelda", this.regen);
+        nbt.putInt("tickPause", this.tickPause);
+        nbt.putInt("amountToRegen", this.amountToRegen);
     }
 
     @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
@@ -93,33 +120,38 @@ public abstract class LivingEntityMixin implements ManaEntityData {
         }
     }
 
+    //Replaced with funky name due to some conflicts with other mods
     @Unique
-    private LivingEntity getThisEntity() {
+    private LivingEntity magicbarlib$self() {
         return ((LivingEntity)(Object)this);
     }
 
     @Override
     public void setMana(int value) {
-        if (getThisEntity() instanceof PlayerEntity) {
+        if (magicbarlib$self() instanceof PlayerEntity) {
             this.setWhenNeededRenderTime(100);
         }
         this.manaLevelZelda = value;
     }
+
     @Override
     public int getMana() {
         return this.manaLevelZelda;
     }
+
     @Override
     public void setMaxMana(int value) {
-        if (getThisEntity() instanceof PlayerEntity) {
+        if (magicbarlib$self() instanceof PlayerEntity) {
             this.setWhenNeededRenderTime(100);
         }
         this.manaMaxLevelZelda = value;
     }
+
     @Override
     public int getMaxMana() {
         return this.manaMaxLevelZelda;
     }
+
     @Override
     public void addMana(int amount) {
         if (amount < 0) {
@@ -136,8 +168,14 @@ public abstract class LivingEntityMixin implements ManaEntityData {
             }
         }
     }
+
     @Override
     public void removeMana(int amount) {
+        removeMana(amount, true);
+    }
+
+    @Override
+    public void removeMana(int amount, boolean addDelay) {
         if (amount < 0) {
             addMana(amount * -1);
         }
@@ -148,8 +186,16 @@ public abstract class LivingEntityMixin implements ManaEntityData {
             else if (this.getMana() > 0 && this.getMana() - amount < 0) {
                 this.setMana(0);
             }
+
+            if (addDelay) {
+                // Totally didn't borrow the regen formula from Terraria before modifying it, I would never
+                this.manaRegenDelay = (int) Math.floor(Math.min(
+                        0.7 * ((1 - (this.getMana() / (double) this.getMaxMana()) * 500 + 45)), -60
+                ));
+            }
         }
     }
+
     @Override
     public boolean canAddMana(int amountToGive) {
         if (amountToGive + this.getMana() <= this.getMaxMana()) {
@@ -197,11 +243,21 @@ public abstract class LivingEntityMixin implements ManaEntityData {
         return this.getMaxMana() - amount > 0;
     }
 
+
+
     @Override
     public boolean hasManaRegen() {
         return this.regen;
     }
 
+    @Override
+    public void setManaRegen(boolean manaRegen) {
+        this.regen = manaRegen;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Deprecated
     @Override
     public void enableManaRegen(boolean regen, int tickPause, int amount) {
         this.tickPause = tickPause;
@@ -211,7 +267,7 @@ public abstract class LivingEntityMixin implements ManaEntityData {
 
     @Override
     public int getWhenNeededRenderTime() {
-        if (getThisEntity() instanceof PlayerEntity) {
+        if (magicbarlib$self() instanceof PlayerEntity) {
             return this.whenNeededRenderTime;
         }
         return 0;
@@ -219,7 +275,7 @@ public abstract class LivingEntityMixin implements ManaEntityData {
 
     @Override
     public void setWhenNeededRenderTime(int whenNeededRenderTime) {
-        if (getThisEntity() instanceof PlayerEntity) {
+        if (magicbarlib$self() instanceof PlayerEntity) {
             this.whenNeededRenderTime = whenNeededRenderTime;
         }
     }

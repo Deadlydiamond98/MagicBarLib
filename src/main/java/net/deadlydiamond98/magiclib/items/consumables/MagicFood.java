@@ -13,7 +13,7 @@ public class MagicFood extends MagicReplenisher {
     private int amountToGive;
     /**
      * @param amountToGive, amount of mana to replenish to the player
-     *
+     * <p>
      * Use this Item if you want to make the player eat the item like food, otherwise
      * @see net.deadlydiamond98.magiclib.items.consumables.MagicFood
      */
