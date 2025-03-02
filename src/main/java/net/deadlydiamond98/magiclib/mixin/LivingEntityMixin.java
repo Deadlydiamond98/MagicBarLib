@@ -82,7 +82,7 @@ public abstract class LivingEntityMixin implements ManaEntityData {
         }
 
         if (entity.age % 12 == 0 && hasManaRegen()) {
-            if (entity instanceof PlayerEntity player && !player.getHungerManager().isNotFull()) {
+            if (entity instanceof PlayerEntity player && player.getHungerManager().isNotFull()) {
                 return;
             }
 
