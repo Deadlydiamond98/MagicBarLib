@@ -37,7 +37,7 @@ public abstract class LivingEntityMixin implements ManaEntityData {
     private void onInit(CallbackInfo ci) {
         this.manaMaxLevelZelda = 100;
         this.manaLevelZelda = 0;
-        this.regen = false;
+        this.regen = true;
         this.tickPause = 40;
         this.amountToRegen = 1;
         this.whenNeededRenderTime = 0;
