@@ -26,7 +26,7 @@ public class MagicLibClient implements ClientModInitializer {
 			if (stack.getItem() instanceof IMagicItem magicItem) {
 
 				int manaCost = magicItem.getManaCost(stack);
-				Text attributeText = Text.literal(" " + manaCost).append(Text.translatable("attribute.magiclib.magic_cost")).formatted(Formatting.DARK_GREEN);
+				Text attributeText = Text.literal(" " + manaCost).append(Text.translatable("attribute.koalalib.magic_cost")).formatted(Formatting.DARK_GREEN);
 				int insertIndex = findInsertIndex(lines);
 				boolean hasMainHandText = lines.stream()
 						.anyMatch(text -> text.getString().equals(Text.translatable("item.modifiers.mainhand").getString()));
