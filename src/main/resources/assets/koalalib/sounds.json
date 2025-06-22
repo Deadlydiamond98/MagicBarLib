@@ -1,0 +1,39 @@
+{
+  "legacy.gui.back": {
+    "sounds": [
+      "koalalib:console/back"
+    ]
+  },
+  "legacy.gui.craft": {
+    "sounds": [
+      "koalalib:console/craft"
+    ]
+  },
+  "legacy.gui.craftfail": {
+    "sounds": [
+      "koalalib:console/craftfail"
+    ]
+  },
+  "legacy.gui.focus": {
+    "sounds": [
+      "koalalib:console/focus"
+    ]
+  },
+  "legacy.gui.press": {
+    "sounds": [
+      "koalalib:console/press"
+    ]
+  },
+  "legacy.gui.scroll": {
+    "sounds": [
+      "koalalib:console/scroll"
+    ]
+  },
+
+
+  "aprilfools.bagel": {
+    "sounds": [
+      "koalalib:joke/bagel"
+    ]
+  }
+}

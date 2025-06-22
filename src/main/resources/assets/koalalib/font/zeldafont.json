@@ -1,0 +1,16 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "koalalib:font/zeldafont.png",
+      "height": 18,
+      "ascent": 14,
+      "chars": [
+        " ABCDEFGHIJKLMNOPQRS",
+        "TUVWXYZabcdefghijklm",
+        "nopqrstuvwxyz0123456",
+        "789-.,!?()/\\\"':;%$[]"
+      ]
+    }
+  ]
+}

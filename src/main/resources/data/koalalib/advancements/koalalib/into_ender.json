@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "koalalib:ender_soul"
+    },
+    "title": {
+      "translate": "advancements.koalalib.into_ender"
+    },
+    "description": {
+      "translate": "advancements.koalalib.into_ender.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:adventure/kill_a_mob",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "koalalib:ender_soul"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
