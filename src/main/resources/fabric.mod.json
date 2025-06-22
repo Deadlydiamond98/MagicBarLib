@@ -1,14 +1,14 @@
 {
 	"schemaVersion": 1,
-	"id": "magiclib",
+	"id": "koalalib",
 	"version": "${version}",
-	"name": "Magic Lib",
-	"description": "Library mod that adds magic",
+	"name": "Koala Lib",
+	"description": "Library mod that adds various things I use in my mods",
 	"authors": [
 		"Deadlydiamond98"
 	],
 	"contact": {
-		"homepage": "https://legacy.curseforge.com/minecraft/mc-mods/magicbarlib",
+		"homepage": "https://legacy.curseforge.com/minecraft/mc-mods/koalalib",
 		"sources": "https://github.com/Deadlydiamond98/MagicBarLib"
 	},
 	"license": "Custom",
