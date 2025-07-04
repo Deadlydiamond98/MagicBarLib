@@ -12,6 +12,16 @@
   "koalalib.main.config.category": "Koala Lib",
   "koalalib.magic_bar.config.category": "Magic Bar Options",
 
+  "zeldacraft.main.config.category": "The Legend of Steve",
+  "testing.main.config.category": "Alpha",
+  "alpha.main.config.category": "ZeldaCraft",
+  "zeldacraft.magic_bar.config.category": "Dungeon Gen",
+
+  "healpgood.main.config.category": "Healing Pretty Good",
+  "healpgood.category.config.category": "Alpha",
+  "healpgood.category2.config.category": "Zero",
+  "healpgood.category3.config.category": "Herald",
+
   "koalalib.main.config.fancyTransitions": "Fancy Transitions",
   "koalalib.magic_bar.config.manaBarPositionX": "Magic Bar X",
   "koalalib.magic_bar.config.manaBarPositionY": "Magic Bar Y",

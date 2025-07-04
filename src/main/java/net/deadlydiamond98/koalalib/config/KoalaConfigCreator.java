@@ -18,12 +18,10 @@ import java.util.HashMap;
 
 public class KoalaConfigCreator {
 
-    // TODO: Allow for creation of sub-categories
-
     // TODO: Prevent resetting of entire config file if new values are added or removed!
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static final HashMap<String, Pair<Class<?>, Boolean>> MOD_CONFIGS = new HashMap<>();
+    public static final HashMap<String, Pair<Class<?>, String>> MOD_CONFIGS = new HashMap<>();
 
     /**
      * Call this method to add a config for your mod!!
@@ -32,16 +30,21 @@ public class KoalaConfigCreator {
      */
     public static void addModConfig(String modID, Class<?> configClass) {
         modID += ".main";
-        MOD_CONFIGS.put(modID, new Pair<>(configClass, false));
+        MOD_CONFIGS.put(modID, new Pair<>(configClass, ""));
 
         readValuesFromConfig(getConfigFile(modID), configClass);
     }
-    
-    public static void addModConfigCategory(String modID, String category, Class<?> configClass) {
-        modID += "." + category;
-        MOD_CONFIGS.put(modID, new Pair<>(configClass, true));
 
-        readValuesFromConfig(getConfigFile(modID), configClass);
+    /**
+     * Call this method to add a sub-category for your mod's config!!
+     * @param modID The ModID of your mod!
+     * @param category The Name of your mod category!
+     * @param configClass The Class where all of your config values will be contained!
+     */
+    public static void addModConfigCategory(String modID, String category, Class<?> configClass) {
+        String categoryName = modID + "." + category;
+        MOD_CONFIGS.put(categoryName, new Pair<>(configClass, modID + ".main"));
+        readValuesFromConfig(getConfigFile(categoryName), configClass);
     }
 
     /**

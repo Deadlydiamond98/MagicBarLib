@@ -30,19 +30,42 @@ public class ModSelectionListWidget extends AlwaysSelectedEntryListWidget<ModSel
     public ModSelectionListWidget(MinecraftClient client, int width, int height, int top, int bottom, int itemHeight) {
         super(client, width, height, top, bottom, itemHeight);
 
-        List<Pair<String, Boolean>> modIDs = new ArrayList<>();
-        KoalaConfigCreator.MOD_CONFIGS.forEach((modID, aClass) -> modIDs.add(new Pair<>(modID, aClass.getB())));
+        List<Pair<String, String>> modIDs = new ArrayList<>();
+        List<Pair<String, String>> modCategories = new ArrayList<>();
+        KoalaConfigCreator.MOD_CONFIGS.forEach((modID, pair) -> {
+            if (pair.getB().isEmpty()) {
+                modIDs.add(new Pair<>(modID, ""));
+            } else {
+                modCategories.add(new Pair<>(modID, pair.getB()));
+            }
+        });
 
         modIDs.sort((o1, o2) -> {
             String name1 = Text.translatable(o1.getA() + ".config.category").getString();
-            String name2 = Text.translatable(o2.getB() + ".config.category").getString();
+            String name2 = Text.translatable(o2.getA() + ".config.category").getString();
             return name1.compareToIgnoreCase(name2);
         });
+
+        modCategories.sort((o2, o1) -> {
+            String name1 = Text.translatable(o1.getA() + ".config.category").getString();
+            String name2 = Text.translatable(o2.getA() + ".config.category").getString();
+            return name1.compareToIgnoreCase(name2);
+        });
+
+        for (int i = modIDs.size() - 1; i >= 0; i--) {
+            int index = i;
+            modCategories.forEach(pair -> {
+                if (modIDs.get(index).getA().equals(pair.getB())) {
+                    modIDs.add(index + 1, pair);
+                }
+            });
+        }
 
         modIDs.forEach(modID -> {
             ModConfigSelectionEntry configCategory = new ModConfigSelectionEntry(
                     client.textRenderer, modID.getA(), modID.getB()
             );
+
             this.addEntry(configCategory);
         });
 
@@ -97,10 +120,10 @@ public class ModSelectionListWidget extends AlwaysSelectedEntryListWidget<ModSel
         private final String modID;
         private final boolean isCategory;
 
-        public ModConfigSelectionEntry(TextRenderer textRenderer, String modid, boolean isCategory) {
+        public ModConfigSelectionEntry(TextRenderer textRenderer, String modid, String category) {
             this.textRenderer = textRenderer;
             this.modID = modid;
-            this.isCategory = isCategory;
+            this.isCategory = !category.isEmpty();
         }
 
         @Override

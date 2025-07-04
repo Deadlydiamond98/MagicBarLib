@@ -25,7 +25,7 @@ public class OldScreenPartsEntries {
     public void render(DrawContext context, int mouseX, int mouseY, float delta, int width, int height) {
 
         if (MainConfigs.fancyTransitions) {
-            for (int i = this.entries.size() - 1; i > 0; i--) {
+            for (int i = this.entries.size() - 1; i >= 0; i--) {
                 ClickableWidget element = this.entries.get(i);
 
                 element.render(context, mouseX, mouseY, delta);
@@ -36,7 +36,7 @@ public class OldScreenPartsEntries {
                 }
             }
 
-            for (int i = this.scrollBars.size() - 1; i > 0; i--) {
+            for (int i = this.scrollBars.size() - 1; i >= 0; i--) {
                 ConfigScrollBar element = this.scrollBars.get(i);
 
                 element.renderOld(context, width, height);
