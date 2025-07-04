@@ -5,6 +5,7 @@ import net.deadlydiamond98.koalalib.client.screen.config.inputs.ConfigTextInput;
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.IConfigEntry;
 import net.deadlydiamond98.koalalib.config.CFGProperties;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
+import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -28,7 +29,11 @@ public class ConfigEntries {
 
     public void renderEntries(DrawContext context, int mouseX, int mouseY, float delta, int width, int height) {
         this.entries.forEach(widget -> {
-            widget.setX((int) MathHelper.lerp(0.1, widget.getX(), width - 100));
+            if (MainConfigs.fancyTransitions) {
+                widget.setX((int) MathHelper.lerp(0.1, widget.getX(), width - 100));
+            } else {
+                widget.setX(width - 100);
+            }
         });
     }
 
@@ -51,10 +56,13 @@ public class ConfigEntries {
     /**
      * Saves the values input into the current entries, moves them to the oldConfigEntry list (for swiping away), and then creates new ones.
      */
-    public void swapDisplayedConfigEntries(String modID, int width, TextRenderer textRenderer) {
-        Class<?> configScreen = KoalaConfigCreator.MOD_CONFIGS.get(modID);
+    public void swapDisplayedConfigEntries(String oldModID, String modID, int width, TextRenderer textRenderer) {
+        if (oldModID != null) {
+            Class<?> oldConfigScreen = KoalaConfigCreator.MOD_CONFIGS.get(oldModID).getA();
+            applyConfigValues(oldConfigScreen);
+        }
 
-        applyConfigValues(configScreen);
+        Class<?> configScreen = KoalaConfigCreator.MOD_CONFIGS.get(modID).getA();
 
         this.entries.clear();
 
@@ -110,7 +118,7 @@ public class ConfigEntries {
 
         String translation = modID + ".config." + field.getName();
 
-        int x = screenWidth + 100;
+        int x = screenWidth + 400;
         int y = (offsetY * 25) + 34;
         int width = 75;
         int height = 20;

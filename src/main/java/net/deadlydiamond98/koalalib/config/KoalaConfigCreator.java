@@ -4,8 +4,9 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.deadlydiamond98.koalalib.KoalaLib;
-import net.deadlydiamond98.koalalib.util.KoalaLibConfigs;
+import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.fabricmc.loader.api.FabricLoader;
+import oshi.util.tuples.Pair;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -17,12 +18,12 @@ import java.util.HashMap;
 
 public class KoalaConfigCreator {
 
+    // TODO: Allow for creation of sub-categories
+
     // TODO: Prevent resetting of entire config file if new values are added or removed!
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static final HashMap<String, Class<?>> MOD_CONFIGS = new HashMap<>();
-
-    public static final HashMap<String, HashMap<String, Class<?>>> MOD_TEST = new HashMap<>();
+    public static final HashMap<String, Pair<Class<?>, Boolean>> MOD_CONFIGS = new HashMap<>();
 
     /**
      * Call this method to add a config for your mod!!
@@ -30,17 +31,17 @@ public class KoalaConfigCreator {
      * @param configClass The Class where all of your config values will be contained!
      */
     public static void addModConfig(String modID, Class<?> configClass) {
-        MOD_CONFIGS.put(modID, configClass);
-
-//        for (int i = 0; i < 25; i++) {
-//            MOD_CONFIGS.put(modID + i, configClass);
-//        }
+        modID += ".main";
+        MOD_CONFIGS.put(modID, new Pair<>(configClass, false));
 
         readValuesFromConfig(getConfigFile(modID), configClass);
     }
     
     public static void addModConfigCategory(String modID, String category, Class<?> configClass) {
-        
+        modID += "." + category;
+        MOD_CONFIGS.put(modID, new Pair<>(configClass, true));
+
+        readValuesFromConfig(getConfigFile(modID), configClass);
     }
 
     /**
@@ -135,7 +136,7 @@ public class KoalaConfigCreator {
      * Used to update all the config files when they're changed in-game
      */
     public static void updateAllConfigFiles() {
-        MOD_CONFIGS.forEach((name, configScreen) -> writeToConfigFile(getConfigFile(name), configScreen));
+        MOD_CONFIGS.forEach((name, configScreen) -> writeToConfigFile(getConfigFile(name), configScreen.getA()));
     }
 
     /**
@@ -168,7 +169,7 @@ public class KoalaConfigCreator {
         logger("\n");
         logger("------------------------------------------------------------------------------");
         try {
-            for (Field field : KoalaLibConfigs.class.getFields()) {
+            for (Field field : MainConfigs.class.getFields()) {
                 logger(field.getName() + " | " + field.get(field.getName()));
             }
         } catch (Exception ignored) {}

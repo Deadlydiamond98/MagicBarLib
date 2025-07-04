@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.client.screen.config.entry;
 
 import net.deadlydiamond98.koalalib.client.screen.config.ConfigScrollBar;
+import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.util.math.MathHelper;
@@ -22,26 +23,32 @@ public class OldScreenPartsEntries {
     }
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta, int width, int height) {
-        for (int i = this.entries.size() - 1; i > 0; i--) {
-            ClickableWidget element = this.entries.get(i);
 
-            element.render(context, mouseX, mouseY, delta);
-            element.setX((int) MathHelper.lerp(0.1, element.getX(), width + 100));
+        if (MainConfigs.fancyTransitions) {
+            for (int i = this.entries.size() - 1; i > 0; i--) {
+                ClickableWidget element = this.entries.get(i);
 
-            if (element.getX() > width + 50) {
-                this.entries.remove(i);
+                element.render(context, mouseX, mouseY, delta);
+                element.setX((int) MathHelper.lerp(0.1, element.getX(), width + 400));
+
+                if (element.getX() > width + 200) {
+                    this.entries.remove(i);
+                }
             }
-        }
 
-        for (int i = this.scrollBars.size() - 1; i > 0; i--) {
-            ConfigScrollBar element = this.scrollBars.get(i);
+            for (int i = this.scrollBars.size() - 1; i > 0; i--) {
+                ConfigScrollBar element = this.scrollBars.get(i);
 
-            element.renderOld(context, width, height);
-            element.scrollBarX = (int) MathHelper.lerp(0.1, element.scrollBarX, width + 100);
+                element.renderOld(context, width, height);
+                element.scrollBarX = (int) MathHelper.lerp(0.1, element.scrollBarX, width + 400);
 
-            if (element.scrollBarX > width + 50) {
-                this.scrollBars.remove(i);
+                if (element.scrollBarX > width + 200) {
+                    this.scrollBars.remove(i);
+                }
             }
+        } else {
+            this.entries.clear();
+            this.scrollBars.clear();
         }
     }
 }

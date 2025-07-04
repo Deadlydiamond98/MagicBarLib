@@ -46,7 +46,7 @@ public class KoalaConfigScreen extends GameOptionsScreen {
         this.addSelectableChild(this.doneButton);
         this.configEntries.getEntries().forEach(this::addDrawableChild);
         this.addSelectableChild(this.modSelections);
-        this.scrollBar = new ConfigScrollBar(this.width + 190);
+        this.scrollBar = new ConfigScrollBar(this.width + 490);
 
         super.init();
     }
@@ -76,20 +76,21 @@ public class KoalaConfigScreen extends GameOptionsScreen {
     private void checkAndSwapConfigs() {
         String modID = this.modSelections.getSelectionModID();
         if (modID != null && !Objects.equals(this.currentModID, modID)) {
-            this.currentModID = modID;
-
             this.oldConfigEntries.getEntries().addAll(this.configEntries.getEntries());
             this.oldConfigEntries.scrollBars.add(this.scrollBar);
 
-            this.configEntries.swapDisplayedConfigEntries(modID, this.width, this.textRenderer);
+            this.configEntries.swapDisplayedConfigEntries(this.currentModID, modID, this.width, this.textRenderer);
+            this.currentModID = modID;
             clearAndInit();
         }
     }
 
     @Override
     public void close() {
-        Class<?> configScreen = KoalaConfigCreator.MOD_CONFIGS.get(this.currentModID);
-        this.configEntries.applyConfigValues(configScreen);
+        if (this.currentModID != null) {
+            Class<?> configScreen = KoalaConfigCreator.MOD_CONFIGS.get(this.currentModID).getA();
+            this.configEntries.applyConfigValues(configScreen);
+        }
         KoalaConfigCreator.updateAllConfigFiles();
         super.close();
     }

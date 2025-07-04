@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.client.screen.config;
 
 import net.deadlydiamond98.koalalib.client.screen.config.entry.ConfigEntries;
+import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.math.MathHelper;
 
@@ -30,7 +31,7 @@ public class ConfigScrollBar {
         int scrollBarHeight = (height - 63) - 34;
 
         if (this.getMaxScroll(height, this.lastListSize) > 0) {
-            this.scrollBarX = (int) MathHelper.lerp(0.1, this.scrollBarX, width - 10);
+            this.scrollBarX = MainConfigs.fancyTransitions ? (int) MathHelper.lerp(0.1, this.scrollBarX, width - 10) : width - 10;
 
             int scrollBarThumbHeight = Math.max(20, (scrollBarHeight * scrollBarHeight) / (scrollBarHeight + getMaxScroll(height, this.lastListSize)));
             int scrollThumbY = 34 + (this.scrollOffset * (scrollBarHeight - scrollBarThumbHeight) / getMaxScroll(height, this.lastListSize));

@@ -7,7 +7,8 @@ import net.deadlydiamond98.koalalib.common.events.KoalaAfterDeathEvent;
 import net.deadlydiamond98.koalalib.common.events.KoalaAfterRespawnEvent;
 import net.deadlydiamond98.koalalib.common.items.ModSharedItems;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
-import net.deadlydiamond98.koalalib.util.KoalaLibConfigs;
+import net.deadlydiamond98.koalalib.config.configs.MagicBarConfigs;
+import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
@@ -23,7 +24,8 @@ public class KoalaLib implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		KoalaConfigCreator.addModConfig(MOD_ID, KoalaLibConfigs.class);
+		KoalaConfigCreator.addModConfig(MOD_ID, MainConfigs.class);
+		KoalaConfigCreator.addModConfigCategory(MOD_ID, "magic_bar", MagicBarConfigs.class);
 
 		ModSharedItems.register();
 		ModSharedSounds.register();
