@@ -19,17 +19,13 @@ import java.util.List;
  * Moved to its own class to make things less cluttered in {@link KoalaConfigScreen}.
  */
 public class ConfigEntries {
-
-    private final OldConfigEntries oldConfigEntries = new OldConfigEntries();
-    private final List<ClickableWidget> entries = new ArrayList<>();
+    public final List<ClickableWidget> entries = new ArrayList<>();
 
     public List<ClickableWidget> getEntries() {
         return this.entries;
     }
 
-    public void renderEntries(DrawContext context, int mouseX, int mouseY, float delta, int width) {
-        this.oldConfigEntries.render(context, mouseX, mouseY, delta, width);
-
+    public void renderEntries(DrawContext context, int mouseX, int mouseY, float delta, int width, int height) {
         this.entries.forEach(widget -> {
             widget.setX((int) MathHelper.lerp(0.1, widget.getX(), width - 100));
         });
@@ -58,7 +54,6 @@ public class ConfigEntries {
         Class<?> configScreen = KoalaConfigCreator.MOD_CONFIGS.get(modID);
 
         applyConfigValues(configScreen);
-        this.oldConfigEntries.getEntries().addAll(this.entries);
 
         this.entries.clear();
 

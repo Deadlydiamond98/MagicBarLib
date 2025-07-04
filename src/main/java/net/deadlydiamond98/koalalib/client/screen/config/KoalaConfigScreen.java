@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.client.screen.config;
 
 import net.deadlydiamond98.koalalib.client.screen.config.entry.ConfigEntries;
+import net.deadlydiamond98.koalalib.client.screen.config.entry.OldScreenPartsEntries;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -19,18 +20,14 @@ import java.util.Objects;
  * Screen used for in-game config editing!
  */
 public class KoalaConfigScreen extends GameOptionsScreen {
-    private static final int SCROLL_STEP = 10;
-
-    private final ConfigScrollBar scrollBar = new ConfigScrollBar();
+    public final OldScreenPartsEntries oldConfigEntries = new OldScreenPartsEntries();
     private final ConfigEntries configEntries = new ConfigEntries();
 
     private boolean firstInit;
     private ModSelectionListWidget modSelections;
     private ButtonWidget doneButton;
     private @Nullable String currentModID = null;
-
-    private int scrollOffset;
-    private int scrollBarX;
+    private ConfigScrollBar scrollBar;
 
     public KoalaConfigScreen(Screen parent, GameOptions gameOptions) {
         super(parent, gameOptions, Text.translatable("koalalib.menu.configMenu"));
@@ -49,7 +46,7 @@ public class KoalaConfigScreen extends GameOptionsScreen {
         this.addSelectableChild(this.doneButton);
         this.configEntries.getEntries().forEach(this::addDrawableChild);
         this.addSelectableChild(this.modSelections);
-        this.scrollBarX = this.width + 190;
+        this.scrollBar = new ConfigScrollBar(this.width + 190);
 
         super.init();
     }
@@ -63,7 +60,9 @@ public class KoalaConfigScreen extends GameOptionsScreen {
         super.render(context, mouseX, mouseY, delta);
 
         checkAndSwapConfigs();
-        this.configEntries.renderEntries(context, mouseX, mouseY, delta, this.width);
+        this.scrollBar.render(context, this.width, this.height, this.configEntries);
+        this.oldConfigEntries.render(context, mouseX, mouseY, delta, width, height);
+        this.configEntries.renderEntries(context, mouseX, mouseY, delta, this.width, this.height);
         renderDirtBGStuff(context, true);
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 16, 16777215);
@@ -72,14 +71,16 @@ public class KoalaConfigScreen extends GameOptionsScreen {
         this.doneButton.setPosition(this.width / 2 - 75, this.height - 38);
 
         this.configEntries.renderEntryTooltips(this.textRenderer, context, mouseX, mouseY);
-        renderScrollBar(context);
     }
 
     private void checkAndSwapConfigs() {
         String modID = this.modSelections.getSelectionModID();
         if (modID != null && !Objects.equals(this.currentModID, modID)) {
             this.currentModID = modID;
-            this.scrollOffset = 0;
+
+            this.oldConfigEntries.getEntries().addAll(this.configEntries.getEntries());
+            this.oldConfigEntries.scrollBars.add(this.scrollBar);
+
             this.configEntries.swapDisplayedConfigEntries(modID, this.width, this.textRenderer);
             clearAndInit();
         }
@@ -95,36 +96,10 @@ public class KoalaConfigScreen extends GameOptionsScreen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        if (mouseX < this.width / 2.0) {
-            return false;
+        if (mouseX > this.width / 2.0) {
+            this.configEntries.scrollEntries(this.scrollBar.scroll(amount, this.height, this.configEntries));
         }
-
-        this.scrollOffset = (int) Math.max(0, Math.min(getMaxScroll(), this.scrollOffset - (amount * SCROLL_STEP)));
-        this.configEntries.scrollEntries(this.scrollOffset);
-        return true;
-    }
-
-    private int getMaxScroll() {
-        int top = 34;
-        int bottom = this.height - 61;
-        int availableHeight = bottom - top;
-        int visibleButtons = availableHeight / 25;
-        return Math.max(0, (this.configEntries.getEntries().size() - visibleButtons) * 25);
-    }
-
-    private void renderScrollBar(DrawContext context) {
-        int scrollBarHeight = (this.height - 63) - 34;
-
-        if (this.getMaxScroll() > 0) {
-            this.scrollBarX = (int) MathHelper.lerp(0.1, this.scrollBarX, this.width - 10);
-
-            int scrollBarThumbHeight = Math.max(20, (scrollBarHeight * scrollBarHeight) / (scrollBarHeight + getMaxScroll()));
-            int scrollThumbY = 34 + (this.scrollOffset * (scrollBarHeight - scrollBarThumbHeight) / getMaxScroll());
-
-            context.fill(this.scrollBarX, 34, this.scrollBarX + 6, this.height - 61, -16777216);
-            context.fill(this.scrollBarX, scrollThumbY, this.scrollBarX + 6, scrollThumbY + scrollBarThumbHeight, -8355712);
-            context.fill(this.scrollBarX, scrollThumbY, this.scrollBarX + 5, scrollThumbY + scrollBarThumbHeight - 1, -4144960);
-        }
+        return super.mouseScrolled(mouseX, mouseY, amount);
     }
 
     private void renderDirtBGStuff(DrawContext context, boolean isShadow) {
