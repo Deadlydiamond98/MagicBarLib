@@ -3,9 +3,14 @@
   "minVersion": "0.8",
   "package": "net.deadlydiamond98.koalalib.mixin",
   "compatibilityLevel": "JAVA_17",
+  "client": [
+    "client.OptionsScreenConfigMixin",
+    "client.SplashScreenMixin"
+  ],
   "mixins": [
     "entity.EntityMixin",
     "entity.ItemEntityMixin",
+    "entity.PlayerEntityMixin",
     "entity.magic.LivingEntityMagicMixin"
   ],
   "injectors": {

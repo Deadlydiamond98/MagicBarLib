@@ -1,4 +1,6 @@
 {
+  "koalalib.menu.configMenu": "Configs",
+
   "advancements.koalalib.into_ender": "Into Ender",
   "advancements.koalalib.into_ender.desc": "Relieve an Ender creature of their Soul",
   "item.koalalib.ender_soul": "Ender Soul",
@@ -7,7 +9,9 @@
   "commands.koalalib.manaSet.success.single": "%s Mana set to %s",
   "commands.koalalib.manaSet.success.multiple": "%s Mana set to %s",
 
-  "koalalib.midnightconfig.title": "Magic Bar Lib",
+  "koalalib.config.title": "Koala Lib",
+  "koalalib.config.test": "Koala Lib Koala Lib Koala LibKoala Lib Koala Lib Koala LibKoala LibvKoala Lib Koala Lib Koala Lib Koala Lib Koala Lib Koala Lib",
+
   "koalalib.midnightconfig.renderManaBar": "When the Magic Bar should be on screen",
   "koalalib.midnightconfig.enum.manaBarEnum.Always": "Always",
   "koalalib.midnightconfig.enum.manaBarEnum.When_Needed": "When Using",

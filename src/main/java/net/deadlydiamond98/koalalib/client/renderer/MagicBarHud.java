@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.renderer;
+package net.deadlydiamond98.koalalib.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.deadlydiamond98.koalalib.KoalaLib;
@@ -133,7 +133,6 @@ public class MagicBarHud implements HudRenderCallback {
         float end = isWhenNeededMode && cooldownGoesAway ? END_ALPHA : START_ALPHA;
         globalAlpha = MathHelper.lerp(LERP_VALUE, globalAlpha, end);
         globalAlpha = globalAlpha < 0.01f ? 0 : globalAlpha;
-        KoalaLib.LOGGER.info(globalAlpha + "");
     }
 
     /**

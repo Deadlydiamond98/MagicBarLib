@@ -19,22 +19,17 @@
 			"net.deadlydiamond98.koalalib.KoalaLib"
 		],
 		"client": [
-			"net.deadlydiamond98.koalalib.MagicLibClient"
+			"net.deadlydiamond98.koalalib.KoalaLibClient"
 		]
 	},
 	"mixins": [
-		"koalalib.mixins.json",
-		{
-			"config": "koalalib.client.mixins.json",
-			"environment": "client"
-		}
+		"koalalib.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.0",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"fabric-api": "*",
-		"midnightlib": ">=1.4.0"
+		"fabric-api": "*"
 	},
 	"suggests": {
 		"another-mod": "*"

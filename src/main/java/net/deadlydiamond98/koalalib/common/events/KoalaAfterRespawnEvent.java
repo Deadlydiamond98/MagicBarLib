@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.events;
+package net.deadlydiamond98.koalalib.common.events;
 
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;

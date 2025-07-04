@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.events;
+package net.deadlydiamond98.koalalib.common.events;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.ToggleableContent;
@@ -6,15 +6,12 @@ import net.deadlydiamond98.koalalib.common.misc.KoalalibTags;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-
-import java.util.List;
 
 public class KoalaAfterDeathEvent {
 

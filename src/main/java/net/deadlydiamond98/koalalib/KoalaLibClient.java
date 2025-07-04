@@ -1,8 +1,8 @@
 package net.deadlydiamond98.koalalib;
 
 import net.deadlydiamond98.koalalib.common.items.magic.IMagicItem;
-import net.deadlydiamond98.koalalib.renderer.MagicBarHud;
-import net.deadlydiamond98.koalalib.networking.ZeldaClientPackets;
+import net.deadlydiamond98.koalalib.networking.KoalaPackets;
+import net.deadlydiamond98.koalalib.client.renderer.MagicBarHud;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
@@ -11,12 +11,12 @@ import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-public class MagicLibClient implements ClientModInitializer {
+public class KoalaLibClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
 
-		ZeldaClientPackets.registerC2SPackets();
+		KoalaPackets.registerS2CPackets();
 		HudRenderCallback.EVENT.register(new MagicBarHud());
 		addMagicItemToolTips();
 	}

@@ -1,13 +1,13 @@
 package net.deadlydiamond98.koalalib;
 
 
-import eu.midnightdust.lib.config.MidnightConfig;
 import net.deadlydiamond98.koalalib.common.commands.MagicBarCommands;
 import net.deadlydiamond98.koalalib.common.misc.ModSharedSounds;
-import net.deadlydiamond98.koalalib.events.KoalaAfterDeathEvent;
-import net.deadlydiamond98.koalalib.events.KoalaAfterRespawnEvent;
+import net.deadlydiamond98.koalalib.common.events.KoalaAfterDeathEvent;
+import net.deadlydiamond98.koalalib.common.events.KoalaAfterRespawnEvent;
 import net.deadlydiamond98.koalalib.common.items.ModSharedItems;
-import net.deadlydiamond98.koalalib.util.MagicConfig;
+import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
+import net.deadlydiamond98.koalalib.util.KoalaLibConfigs;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
@@ -23,11 +23,10 @@ public class KoalaLib implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		MidnightConfig.init(MOD_ID, MagicConfig.class);
+		KoalaConfigCreator.addModConfig(MOD_ID, KoalaLibConfigs.class);
 
 		ModSharedItems.register();
 		ModSharedSounds.register();
-
 
 		KoalaAfterRespawnEvent.register();
 		KoalaAfterDeathEvent.register();
