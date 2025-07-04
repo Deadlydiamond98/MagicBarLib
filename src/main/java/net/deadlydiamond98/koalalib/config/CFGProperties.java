@@ -13,4 +13,6 @@ import java.lang.annotation.Target;
 public @interface CFGProperties {
 
     boolean hasDesc() default true;
+    double min() default Double.MIN_VALUE;
+    double max() default Double.MAX_VALUE;
 }

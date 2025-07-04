@@ -34,8 +34,8 @@ public class ModSelectionListWidget extends AlwaysSelectedEntryListWidget<ModSel
         KoalaConfigCreator.MOD_CONFIGS.forEach((modID, aClass) -> modIDs.add(modID));
 
         modIDs.sort((o1, o2) -> {
-            String name1 = Text.translatable(o1 + ".config.title").getString();
-            String name2 = Text.translatable(o2 + ".config.title").getString();
+            String name1 = Text.translatable(o1 + ".config.category.main").getString();
+            String name2 = Text.translatable(o2 + ".config.category.main").getString();
             return name1.compareToIgnoreCase(name2);
         });
 
@@ -120,7 +120,7 @@ public class ModSelectionListWidget extends AlwaysSelectedEntryListWidget<ModSel
         }
 
         public Text getModTranslation() {
-            return Text.translatable(this.modID + ".config.title");
+            return Text.translatable(this.modID + ".config.category.main");
         }
 
         public Identifier getIconTexture() {

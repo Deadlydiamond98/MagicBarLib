@@ -96,7 +96,7 @@ public class KoalaConfigScreen extends GameOptionsScreen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        if (mouseX > this.width / 2.0) {
+        if (mouseX > this.width / 2.0 || this.modSelections.getMaxScroll() <= 0) {
             this.configEntries.scrollEntries(this.scrollBar.scroll(amount, this.height, this.configEntries));
         }
         return super.mouseScrolled(mouseX, mouseY, amount);

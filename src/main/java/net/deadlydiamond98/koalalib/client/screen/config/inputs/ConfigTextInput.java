@@ -11,23 +11,26 @@ import net.minecraft.text.Text;
 public class ConfigTextInput extends AutoTickingTextFieldWidget implements IConfigEntry {
     private final boolean isNumber, isDecimal;
     private final int originalY;
+    private final String translation;
     private int renderY;
+    private boolean hasDesc = true;
 
-    public ConfigTextInput(TextRenderer textRenderer, int x, int y, int width, int height, double defaultValue) {
-        this(textRenderer, x, y, width, height, String.valueOf(defaultValue), true, true);
+    public ConfigTextInput(String translation, TextRenderer textRenderer, int x, int y, int width, int height, double defaultValue) {
+        this(translation, textRenderer, x, y, width, height, String.valueOf(defaultValue), true, true);
     }
 
-    public ConfigTextInput(TextRenderer textRenderer, int x, int y, int width, int height, int defaultValue) {
-        this(textRenderer, x, y, width, height, String.valueOf(defaultValue), true, false);
+    public ConfigTextInput(String translation, TextRenderer textRenderer, int x, int y, int width, int height, int defaultValue) {
+        this(translation, textRenderer, x, y, width, height, String.valueOf(defaultValue), true, false);
     }
 
-    public ConfigTextInput(TextRenderer textRenderer, int x, int y, int width, int height, String defaultValue) {
-        this(textRenderer, x, y, width, height, defaultValue, false, false);
+    public ConfigTextInput(String translation, TextRenderer textRenderer, int x, int y, int width, int height, String defaultValue) {
+        this(translation, textRenderer, x, y, width, height, defaultValue, false, false);
     }
 
-    private ConfigTextInput(TextRenderer textRenderer, int x, int y, int width, int height, String defaultValue, boolean isNumber, boolean isDecimal) {
+    private ConfigTextInput(String translation, TextRenderer textRenderer, int x, int y, int width, int height, String defaultValue, boolean isNumber, boolean isDecimal) {
         super(textRenderer, x, y, width, height, Text.empty());
         this.setText(defaultValue);
+        this.translation = translation;
         this.isNumber = isNumber;
         this.isDecimal = isDecimal;
         this.originalY = y;
@@ -37,7 +40,7 @@ public class ConfigTextInput extends AutoTickingTextFieldWidget implements IConf
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        renderTitleText(context, this.getX(), this.getY());
+        renderTitleText(context, this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     @Override
@@ -67,6 +70,21 @@ public class ConfigTextInput extends AutoTickingTextFieldWidget implements IConf
     public void scroll(int scrollOffset) {
         this.renderY = this.originalY + scrollOffset;
         this.setY(this.renderY);
+    }
+
+    @Override
+    public String getTranslation() {
+        return this.translation;
+    }
+
+    @Override
+    public boolean hasDesc() {
+        return this.hasDesc;
+    }
+
+    @Override
+    public void enableDesc(boolean hasDesc) {
+        this.hasDesc = hasDesc;
     }
 
     @Override

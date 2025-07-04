@@ -3,6 +3,7 @@ package net.deadlydiamond98.koalalib.client.screen.config.entry;
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.BooleanButton;
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.ConfigTextInput;
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.IConfigEntry;
+import net.deadlydiamond98.koalalib.config.CFGProperties;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -60,13 +61,10 @@ public class ConfigEntries {
         try {
             int i = 0;
             for (Field field : configScreen.getFields()) {
-
-                Class<?> type = field.getType();
                 Object value = field.get(configScreen);
 
-                this.entries.add(getWidget(type, value, i++, width, textRenderer, field.getName()));
+                this.entries.add(getWidget(field, value, i++, width, textRenderer, modID));
             }
-
         } catch (Exception ignored) {}
     }
 
@@ -107,22 +105,42 @@ public class ConfigEntries {
     /**
      * Returns the widget corresponding to the value type
      */
-    private ClickableWidget getWidget(Class<?> type, Object value, int offsetY, int screenWidth, TextRenderer textRenderer, String name) {
+    private ClickableWidget getWidget(Field field, Object value, int offsetY, int screenWidth, TextRenderer textRenderer, String modID) {
+        Class<?> type = field.getType();
+
+        String translation = modID + ".config." + field.getName();
+
         int x = screenWidth + 100;
         int y = (offsetY * 25) + 34;
         int width = 75;
         int height = 20;
 
+        ClickableWidget entry;
         if (type == int.class) {
-            return new ConfigTextInput(textRenderer, x, y, width, height, (int)value);
+            entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, (int)value);
         } else if (type == double.class) {
-            return new ConfigTextInput(textRenderer, x, y, width, height, (double)value);
+            entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, (double)value);
         } else if (type == float.class) {
-            return new ConfigTextInput(textRenderer, x, y, width, height, (float)value);
+            entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, (float)value);
         } else if (type == boolean.class) {
-            return new BooleanButton(x, y, width, height, (boolean)value);
+            entry = new BooleanButton(translation, x, y, width, height, (boolean)value);
         } else {
-            return new ConfigTextInput(textRenderer, x, y, width, height, value.toString());
+            entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, value.toString());
         }
+
+        if (field.isAnnotationPresent(CFGProperties.class)) {
+            CFGProperties cfgProperties = field.getAnnotation(CFGProperties.class);
+            entry = applyProperties(entry, cfgProperties);
+        }
+
+        return entry;
+    }
+
+    private ClickableWidget applyProperties(ClickableWidget entry, CFGProperties cfgProperties) {
+        if (entry instanceof IConfigEntry configEntry) {
+            configEntry.enableDesc(cfgProperties.hasDesc());
+        }
+
+        return entry;
     }
 }

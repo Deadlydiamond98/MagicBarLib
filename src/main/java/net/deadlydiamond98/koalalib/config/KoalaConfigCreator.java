@@ -22,6 +22,8 @@ public class KoalaConfigCreator {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final HashMap<String, Class<?>> MOD_CONFIGS = new HashMap<>();
 
+    public static final HashMap<String, HashMap<String, Class<?>>> MOD_TEST = new HashMap<>();
+
     /**
      * Call this method to add a config for your mod!!
      * @param modID The ModID of your mod!
@@ -35,6 +37,10 @@ public class KoalaConfigCreator {
 //        }
 
         readValuesFromConfig(getConfigFile(modID), configClass);
+    }
+    
+    public static void addModConfigCategory(String modID, String category, Class<?> configClass) {
+        
     }
 
     /**

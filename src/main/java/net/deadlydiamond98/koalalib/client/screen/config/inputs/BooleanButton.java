@@ -9,21 +9,25 @@ import net.minecraft.text.Text;
  */
 public class BooleanButton extends ButtonWidget implements IConfigEntry {
     private final int originalY;
+    private final String translation;
     private int renderY;
+    private boolean hasDesc = true;
 
     private boolean bl;
 
-    public BooleanButton(int x, int y, int width, int height, boolean bl) {
+    public BooleanButton(String translation, int x, int y, int width, int height, boolean bl) {
         super(x, y, width, height, Text.of(bl ? "True" : "False"), BooleanButton::changeValue, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
         this.bl = bl;
         this.originalY = y;
         this.renderY = y;
+        this.translation = translation;
     }
+
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        renderTitleText(context, this.getX(), this.getY());
+        renderTitleText(context, this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     public boolean getBool() {
@@ -52,5 +56,20 @@ public class BooleanButton extends ButtonWidget implements IConfigEntry {
     public void scroll(int scrollOffset) {
         this.renderY = this.originalY + scrollOffset;
         this.setY(this.renderY);
+    }
+
+    @Override
+    public String getTranslation() {
+        return this.translation;
+    }
+
+    @Override
+    public boolean hasDesc() {
+        return this.hasDesc;
+    }
+
+    @Override
+    public void enableDesc(boolean hasDesc) {
+        this.hasDesc = hasDesc;
     }
 }

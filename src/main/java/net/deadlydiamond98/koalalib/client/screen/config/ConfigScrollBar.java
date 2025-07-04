@@ -5,7 +5,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.math.MathHelper;
 
 public class ConfigScrollBar {
-
     private static final int SCROLL_STEP = 10;
 
     private int scrollOffset;
