@@ -1,15 +1,11 @@
 package net.deadlydiamond98.koalalib.client.screen.config;
 
-import net.deadlydiamond98.koalalib.KoalaLib;
-import net.deadlydiamond98.koalalib.client.screen.config.inputs.ConfigTextInput;
-import net.deadlydiamond98.koalalib.client.screen.config.inputs.BooleanButton;
-import net.deadlydiamond98.koalalib.client.screen.config.inputs.IConfigEntry;
+import net.deadlydiamond98.koalalib.client.screen.config.entry.ConfigEntries;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.screen.ScreenTexts;
@@ -17,9 +13,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,8 +21,8 @@ import java.util.Objects;
 public class KoalaConfigScreen extends GameOptionsScreen {
     private static final int SCROLL_STEP = 10;
 
-    private final List<ClickableWidget> configEntries = new ArrayList<>();
-    private final List<ClickableWidget> oldconfigEntries = new ArrayList<>();
+    private final ConfigScrollBar scrollBar = new ConfigScrollBar();
+    private final ConfigEntries configEntries = new ConfigEntries();
 
     private boolean firstInit;
     private ModSelectionListWidget modSelections;
@@ -37,17 +30,14 @@ public class KoalaConfigScreen extends GameOptionsScreen {
     private @Nullable String currentModID = null;
 
     private int scrollOffset;
+    private int scrollBarX;
 
     public KoalaConfigScreen(Screen parent, GameOptions gameOptions) {
         super(parent, gameOptions, Text.translatable("koalalib.menu.configMenu"));
     }
 
-    /**
-     * Initializes everything (or just re-adds children if called after first time)
-     */
     @Override
     protected void init() {
-
         if (!this.firstInit) {
             this.modSelections = new ModSelectionListWidget(
                     this.client, this.width, this.height, 32, this.height - 61, 18
@@ -57,46 +47,87 @@ public class KoalaConfigScreen extends GameOptionsScreen {
             this.firstInit = !this.firstInit;
         }
         this.addSelectableChild(this.doneButton);
-        this.configEntries.forEach(this::addDrawableChild);
+        this.configEntries.getEntries().forEach(this::addDrawableChild);
         this.addSelectableChild(this.modSelections);
+        this.scrollBarX = this.width + 190;
 
         super.init();
     }
 
-    /**
-     * Default render method, where everything renders
-     */
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBGStuff(context, false);
+        renderDirtBGStuff(context, false);
 
-        oldConfigEntryRender(context, mouseX, mouseY, delta);
         this.modSelections.setScreenWidth(this.width);
         this.modSelections.render(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
 
-        generateConfigButtons();
-        this.configEntries.forEach(this::configEntryRender);
-        renderBGStuff(context, true);
+        checkAndSwapConfigs();
+        this.configEntries.renderEntries(context, mouseX, mouseY, delta, this.width);
+        renderDirtBGStuff(context, true);
 
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 16, 16777215);
+
         this.doneButton.render(context, mouseX, mouseY, delta);
-        this.doneButton.setX(this.width / 2 - 75);
-        this.doneButton.setY(this.height - 38);
-        this.configEntries.forEach(clickableWidget -> renderTooltips(clickableWidget, context, mouseX, mouseY));
+        this.doneButton.setPosition(this.width / 2 - 75, this.height - 38);
+
+        this.configEntries.renderEntryTooltips(this.textRenderer, context, mouseX, mouseY);
+        renderScrollBar(context);
     }
 
-    private void renderTooltips(ClickableWidget clickableWidget, DrawContext context, int mouseX, int mouseY) {
-        if (clickableWidget instanceof IConfigEntry button) {
-            button.renderDescriptionTooltip(context, this.textRenderer, mouseX, mouseY);
+    private void checkAndSwapConfigs() {
+        String modID = this.modSelections.getSelectionModID();
+        if (modID != null && !Objects.equals(this.currentModID, modID)) {
+            this.currentModID = modID;
+            this.scrollOffset = 0;
+            this.configEntries.swapDisplayedConfigEntries(modID, this.width, this.textRenderer);
+            clearAndInit();
         }
     }
 
+    @Override
+    public void close() {
+        Class<?> configScreen = KoalaConfigCreator.MOD_CONFIGS.get(this.currentModID);
+        this.configEntries.applyConfigValues(configScreen);
+        KoalaConfigCreator.updateAllConfigFiles();
+        super.close();
+    }
 
-    /**
-     * Renders the background and Foreground Dirt to Match Menus
-     */
-    private void renderBGStuff(DrawContext context, boolean isShadow) {
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        if (mouseX < this.width / 2.0) {
+            return false;
+        }
+
+        this.scrollOffset = (int) Math.max(0, Math.min(getMaxScroll(), this.scrollOffset - (amount * SCROLL_STEP)));
+        this.configEntries.scrollEntries(this.scrollOffset);
+        return true;
+    }
+
+    private int getMaxScroll() {
+        int top = 34;
+        int bottom = this.height - 61;
+        int availableHeight = bottom - top;
+        int visibleButtons = availableHeight / 25;
+        return Math.max(0, (this.configEntries.getEntries().size() - visibleButtons) * 25);
+    }
+
+    private void renderScrollBar(DrawContext context) {
+        int scrollBarHeight = (this.height - 63) - 34;
+
+        if (this.getMaxScroll() > 0) {
+            this.scrollBarX = (int) MathHelper.lerp(0.1, this.scrollBarX, this.width - 10);
+
+            int scrollBarThumbHeight = Math.max(20, (scrollBarHeight * scrollBarHeight) / (scrollBarHeight + getMaxScroll()));
+            int scrollThumbY = 34 + (this.scrollOffset * (scrollBarHeight - scrollBarThumbHeight) / getMaxScroll());
+
+            context.fill(this.scrollBarX, 34, this.scrollBarX + 6, this.height - 61, -16777216);
+            context.fill(this.scrollBarX, scrollThumbY, this.scrollBarX + 6, scrollThumbY + scrollBarThumbHeight, -8355712);
+            context.fill(this.scrollBarX, scrollThumbY, this.scrollBarX + 5, scrollThumbY + scrollBarThumbHeight - 1, -4144960);
+        }
+    }
+
+    private void renderDirtBGStuff(DrawContext context, boolean isShadow) {
         int left = 0;
         int right = this.width;
         int top = 32;
@@ -119,172 +150,5 @@ public class KoalaConfigScreen extends GameOptionsScreen {
             context.fillGradient(RenderLayer.getGuiOverlay(), left, top, right, top + 4, -16777216, 0, 0);
             context.fillGradient(RenderLayer.getGuiOverlay(), left, bottom - 4, right, bottom, 0, -16777216, 0);
         }
-    }
-
-    /**
-     * Handles the Swipe Away Animation of Previous Config Input Fields, and Removes them when off-screen
-     */
-    private void oldConfigEntryRender(DrawContext context, int mouseX, int mouseY, float delta) {
-        for (int i = this.oldconfigEntries.size() - 1; i > 0; i--) {
-            ClickableWidget element = this.oldconfigEntries.get(i);
-
-            element.render(context, mouseX, mouseY, delta);
-            element.setX((int) MathHelper.lerp(0.1, element.getX(), this.width + 100));
-
-            if (element.getX() > this.width + 50) {
-                this.oldconfigEntries.remove(i);
-            }
-        }
-    }
-
-    /**
-     * Handles the Slide-in animation of Config Input Fields
-     */
-    private void configEntryRender(ClickableWidget element) {
-        element.setX((int) MathHelper.lerp(0.1, element.getX(), this.width - 100));
-    }
-
-    /**
-     * Generates Config Inputs when a selection is made!
-     */
-    private void generateConfigButtons() {
-        String modID = this.modSelections.getSelectionModID();
-        if (modID != null && !Objects.equals(this.currentModID, modID)) {
-            this.currentModID = modID;
-            this.scrollOffset = 0;
-
-            Class<?> configScreen = KoalaConfigCreator.MOD_CONFIGS.get(modID);
-
-            try {
-                int i = 0;
-                for (Field field : configScreen.getFields()) {
-                    ClickableWidget entry = this.configEntries.get(i++);
-                    Class<?> type = field.getType();
-
-                    Object value;
-                    if (entry instanceof BooleanButton bl) {
-                        value = bl.getBool();
-                    } else if (entry instanceof ConfigTextInput input) {
-                        String tempVal = input.getText();
-                        if (type == int.class) {
-                            value = Integer.parseInt(tempVal);
-                        } else if (type == double.class) {
-                            value = Double.parseDouble(tempVal);
-                        } else if (type == float.class) {
-                            value = Float.parseFloat(tempVal);
-                        } else {
-                            value = tempVal;
-                        }
-                    } else {
-                        return;
-                    }
-
-                    field.set(configScreen, value);
-                }
-            } catch (Exception ignored) {
-            }
-            this.oldconfigEntries.addAll(this.configEntries);
-
-            this.configEntries.clear();
-
-            try {
-                int i = 0;
-                for (Field field : configScreen.getFields()) {
-
-                    Class<?> type = field.getType();
-                    Object value = field.get(configScreen);
-
-                    this.configEntries.add(getWidget(type, value, i++, field.getName()));
-                }
-
-            } catch (Exception ignored) {}
-            clearAndInit();
-        }
-    }
-
-    /**
-     * Gets the widget type for a config Input
-     */
-    private ClickableWidget getWidget(Class<?> type, Object value, int offsetY, String name) {
-        int x = this.width + 100;
-        int y = (offsetY * 25) + 34;
-        int width = 75;
-        int height = 20;
-
-        if (type == int.class) {
-            return new ConfigTextInput(client.textRenderer, x, y, width, height, (int)value);
-        } else if (type == double.class) {
-            return new ConfigTextInput(client.textRenderer, x, y, width, height, (double)value);
-        } else if (type == float.class) {
-            return new ConfigTextInput(client.textRenderer, x, y, width, height, (float)value);
-        } else if (type == boolean.class) {
-            return new BooleanButton(x, y, width, height, (boolean)value);
-        } else {
-            return new ConfigTextInput(client.textRenderer, x, y, width, height, value.toString());
-        }
-    }
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        if (mouseX < this.width / 2.0) {
-            return false;
-        }
-
-        this.scrollOffset = (int) Math.max(0, Math.min(getMaxScroll(), this.scrollOffset - (amount * SCROLL_STEP)));
-
-        this.configEntries.forEach(widget -> {
-            if (widget instanceof IConfigEntry entry) {
-                entry.scroll(-this.scrollOffset);
-            }
-        });
-
-        return true;
-    }
-
-    private int getMaxScroll() {
-        int top = 34;
-        int bottom = this.height - 61;
-        int availableHeight = bottom - top;
-        int visibleButtons = availableHeight / 25;
-        return Math.max(0, (this.configEntries.size() - visibleButtons) * 25);
-    }
-
-    /**
-     * Regular Close Method, but with the added functionality of updating config files
-     */
-    @Override
-    public void close() {
-        Class<?> configScreen = KoalaConfigCreator.MOD_CONFIGS.get(this.currentModID);
-        try {
-            int i = 0;
-            for (Field field : configScreen.getFields()) {
-                ClickableWidget entry = this.configEntries.get(i++);
-                Class<?> type = field.getType();
-
-                Object value;
-                if (entry instanceof BooleanButton bl) {
-                    value = bl.getBool();
-                } else if (entry instanceof ConfigTextInput input) {
-                    String tempVal = input.getText();
-                    if (type == int.class) {
-                        value = Integer.parseInt(tempVal);
-                    } else if (type == double.class) {
-                        value = Double.parseDouble(tempVal);
-                    } else if (type == float.class) {
-                        value = Float.parseFloat(tempVal);
-                    } else {
-                        value = tempVal;
-                    }
-                } else {
-                    return;
-                }
-
-                field.set(configScreen, value);
-            }
-        } catch (Exception ignored) {
-        }
-
-        KoalaConfigCreator.updateAllConfigFiles();
-        super.close();
     }
 }
