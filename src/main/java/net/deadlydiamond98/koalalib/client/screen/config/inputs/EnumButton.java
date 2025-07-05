@@ -3,24 +3,30 @@ package net.deadlydiamond98.koalalib.client.screen.config.inputs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.ApiStatus;
 
-/**
- * Toggle Button for Boolean Config Values. I tried to move some repeated into a parent class for enumButton, but for some reason that breaks things...
- */
-public class BooleanButton extends ButtonWidget implements IConfigEntry {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EnumButton extends ButtonWidget implements IConfigEntry {
     private final int originalY;
     private final String translation;
     private int renderY;
     private boolean hasDesc = true;
 
-    private boolean bl;
+    private final String modID;
 
-    public BooleanButton(String translation, int x, int y, int width, int height, boolean bl) {
-        super(x, y, width, height, Text.of(bl ? "True" : "False"), BooleanButton::changeValue, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
-        this.bl = bl;
+    private final Class<?> enumType;
+    private Enum enumValue;
+
+    public EnumButton(String translation, int x, int y, int width, int height, Class<?> enumType, Enum<?> enumValue, String modID) {
+        super(x, y, width, height, Text.of(""), EnumButton::changeValue, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
+        this.enumType = enumType;
+        this.enumValue = enumValue;
         this.originalY = y;
         this.renderY = y;
         this.translation = translation;
+        this.modID = modID;
     }
 
     @Override
@@ -29,21 +35,23 @@ public class BooleanButton extends ButtonWidget implements IConfigEntry {
         renderTitleText(context, this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
-    public boolean getBool() {
-        return this.bl;
-    }
-
     private static void changeValue(ButtonWidget button) {
-        ((BooleanButton) button).changeValue();
+        ((EnumButton) button).changeValue();
     }
 
     private void changeValue() {
-        this.bl = !this.bl;
+        Object[] enumConstants = this.enumType.getEnumConstants();
+        int ordinal = (enumValue.ordinal() + 1) % (enumConstants.length);
+        this.enumValue = (Enum<?>) enumConstants[ordinal];
     }
 
     @Override
     public Text getMessage() {
-        return Text.of(this.bl ? "True" : "False");
+        return Text.translatable(this.modID + this.enumValue.name());
+    }
+
+    public Enum<?> getEnum() {
+        return this.enumValue;
     }
 
     @Override

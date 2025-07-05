@@ -3,9 +3,10 @@ package net.deadlydiamond98.koalalib.client.renderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.ToggleableContent;
+import net.deadlydiamond98.koalalib.config.configs.MagicBarConfigs;
 import net.deadlydiamond98.koalalib.util.ColorHelper;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
-import net.deadlydiamond98.koalalib.util.MagicConfig;
+import net.deadlydiamond98.koalalib.util.magic.MagicMeterRenderType;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -51,8 +52,8 @@ public class MagicBarHud implements HudRenderCallback {
         int width = client.getWindow().getScaledWidth();
         int height = client.getWindow().getScaledHeight();
 
-        int posX = (width / 2) - 320 + MagicConfig.manaBarPositionX;
-        int posY = height - 42 - MagicConfig.manaBarPositionY;
+        int posX = (width / 2) - 320 + MagicBarConfigs.manaBarPositionX;
+        int posY = height - 42 - MagicBarConfigs.manaBarPositionY;
 
         renderMagicBar(drawContext, matrices, client, posX, posY, tickDelta);
     }
@@ -106,7 +107,7 @@ public class MagicBarHud implements HudRenderCallback {
 
         Text magicLvlText = Text.literal(displayedZeros + displayManaText).setStyle(Style.EMPTY.withFont(KoalaLib.ZELDA_FONT));
 
-        matrices.translate(posX + MagicConfig.manaBarTextOffsetX, posY + MagicConfig.manaBarTextOffsetY, 0);
+        matrices.translate(posX + MagicBarConfigs.manaBarTextOffsetX, posY + MagicBarConfigs.manaBarTextOffsetY, 0);
         matrices.scale(0.75f, 0.75f, 0.75f);
 
         drawContext.drawText(textRenderer, magicLvlText, 0, 0, getTextColor(client), false);
@@ -127,7 +128,7 @@ public class MagicBarHud implements HudRenderCallback {
      */
     private void updateAlphaForRenderSometimes(MinecraftClient client) {
 
-        boolean isWhenNeededMode = MagicConfig.renderManaBar == MagicConfig.manaBarEnum.When_Needed;
+        boolean isWhenNeededMode = MagicBarConfigs.manaBarRenderType == MagicMeterRenderType.When_Needed;
         boolean cooldownGoesAway = MagicBarHelper.getBar(client.player).koalalib$getMagicBarRenderTime() <= 0;
 
         float end = isWhenNeededMode && cooldownGoesAway ? END_ALPHA : START_ALPHA;
@@ -189,7 +190,7 @@ public class MagicBarHud implements HudRenderCallback {
         PlayerEntity player = client.player;
         GameMode currentGamemode = client.interactionManager.getCurrentGameMode();
         return player != null && currentGamemode.isSurvivalLike() && globalAlpha > 0
-                && MagicConfig.renderManaBar != MagicConfig.manaBarEnum.Never
+                && MagicBarConfigs.manaBarRenderType != MagicMeterRenderType.Never
                 && ToggleableContent.isMagicBarEnabled();
     }
 }

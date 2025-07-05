@@ -98,6 +98,12 @@ public class KoalaConfigCreator {
             } else if (type.equals(float.class)) {
                 return (float) numericalValue;
             }
+        } else if (field.getType().isEnum()) {
+            for (Object enumConstant : field.getType().getEnumConstants()) {
+                if (((Enum<?>) enumConstant).name().equals(value.toString())) {
+                    return enumConstant;
+                }
+            }
         }
 
         return value;

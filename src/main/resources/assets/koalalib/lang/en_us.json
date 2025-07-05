@@ -12,22 +12,16 @@
   "koalalib.main.config.category": "Koala Lib",
   "koalalib.magic_bar.config.category": "Magic Bar Options",
 
-  "zeldacraft.main.config.category": "The Legend of Steve",
-  "testing.main.config.category": "Alpha",
-  "alpha.main.config.category": "ZeldaCraft",
-  "zeldacraft.magic_bar.config.category": "Dungeon Gen",
-
-  "healpgood.main.config.category": "Healing Pretty Good",
-  "healpgood.category.config.category": "Alpha",
-  "healpgood.category2.config.category": "Zero",
-  "healpgood.category3.config.category": "Herald",
-
   "koalalib.main.config.fancyTransitions": "Fancy Transitions",
   "koalalib.magic_bar.config.manaBarPositionX": "Magic Bar X",
   "koalalib.magic_bar.config.manaBarPositionY": "Magic Bar Y",
   "koalalib.magic_bar.config.manaBarTextOffsetX": "Magic Bar Offset X",
   "koalalib.magic_bar.config.manaBarTextOffsetY": "Magic Bar Offset Y",
+
   "koalalib.magic_bar.config.manaBarRenderType": "Magic Bar Display",
+  "koalalib.magic_bar.enum.manaBarRenderType.Always": "Always",
+  "koalalib.magic_bar.enum.manaBarRenderType.When_Needed": "When Using",
+  "koalalib.magic_bar.enum.manaBarRenderType.Never": "Never",
 
   "koalalib.main.config.fancyTransitions.desc": "If True, the config menu will have nice sliding transitions",
   "koalalib.magic_bar.config.manaBarPositionX.desc": "The X-Postion of the on-screen Magic Bar",
@@ -39,9 +33,5 @@
   "koalalib.midnightconfig.renderManaBar": "When the Magic Bar should be on screen",
   "koalalib.midnightconfig.enum.manaBarEnum.Always": "Always",
   "koalalib.midnightconfig.enum.manaBarEnum.When_Needed": "When Using",
-  "koalalib.midnightconfig.enum.manaBarEnum.Never": "Never",
-  "koalalib.midnightconfig.manaBarPositionX": "The X-Postion of the on-screen Magic Bar",
-  "koalalib.midnightconfig.manaBarPositionY": "The Y-Postion of the on-screen Magic Bar",
-  "koalalib.midnightconfig.manaBarTextOffsetX": "The X-Postion of the Magic Text Relative to the Magic Bar",
-  "koalalib.midnightconfig.manaBarTextOffsetY": "The Y-Postion of the Magic Text Relative to the Magic Bar"
+  "koalalib.midnightconfig.enum.manaBarEnum.Never": "Never"
 }

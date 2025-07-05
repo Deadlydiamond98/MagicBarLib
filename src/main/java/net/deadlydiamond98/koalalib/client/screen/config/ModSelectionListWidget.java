@@ -32,6 +32,7 @@ public class ModSelectionListWidget extends AlwaysSelectedEntryListWidget<ModSel
 
         List<Pair<String, String>> modIDs = new ArrayList<>();
         List<Pair<String, String>> modCategories = new ArrayList<>();
+        // Get Mod Configs, & organize based on whether they are a category
         KoalaConfigCreator.MOD_CONFIGS.forEach((modID, pair) -> {
             if (pair.getB().isEmpty()) {
                 modIDs.add(new Pair<>(modID, ""));
@@ -40,18 +41,21 @@ public class ModSelectionListWidget extends AlwaysSelectedEntryListWidget<ModSel
             }
         });
 
+        // Sort Mods Alphabetically
         modIDs.sort((o1, o2) -> {
             String name1 = Text.translatable(o1.getA() + ".config.category").getString();
             String name2 = Text.translatable(o2.getA() + ".config.category").getString();
             return name1.compareToIgnoreCase(name2);
         });
 
+        // Sort Categories Alphabetically, but in reverse
         modCategories.sort((o2, o1) -> {
             String name1 = Text.translatable(o1.getA() + ".config.category").getString();
             String name2 = Text.translatable(o2.getA() + ".config.category").getString();
             return name1.compareToIgnoreCase(name2);
         });
 
+        // Go through and add the Categories under the Mods
         for (int i = modIDs.size() - 1; i >= 0; i--) {
             int index = i;
             modCategories.forEach(pair -> {
@@ -61,6 +65,7 @@ public class ModSelectionListWidget extends AlwaysSelectedEntryListWidget<ModSel
             });
         }
 
+        // Add Entries
         modIDs.forEach(modID -> {
             ModConfigSelectionEntry configCategory = new ModConfigSelectionEntry(
                     client.textRenderer, modID.getA(), modID.getB()

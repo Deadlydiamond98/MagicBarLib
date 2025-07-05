@@ -2,6 +2,7 @@ package net.deadlydiamond98.koalalib.client.screen.config.entry;
 
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.BooleanButton;
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.ConfigTextInput;
+import net.deadlydiamond98.koalalib.client.screen.config.inputs.EnumButton;
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.IConfigEntry;
 import net.deadlydiamond98.koalalib.config.CFGProperties;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
@@ -89,6 +90,8 @@ public class ConfigEntries {
                 Object value;
                 if (entry instanceof BooleanButton bl) {
                     value = bl.getBool();
+                } else if (entry instanceof EnumButton enumm) {
+                    value = enumm.getEnum();
                 } else if (entry instanceof ConfigTextInput input) {
                     String tempVal = input.getText();
                     if (type == int.class) {
@@ -97,7 +100,8 @@ public class ConfigEntries {
                         value = Double.parseDouble(tempVal);
                     } else if (type == float.class) {
                         value = Float.parseFloat(tempVal);
-                    } else {
+                    }
+                    else {
                         value = tempVal;
                     }
                 } else {
@@ -132,6 +136,8 @@ public class ConfigEntries {
             entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, (float)value);
         } else if (type == boolean.class) {
             entry = new BooleanButton(translation, x, y, width, height, (boolean)value);
+        } else if (type.isEnum()) {
+            entry = new EnumButton(translation, x, y, width, height, type, (Enum<?>) value, modID + ".enum." + field.getName() + ".");
         } else {
             entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, value.toString());
         }

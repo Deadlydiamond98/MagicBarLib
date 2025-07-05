@@ -1,7 +1,7 @@
 package net.deadlydiamond98.koalalib;
 
 /**
- * Contains various togglable features, such as the Magic Meter, so they can be used if wanted, but don't get added if
+ * Contains various toggleable features, such as the Magic Meter, so they can be used if wanted, but don't get added if
  * unused.
  */
 public class ToggleableContent {

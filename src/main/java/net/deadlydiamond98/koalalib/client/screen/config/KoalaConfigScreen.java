@@ -1,8 +1,10 @@
 package net.deadlydiamond98.koalalib.client.screen.config;
 
+import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.client.screen.config.entry.ConfigEntries;
 import net.deadlydiamond98.koalalib.client.screen.config.entry.OldScreenPartsEntries;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
+import net.deadlydiamond98.koalalib.config.configs.MagicBarConfigs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
