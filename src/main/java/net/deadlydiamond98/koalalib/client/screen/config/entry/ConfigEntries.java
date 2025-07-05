@@ -155,6 +155,11 @@ public class ConfigEntries {
             configEntry.enableDesc(cfgProperties.hasDesc());
         }
 
+        if (entry instanceof ConfigTextInput configTextInput) {
+            configTextInput.setMaxNumber(cfgProperties.max());
+            configTextInput.setMinNumber(cfgProperties.min());
+        }
+
         return entry;
     }
 }
