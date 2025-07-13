@@ -13,20 +13,19 @@ public class MagicBarHelper {
      * @param entity The entity to add Mana to
      * @param amount The amount of Mana to add to the player
      */
-    public static void addMana(LivingEntity entity, int amount) {
+    public static boolean addMana(LivingEntity entity, int amount) {
         if (amount < 0) {
-            removeMana(entity, amount * -1);
-        }
-        else {
-            if (canAddMana(entity, amount)) {
-                if (amount + getMana(entity) <= getMaxMana(entity)) {
-                    setMana(entity, getMana(entity) + amount);
-                }
-                else if (getMana(entity) < getMaxMana(entity) && amount + getMana(entity) > getMaxMana(entity)) {
-                    setMana(entity, getMaxMana(entity));
-                }
+            return removeMana(entity, amount * -1);
+        }  else if (canAddMana(entity, amount)) {
+            if (amount + getMana(entity) <= getMaxMana(entity)) {
+                setMana(entity, getMana(entity) + amount);
             }
+            else if (getMana(entity) < getMaxMana(entity) && amount + getMana(entity) > getMaxMana(entity)) {
+                setMana(entity, getMaxMana(entity));
+            }
+            return true;
         }
+        return canAddMana(entity, amount);
     }
 
     /**
@@ -34,8 +33,8 @@ public class MagicBarHelper {
      * @param entity The entity to remove Mana from
      * @param amount The amount of Mana to remove from the player
      */
-    public static void removeMana(LivingEntity entity, int amount) {
-        removeMana(entity, amount, true);
+    public static boolean removeMana(LivingEntity entity, int amount) {
+        return removeMana(entity, amount, true);
     }
 
     /**
@@ -44,11 +43,11 @@ public class MagicBarHelper {
      * @param amount The amount of Mana to remove from the player
      * @param addDelay Whether a delay should be applied to passive mana regen
      */
-    public static void removeMana(LivingEntity entity, int amount, boolean addDelay) {
+    public static boolean removeMana(LivingEntity entity, int amount, boolean addDelay) {
         if (amount < 0) {
-            addMana(entity, amount * -1);
+            return addMana(entity, amount * -1);
         }
-        if (canRemoveMana(entity, amount)) {
+        else if (canRemoveMana(entity, amount)) {
             if (getMana(entity) - amount >= 0) {
                 setMana(entity, getMana(entity) - amount);
             }
@@ -57,6 +56,7 @@ public class MagicBarHelper {
             }
             getBar(entity).koalalib$applyRegenDelay(addDelay);
         }
+        return canRemoveMana(entity, amount);
     }
 
     /**
@@ -88,15 +88,15 @@ public class MagicBarHelper {
      * @param amount The amount of Mana that the Max Mana should increase by
      * @param replenish Whether mana the amount of mana that's given should also be added to the entity's current mana
      */
-    public static void increaseMaxMana(LivingEntity entity, int amount, boolean replenish) {
+    public static boolean increaseMaxMana(LivingEntity entity, int amount, boolean replenish) {
         if (amount < 0) {
-            decreaseMaxMana(entity, amount * -1);
-        }
-        else {
+            return decreaseMaxMana(entity, amount * -1);
+        } else {
             setMaxMana(entity, getMaxMana(entity) + amount);
             if (replenish) {
                 addMana(entity, amount);
             }
+            return true;
         }
     }
 
@@ -105,17 +105,16 @@ public class MagicBarHelper {
      * @param entity The entity who you want to remove max mana from
      * @param amount The amount of Mana that the Max Mana should decrease by
      */
-    public static void decreaseMaxMana(LivingEntity entity, int amount) {
+    public static boolean decreaseMaxMana(LivingEntity entity, int amount) {
         if (amount < 0) {
-            increaseMaxMana(entity, amount * -1, false);
-        } else {
-            if (canDecreaseMaxMana(entity, amount)) {
-                setMaxMana(entity, getMaxMana(entity) - amount);
-                if (getMaxMana(entity) < getMana(entity)) {
-                    setMana(entity, getMaxMana(entity));
-                }
+            return increaseMaxMana(entity, amount * -1, false);
+        } else if (canDecreaseMaxMana(entity, amount)) {
+            setMaxMana(entity, getMaxMana(entity) - amount);
+            if (getMaxMana(entity) < getMana(entity)) {
+                setMana(entity, getMaxMana(entity));
             }
         }
+        return canDecreaseMaxMana(entity, amount);
     }
 
     /**

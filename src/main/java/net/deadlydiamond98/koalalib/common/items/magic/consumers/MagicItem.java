@@ -23,15 +23,12 @@ public class MagicItem extends Item implements IMagicItem {
     /**
      * Run when item is using mana
      */
-    protected void doManaAction(PlayerEntity user, World world) {
-        MagicBarHelper.removeMana(user, this.manaCost);
-    }
+    protected void doManaAction(PlayerEntity user, World world) {}
 
     /**
      * Run when item can't use mana
      */
-    protected void doNoManaEvent(PlayerEntity user, World world) {
-    }
+    protected void doNoManaEvent(PlayerEntity user, World world) {}
 
     @Override
     public int getManaCost(ItemStack stack) {
@@ -41,7 +38,7 @@ public class MagicItem extends Item implements IMagicItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (MagicBarHelper.canRemoveMana(user, this.manaCost) || user.isCreative()) {
+        if (MagicBarHelper.removeMana(user, this.manaCost) || user.isCreative()) {
             doManaAction(user, world);
             return TypedActionResult.success(user.getStackInHand(hand));
         }

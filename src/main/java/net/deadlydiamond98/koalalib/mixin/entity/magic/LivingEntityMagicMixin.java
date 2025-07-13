@@ -167,8 +167,10 @@ public abstract class LivingEntityMagicMixin implements IMagicBarMixinData {
     @Override
     public void koalalib$applyRegenDelay(boolean value) {
         // Totally didn't borrow the regen formula from Terraria before modifying it, I would never
-        this.koalalib$manaRegenDelay = (int) Math.floor(
-                Math.min(0.7 * ((1 - (koalalib$getMana() / (double) koalalib$getMaxMana()) * 500 + 45)), -60
-                ));
+        if (value) {
+            this.koalalib$manaRegenDelay = (int) Math.floor(
+                    Math.min(0.7 * ((1 - (koalalib$getMana() / (double) koalalib$getMaxMana()) * 500 + 45)), -60)
+            );
+        }
     }
 }

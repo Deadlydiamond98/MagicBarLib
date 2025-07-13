@@ -37,7 +37,7 @@ public class MagicDowngrade extends MagicReplenisher {
      */
     public void removeMana(PlayerEntity user, Hand hand) {
         MagicBarHelper.decreaseMaxMana(user, this.removedMana);
-        if (consumed) {
+        if (this.consumed) {
             user.getStackInHand(hand).decrement(1);
         }
         if (this.cooldown > 0) {
