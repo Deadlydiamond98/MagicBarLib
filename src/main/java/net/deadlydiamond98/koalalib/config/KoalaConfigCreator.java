@@ -18,8 +18,6 @@ import java.util.HashMap;
 
 public class KoalaConfigCreator {
 
-    // TODO: Prevent resetting of entire config file if new values are added or removed!
-
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final HashMap<String, Pair<Class<?>, String>> MOD_CONFIGS = new HashMap<>();
 
@@ -63,18 +61,13 @@ public class KoalaConfigCreator {
             Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
             HashMap<String, Object> readConfigData = GSON.fromJson(reader, type);
 
-            if (configClass.getFields().length == readConfigData.size()) {
-                readConfigData.forEach((name, value) -> {
-                    try {
-                        Field field = configClass.getField(name);
-                        field.set(configClass, matchValueToFieldType(value, field));
-                    } catch (Exception e) {
-                        createConfigFile(path, configClass, 0); // A
-                    }
-                });
-            } else {
-                createConfigFile(path, configClass, 1); // B
-            }
+            readConfigData.forEach((name, value) -> {
+                try {
+                    Field field = configClass.getField(name);
+                    field.set(configClass, matchValueToFieldType(value, field));
+                } catch (Exception ignored) {}
+            });
+            writeToConfigFile(path, configClass);
         } catch (Exception ignored) {
             createConfigFile(path, configClass, 2); // C
         }
