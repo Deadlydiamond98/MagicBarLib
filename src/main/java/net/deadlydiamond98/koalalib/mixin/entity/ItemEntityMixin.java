@@ -2,6 +2,7 @@ package net.deadlydiamond98.koalalib.mixin.entity;
 
 import net.deadlydiamond98.koalalib.common.items.interaction.IFloating;
 import net.deadlydiamond98.koalalib.common.items.interaction.IPickupSound;
+import net.deadlydiamond98.koalalib.util.mixindata.IFloatingItemMixinData;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -15,14 +16,28 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Mixin(ItemEntity.class)
-public class ItemEntityMixin extends EntityMixin {
+public abstract class ItemEntityMixin extends EntityMixin implements IFloatingItemMixinData {
+
     @Unique
     private static final Map<PlayerEntity, Long> LAST_PICKUP_TIME = new ConcurrentHashMap<>();
+
+    @Unique
+    private boolean koalalib$isDroppedItem;
 
     @Override
     protected boolean koalalib$hasNoGravity(boolean original) {
         ItemEntity item = (ItemEntity) (Object) this;
         return item.getStack().getItem() instanceof IFloating || super.koalalib$hasNoGravity(original);
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void koalalib$tick(CallbackInfo ci) {
+
+        ItemEntity item = (ItemEntity) (Object) this;
+
+        if (item.getStack().getItem() instanceof IFloating && this.koalalib$isDroppedItem) {
+            this.setVelocity(this.getVelocity().multiply(1, 0.9, 1));
+        }
     }
 
     @Inject(
@@ -42,5 +57,10 @@ public class ItemEntityMixin extends EntityMixin {
                 }
             }
         }
+    }
+
+    @Override
+    public void koalalib$setDroppedItem(boolean bl) {
+        this.koalalib$isDroppedItem = bl;
     }
 }
