@@ -31,13 +31,22 @@ public class MagicFood extends MagicReplenisher {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient()) {
-            if (MagicBarHelper.canAddMana(user, this.amountToGive) || user.isCreative()) {
-                return super.use(world, user, hand);
+        ItemStack itemStack = user.getStackInHand(hand);
+
+        if (this.isFood()) {
+
+            if (user.canConsume(this.getFoodComponent().isAlwaysEdible()) || MagicBarHelper.canAddMana(user, this.amountToGive)) {
+                user.setCurrentHand(hand);
+                return TypedActionResult.consume(itemStack);
+            } else {
+                return TypedActionResult.fail(itemStack);
             }
+
+        } else {
+            return TypedActionResult.pass(user.getStackInHand(hand));
         }
-        return TypedActionResult.fail(user.getStackInHand(hand));
     }
+
 
     @Override
     public UseAction getUseAction(ItemStack stack) {

@@ -13,14 +13,12 @@ import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
-public class KoalaAfterDeathEvent {
+public class KoalaAfterDeathEvents {
 
     public static final Identifier ENDERSOUL_LOOT_TABLE_ID = new Identifier(KoalaLib.MOD_ID, "entities/endersoul");
 
     public static void register() {
-        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
-            dropEnderSouls(entity, damageSource);
-        });
+        ServerLivingEntityEvents.AFTER_DEATH.register(KoalaAfterDeathEvents::dropEnderSouls);
     }
 
     private static void dropEnderSouls(LivingEntity entity, DamageSource damageSource) {

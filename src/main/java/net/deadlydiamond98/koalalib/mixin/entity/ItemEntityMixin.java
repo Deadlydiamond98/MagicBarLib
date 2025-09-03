@@ -21,9 +21,6 @@ public abstract class ItemEntityMixin extends EntityMixin implements IFloatingIt
     @Unique
     private static final Map<PlayerEntity, Long> LAST_PICKUP_TIME = new ConcurrentHashMap<>();
 
-    @Unique
-    private boolean koalalib$isDroppedItem;
-
     @Override
     protected boolean koalalib$hasNoGravity(boolean original) {
         ItemEntity item = (ItemEntity) (Object) this;
@@ -35,8 +32,8 @@ public abstract class ItemEntityMixin extends EntityMixin implements IFloatingIt
 
         ItemEntity item = (ItemEntity) (Object) this;
 
-        if (item.getStack().getItem() instanceof IFloating && this.koalalib$isDroppedItem) {
-            this.setVelocity(this.getVelocity().multiply(1, 0.9, 1));
+        if (item.getStack().getItem() instanceof IFloating) {
+            this.setVelocity(this.getVelocity().multiply(0.9, 0.9, 0.9));
         }
     }
 
@@ -57,10 +54,5 @@ public abstract class ItemEntityMixin extends EntityMixin implements IFloatingIt
                 }
             }
         }
-    }
-
-    @Override
-    public void koalalib$setDroppedItem(boolean bl) {
-        this.koalalib$isDroppedItem = bl;
     }
 }

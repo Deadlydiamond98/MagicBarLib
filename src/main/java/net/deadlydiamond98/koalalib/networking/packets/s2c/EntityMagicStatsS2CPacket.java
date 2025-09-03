@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.networking.packets;
+package net.deadlydiamond98.koalalib.networking.packets.s2c;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
@@ -22,18 +22,19 @@ public class EntityMagicStatsS2CPacket {
         buf.writeInt(whenNeededRenderTime);
         ServerPlayNetworking.send(player, ID, buf);
     }
-    
-    public static void recieve(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf,
-                               PacketSender responseSender) {
-        int level = buf.readInt();
-        int maxLevel = buf.readInt();
-        int whenNeededRenderTime = buf.readInt();
-        client.execute(() -> {
+
+    public static class Handler {
+        public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+            int level = buf.readInt();
+            int maxLevel = buf.readInt();
+            int whenNeededRenderTime = buf.readInt();
+            client.execute(() -> {
                 if (client.player != null) {
                     MagicBarHelper.setMana(client.player, level);
                     MagicBarHelper.setMaxMana(client.player, maxLevel);
                     MagicBarHelper.getBar(client.player).koalalib$setMagicBarRenderTime(whenNeededRenderTime);
                 }
-        });
+            });
+        }
     }
 }

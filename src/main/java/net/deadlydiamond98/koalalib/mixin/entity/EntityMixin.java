@@ -20,12 +20,4 @@ public abstract class EntityMixin {
     protected boolean koalalib$hasNoGravity(boolean original) {
         return original;
     }
-
-    @ModifyReturnValue(method = "dropStack(Lnet/minecraft/item/ItemStack;F)Lnet/minecraft/entity/ItemEntity;", at = @At("RETURN"))
-    private ItemEntity koalalib$dropStack(ItemEntity original) {
-        if (original != null) {
-            ((IFloatingItemMixinData) original).koalalib$setDroppedItem(true);
-        }
-        return original;
-    }
 }
