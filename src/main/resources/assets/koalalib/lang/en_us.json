@@ -30,5 +30,8 @@
   "koalalib.magic_bar.config.manaBarTextOffsetY.desc": "The Y-Postion of the Magic Text Relative to the Magic Bar",
   "koalalib.magic_bar.config.manaBarRenderType.desc": "Determines how the Magic Bar will display on the screen (If the Magic Bar is present)",
 
-  "koalalib.updatechecker": "There is a new update out for KoalaLib!"
+  "chat.koalalib.update": "There is a new update out for %s!",
+  "chat.koalalib.update.prompt": "You can download the latest version by clicking %s\n",
+  "chat.koalalib.update.hyperlink": "[HERE]",
+  "chat.koalalib.update.disable": "Mod Update Chat Messages from %s can be turned off via configs"
 }

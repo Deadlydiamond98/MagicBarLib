@@ -4,77 +4,128 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.gson.*;
 import net.deadlydiamond98.koalalib.KoalaLib;
+import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModOrigin;
-import oshi.util.tuples.Pair;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public class KoalaUpdateChecker {
 
-    public static HashMap<String, UpdatableMod> MOD_UPDATE_LIST = new HashMap<>();
+    public static final List<UpdatableMod> MOD_UPDATE_LIST = new ArrayList<>();
     private static final String MODRINTH_URL = "https://api.modrinth.com/v2/version_file/";
 
-    public record UpdatableMod(String name, String fileName, String modrinthName, String url) {}
+    // Version and Loader have a variable so that when I inevitably port the mod, things will be easier
+    private static final String VERSION = "1.20.1";
+    private static final String LOADER = "fabric";
 
-//    String url = MODRINTH_URL + "044d33a1f4b24094c21d94e5168155d6cc76fccd9d49962ec3b25e20e79aff0fb93e70803fd1c132ba44b65112e5b96dc985577c671c73c68bd0586bedb5f184";
-//    String url = MODRINTH_URL + "98dca2d8a9b371bf4c84a4300aaa0c87e6cac3d5f598600ea78f4e74dbe6d73dff2b1f1f53d8fb251d71ecb23097376d857012ef5eb1e3122bea2dee4363f652";
-//    String url = MODRINTH_URL + "cdd4f52dc6930d89f01765e95f481d3520ec5f85c85112e738cf0b716418c543aae90d343bf381512613c8ed67944af93d1732cf84eb7a6b85b80617ba10879b";
-//
+    public record UpdatableMod(String name, String url) {}
+
+    /**
+     * This method can be called to add a checker for a mod. When the mod is loaded, this get the jar file corresponding
+     * to the modid, and check Modrinth for the latest version.
+     * @param modid Mod ID for the mod that will be checked
+     */
     public static void addModUpdateChecker(String modid) {
-        String url = MODRINTH_URL + getSHA512Hash(modid);
+        if (MainConfigs.checkForUpdates) {
+            Optional<ModContainer> optional = FabricLoader.getInstance().getModContainer(modid);
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(url).openStream()))) {
-            JsonObject jsonObject = JsonParser.parseString(reader.readLine()).getAsJsonObject();
-            JsonObject primaryRelease = getPrimaryRelease(jsonObject).getAsJsonObject();
+            if (optional.isPresent()) {
+                ModContainer container = optional.get();
+                String name = container.getMetadata().getName();
 
-            String modrinthName = primaryRelease.get("filename").getAsString();
-            String modUrl = primaryRelease.get("url").getAsString();
-            KoalaLib.LOGGER.info("-------------------------------");
-            KoalaLib.LOGGER.info("Name: {}", FabricLoader.getInstance().getModContainer(modid).orElseThrow().getMetadata().getName());
-            String path = getJarLocation(modid, FabricLoader.getInstance().getModContainer(modid).orElseThrow()).toString();
-//            KoalaLib.LOGGER.info("Parent Mod ID: {}", path);
-            KoalaLib.LOGGER.info("Modrinth File: {}", modrinthName);
-            KoalaLib.LOGGER.info("URL: {}", modUrl);
-            KoalaLib.LOGGER.info("Is Up to date?: {}", path.contains(modrinthName));
-            KoalaLib.LOGGER.info("-------------------------------\n");
+                try {
+                    URL url = new URL(MODRINTH_URL + getSHA512Hash(name, container) + "/update?algorithm=sha512");
+                    JsonObject jsonObject = JsonParser.parseString(requestJSONString(url)).getAsJsonObject();
+                    JsonObject primaryRelease = getPrimaryRelease(jsonObject).getAsJsonObject();
 
-        } catch (Exception ignored) {
-//            KoalaLib.LOGGER.info("Failed to find [{}] on Modrinth!", modid);
+                    String modFilepath = getJarLocation(FabricLoader.getInstance().getModContainer(modid).orElseThrow()).toString();
+                    String modrinthName = primaryRelease.get("filename").getAsString();
+
+                    if (!modFilepath.contains(modrinthName)) {
+                        String modUrl = primaryRelease.get("url").getAsString();
+
+                        MOD_UPDATE_LIST.add(new UpdatableMod(name, modUrl));
+
+                        KoalaLib.LOGGER.info("-------------------------------\n");
+                        KoalaLib.LOGGER.info("An update for {} has been detected!", name);
+                        KoalaLib.LOGGER.info("You can download the latest version of {} here: \n{}", name, modUrl);
+                        KoalaLib.LOGGER.info("\n-------------------------------\n");
+                    }
+
+                } catch (Exception ignored) {
+                    KoalaLib.LOGGER.info("Failed to find {} on Modrinth!", name);
+                }
+            }
         }
     }
 
+    /**
+     * Gets a json from Modrinth that contains information about the latest release of a mod
+     * @param url Url for the mod
+     * @return Returns a string that contains the entire Json file
+     */
+    private static String requestJSONString(URL url) throws Exception {
+        HttpURLConnection http = (HttpURLConnection) url.openConnection();
+        http.setRequestMethod("POST");
+        http.setDoOutput(true);
+        http.setRequestProperty("Content-Type", "application/json");
+        String data = "{\"loaders\":[\"" + LOADER + "\"],\"game_versions\":[\"" + VERSION + "\"]}";
+        byte[] out = data.getBytes(StandardCharsets.UTF_8);
+        OutputStream stream = http.getOutputStream();
+        stream.write(out);
+        return new BufferedReader(new InputStreamReader(http.getInputStream())).readLine();
+    }
+
+    /**
+     * Filters the mod "files" that are uploaded for the modrinth version for the Primary release, and returns the primary
+     * release
+     * @param jsonObject json object
+     * @return Returns the primary release
+     */
     private static JsonElement getPrimaryRelease(JsonObject jsonObject) {
         return jsonObject.getAsJsonArray("files").asList().stream().filter(
                 jsonElement -> jsonElement.getAsJsonObject().get("primary").getAsBoolean()
         ).findFirst().orElseThrow();
     }
 
-    private static Path getJarLocation(String modid, ModContainer container) {
+    /**
+     * Returns the location of your mod Jar
+     * @param container mod container, basically mod information
+     * @return Returns the location of your mod Jar
+     */
+    private static Path getJarLocation(ModContainer container) {
         return container.getOrigin().getPaths().stream().filter(
                 path -> path.toString().toLowerCase(Locale.ROOT).endsWith(".jar")
         ).findFirst().orElseThrow();
     }
 
-    private static String getSHA512Hash(String modid) {
-        ModContainer container = FabricLoader.getInstance().getModContainer(modid).orElseThrow();
-
+    /**
+     * Returns a SHA-512 Hash that corresponds to a mod, which Modrinth needs for retrieving the latest version of a mod.<br>
+     * (In all honestly, I have no idea what a Hash exactly is, I just Googled how to convert a file to a SHA-512 and went from there)
+     * @param name Name of the mod
+     * @param container mod container, basically mod information
+     * @return returns a SHA-512 Hash corresponding to a mod
+     */
+    private static String getSHA512Hash(String name, ModContainer container) {
         try {
             if (container.getOrigin().getKind() == ModOrigin.Kind.PATH) {
-                File file = getJarLocation(modid, container).toFile();
+                File file = getJarLocation(container).toFile();
                 if (file.isFile()) {
                     return Files.asByteSource(file).hash(Hashing.sha512()).toString();
                 }
             }
         } catch (Exception ignored) {
-            KoalaLib.LOGGER.info("Unable to get the SHA-512 Hash for [{}]", modid);
+            KoalaLib.LOGGER.info("Unable to get the SHA-512 Hash for [{}]", name);
         }
 
         return null;

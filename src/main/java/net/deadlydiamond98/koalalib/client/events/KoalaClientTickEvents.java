@@ -1,21 +1,32 @@
 package net.deadlydiamond98.koalalib.client.events;
 
+import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.common.blocks.interaction.IHitBlockAction;
 import net.deadlydiamond98.koalalib.common.items.interaction.ISwingAction;
+import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.deadlydiamond98.koalalib.networking.packets.c2s.LeftClickItemC2SPacket;
 import net.deadlydiamond98.koalalib.networking.packets.c2s.PunchBlockC2SPacket;
+import net.deadlydiamond98.koalalib.updater.KoalaUpdateChecker;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class KoalaClientTickEvents {
 
     public static boolean wasAttacking = false;
+
+    public static boolean updateTipSent = false;
+    public static int updateTipTimer = 0;
 
     public static void register() {
         ClientTickEvents.END_CLIENT_TICK.register(KoalaClientTickEvents::endClientTick);
@@ -25,6 +36,9 @@ public class KoalaClientTickEvents {
         PlayerEntity player = client.player;
 
         if (player != null) {
+
+            // Attack related things
+
             boolean isAttacking = client.options.attackKey.isPressed();
             Item item = player.getMainHandStack().getItem();
             World world = player.getWorld();
@@ -38,6 +52,15 @@ public class KoalaClientTickEvents {
             } else if (wasAttacking) {
                 wasAttacking = false;
             }
+
+            // Update Chat Message
+
+            if (!updateTipSent && MainConfigs.checkForUpdates && !KoalaUpdateChecker.MOD_UPDATE_LIST.isEmpty() && updateTipTimer++ > 100) {
+                player.sendMessage(Text.translatable("chat.koalalib.update.disable",
+                        Text.literal("Koala Lib").formatted(Formatting.YELLOW)
+                ).formatted(Formatting.GREEN));
+                updateTipSent = true;
+            }
         }
     }
 
@@ -49,9 +72,9 @@ public class KoalaClientTickEvents {
     }
 
     private static void handleBlockAtkAction(MinecraftClient client, World world) {
-        BlockHitResult hitResult = (BlockHitResult) client.crosshairTarget;
-        if (hitResult != null) {
-            BlockPos pos = hitResult.getBlockPos();
+        HitResult hitResult = client.crosshairTarget;
+        if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos pos = ((BlockHitResult)  hitResult).getBlockPos();
             BlockState state = world.getBlockState(pos);
 
             if (state.getBlock() instanceof IHitBlockAction hitBlock) {

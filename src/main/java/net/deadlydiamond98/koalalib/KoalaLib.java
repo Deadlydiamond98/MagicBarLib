@@ -29,11 +29,8 @@ public class KoalaLib implements ModInitializer {
 	public void onInitialize() {
 		KoalaConfigCreator.addModConfig(MOD_ID, MainConfigs.class);
 		KoalaConfigCreator.addModConfigCategory(MOD_ID, "magic_bar", MagicBarConfigs.class);
-//		KoalaUpdateChecker.addModUpdateChecker(KoalaLib.MOD_ID);
-
-		FabricLoader.getInstance().getAllMods().forEach(container -> {
-			KoalaUpdateChecker.addModUpdateChecker(container.getMetadata().getId());
-		});
+		KoalaUpdateChecker.addModUpdateChecker(KoalaLib.MOD_ID);
+		KoalaUpdateChecker.addModUpdateChecker("healpgood");
 
 		ToggleableContent.enableMagicBar(true);
 

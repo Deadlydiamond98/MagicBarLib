@@ -12,7 +12,7 @@ public class ModSharedItems {
 
     public static final Item ENDER_SOUL = registerItem("ender_soul", new FloatingItem(new Item.Settings()));
 
-    public static final Item TEST = registerItem("test_weapon", new MagicFood(new Item.Settings().food(new FoodComponent.Builder().hunger(4).saturationModifier(1).build()), 10));
+//    public static final Item TEST = registerItem("test_weapon", new MagicFood(new Item.Settings().food(new FoodComponent.Builder().hunger(4).saturationModifier(1).build()), 10));
 
     private static Item registerItem(String itemName, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(KoalaLib.MOD_ID, itemName), item);
