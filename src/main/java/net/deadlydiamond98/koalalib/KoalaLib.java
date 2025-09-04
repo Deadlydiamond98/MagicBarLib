@@ -30,7 +30,6 @@ public class KoalaLib implements ModInitializer {
 		KoalaConfigCreator.addModConfig(MOD_ID, MainConfigs.class);
 		KoalaConfigCreator.addModConfigCategory(MOD_ID, "magic_bar", MagicBarConfigs.class);
 		KoalaUpdateChecker.addModUpdateChecker(KoalaLib.MOD_ID);
-		KoalaUpdateChecker.addModUpdateChecker("healpgood");
 
 		ToggleableContent.enableMagicBar(true);
 
