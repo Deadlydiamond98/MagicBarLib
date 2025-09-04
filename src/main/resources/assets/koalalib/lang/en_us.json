@@ -28,5 +28,7 @@
   "koalalib.magic_bar.config.manaBarPositionY.desc": "The Y-Postion of the on-screen Magic Bar",
   "koalalib.magic_bar.config.manaBarTextOffsetX.desc": "The X-Postion of the Magic Text Relative to the Magic Bar",
   "koalalib.magic_bar.config.manaBarTextOffsetY.desc": "The Y-Postion of the Magic Text Relative to the Magic Bar",
-  "koalalib.magic_bar.config.manaBarRenderType.desc": "Determines how the Magic Bar will display on the screen (If the Magic Bar is present)"
+  "koalalib.magic_bar.config.manaBarRenderType.desc": "Determines how the Magic Bar will display on the screen (If the Magic Bar is present)",
+
+  "koalalib.updatechecker": "There is a new update out for KoalaLib!"
 }

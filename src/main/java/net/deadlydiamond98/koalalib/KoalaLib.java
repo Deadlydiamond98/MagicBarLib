@@ -11,6 +11,7 @@ import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
 import net.deadlydiamond98.koalalib.config.configs.MagicBarConfigs;
 import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.deadlydiamond98.koalalib.networking.KoalaPackets;
+import net.deadlydiamond98.koalalib.updater.KoalaUpdateChecker;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
@@ -28,6 +29,11 @@ public class KoalaLib implements ModInitializer {
 	public void onInitialize() {
 		KoalaConfigCreator.addModConfig(MOD_ID, MainConfigs.class);
 		KoalaConfigCreator.addModConfigCategory(MOD_ID, "magic_bar", MagicBarConfigs.class);
+//		KoalaUpdateChecker.addModUpdateChecker(KoalaLib.MOD_ID);
+
+		FabricLoader.getInstance().getAllMods().forEach(container -> {
+			KoalaUpdateChecker.addModUpdateChecker(container.getMetadata().getId());
+		});
 
 		ToggleableContent.enableMagicBar(true);
 
@@ -39,7 +45,6 @@ public class KoalaLib implements ModInitializer {
 		KoalaAfterDeathEvents.register();
 		MagicBarCommands.register();
 		KoalaPackets.registerC2SPackets();
-
 		LOGGER.info("KoalaLib finished Loading");
 	}
 
