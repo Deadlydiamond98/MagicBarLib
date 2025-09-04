@@ -13,6 +13,7 @@
   "koalalib.magic_bar.config.category": "Magic Bar Options",
 
   "koalalib.main.config.fancyTransitions": "Fancy Transitions",
+  "koalalib.main.config.checkForUpdates": "Check for Updates",
   "koalalib.magic_bar.config.manaBarPositionX": "Magic Bar X",
   "koalalib.magic_bar.config.manaBarPositionY": "Magic Bar Y",
   "koalalib.magic_bar.config.manaBarTextOffsetX": "Magic Bar Offset X",
@@ -24,6 +25,7 @@
   "koalalib.magic_bar.enum.manaBarRenderType.Never": "Never",
 
   "koalalib.main.config.fancyTransitions.desc": "If True, the config menu will have nice sliding transitions",
+  "koalalib.main.config.checkForUpdates.desc": "If True, Mods using this library will be able to check if newer versions are available, and notify you about them",
   "koalalib.magic_bar.config.manaBarPositionX.desc": "The X-Postion of the on-screen Magic Bar",
   "koalalib.magic_bar.config.manaBarPositionY.desc": "The Y-Postion of the on-screen Magic Bar",
   "koalalib.magic_bar.config.manaBarTextOffsetX.desc": "The X-Postion of the Magic Text Relative to the Magic Bar",
