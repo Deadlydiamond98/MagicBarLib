@@ -21,14 +21,12 @@ import org.slf4j.LoggerFactory;
 public class KoalaLib implements ModInitializer {
 	public static final String MOD_ID = "koalalib";
 
-	//Custom Zelda Font
 	public static final Identifier ZELDA_FONT = new Identifier(MOD_ID, "zeldafont");
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitialize() {
 		KoalaConfigCreator.addModConfig(MOD_ID, MainConfigs.class);
-		KoalaConfigCreator.addModConfigCategory(MOD_ID, "magic_bar", MagicBarConfigs.class);
 		KoalaUpdateChecker.addModUpdateChecker(KoalaLib.MOD_ID);
 
 		ModSharedItems.register();

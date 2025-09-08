@@ -3,40 +3,57 @@ package net.deadlydiamond98.koalalib.common.events;
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.ToggleableContent;
 import net.deadlydiamond98.koalalib.common.misc.KoalalibTags;
+import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
+import net.deadlydiamond98.koalalib.util.LootTableHelper;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContextParameterSet;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Heightmap;
+import net.minecraft.world.gen.feature.EndPortalFeature;
 
 public class KoalaAfterDeathEvents {
 
-    public static final Identifier ENDERSOUL_LOOT_TABLE_ID = new Identifier(KoalaLib.MOD_ID, "entities/endersoul");
+    // Ender Soul Loot Table IDs
+    public static final Identifier SOUL = new Identifier(KoalaLib.MOD_ID, "entities/endersoul_reg_mob");
+    public static final Identifier SOUL_MINIBOSS = new Identifier(KoalaLib.MOD_ID, "entities/endersoul_reg_mob");
+    private static final Identifier SOUL_DRAGON = new Identifier(KoalaLib.MOD_ID, "entities/endersoul_dragon");
 
     public static void register() {
         ServerLivingEntityEvents.AFTER_DEATH.register(KoalaAfterDeathEvents::dropEnderSouls);
     }
 
+    /**
+     * Drops Ender Souls when an Ender-Type Mob dies!
+     */
     private static void dropEnderSouls(LivingEntity entity, DamageSource damageSource) {
-        // If Ender Souls are enabled, this will allow them to drop using a loot table
-        if (ToggleableContent.areEnderSoulsEnabled() && entity.getType().isIn(KoalalibTags.Entities.ENDER_MOB)) {
-
-            if (!entity.getWorld().isClient) {
-
-                LootTable lootTable = entity.getWorld().getServer().getLootManager().getLootTable(ENDERSOUL_LOOT_TABLE_ID);
-                LootContextParameterSet.Builder builder = (new LootContextParameterSet.Builder((ServerWorld)entity.getWorld()))
-                        .add(LootContextParameters.THIS_ENTITY, entity).add(LootContextParameters.ORIGIN, entity.getPos())
-                        .add(LootContextParameters.DAMAGE_SOURCE, damageSource)
-                        .addOptional(LootContextParameters.KILLER_ENTITY, damageSource.getAttacker())
-                        .addOptional(LootContextParameters.DIRECT_KILLER_ENTITY, damageSource.getSource());
-
-                LootContextParameterSet lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
-                lootTable.generateLoot(lootContextParameterSet, entity.getLootTableSeed(), entity::dropStack);
+        if (ToggleableContent.areEnderSoulsEnabled()) {
+            if (entity.getType().isIn(KoalalibTags.Entities.ENDER_MOB)) {
+                LootTableHelper.addLootToMob(entity, damageSource, SOUL);
             }
+            else if (entity.getType().isIn(KoalalibTags.Entities.ENDER_MINI_BOSS)) {
+                LootTableHelper.addLootToMob(entity, damageSource, SOUL_MINIBOSS);
+            }
+            else if (entity instanceof EnderDragonEntity dragon && MainConfigs.enderDragonDrops) {
+                LootTableHelper.addLootToMob(entity, damageSource, SOUL_DRAGON, stack -> dropEnderDragonSouls(dragon, stack));
+            }
+        }
+    }
+
+    /**
+     * Creates the loot-table above the Dragon Egg with a Glowing Effect, so that they aren't easily missed!
+     */
+    private static void dropEnderDragonSouls(EnderDragonEntity dragon, ItemStack stack) {
+        if (!stack.isEmpty()) {
+            BlockPos pos = dragon.getWorld().getTopPosition(Heightmap.Type.MOTION_BLOCKING, EndPortalFeature.offsetOrigin(dragon.getFightOrigin()));
+            ItemEntity itemEntity = new ItemEntity(dragon.getWorld(), pos.getX() + 0.5, pos.getY() + 1, pos.getZ()+ 0.5, stack, 0, 0, 0);
+            itemEntity.setToDefaultPickupDelay();
+            itemEntity.setGlowing(true);
+            dragon.getWorld().spawnEntity(itemEntity);
         }
     }
 }

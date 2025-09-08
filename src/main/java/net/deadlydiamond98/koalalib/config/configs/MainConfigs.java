@@ -6,4 +6,5 @@ package net.deadlydiamond98.koalalib.config.configs;
 public class MainConfigs {
     public static boolean checkForUpdates = true;
     public static boolean fancyTransitions = true;
+    public static boolean enderDragonDrops = true;
 }

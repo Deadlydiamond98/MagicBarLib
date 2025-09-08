@@ -22,18 +22,20 @@ public interface IConfigEntry {
 
     default void renderDescriptionTooltip(DrawContext context, TextRenderer textRenderer, int mouseX, int mouseY) {
         if (canRenderTooltip() && !getTranslation().isEmpty() && hasDesc()) {
-            List<Text> tooltip = new ArrayList<>();
 
+            String[] descriptions = Text.translatable(getTranslation() + ".desc").getString().split("\\n");
+            List<Text> tooltip = new ArrayList<>();
             int maxLen = 35;
 
-            String description = Text.translatable(getTranslation() + ".desc").getString();
-
-            while (description.length() > maxLen) {
-                int split = TextFormatHelper.findSplitIndex(description, maxLen);
-                tooltip.add(Text.literal(description.substring(0, split).trim()));
-                description = description.substring(split).trim();
+            for (String description : descriptions) {
+                while (description.length() > maxLen) {
+                    int split = TextFormatHelper.findSplitIndex(description, maxLen);
+                    String firstHalf = description.substring(0, split).trim();
+                    tooltip.add(Text.literal(firstHalf));
+                    description = TextFormatHelper.returnColorFormatSymbol(firstHalf) + description.substring(split).trim();
+                }
+                tooltip.add(Text.literal(description));
             }
-            tooltip.add(Text.literal(description));
 
             context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
         }

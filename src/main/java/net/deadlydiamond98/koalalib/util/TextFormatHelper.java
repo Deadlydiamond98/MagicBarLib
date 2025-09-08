@@ -29,4 +29,19 @@ public class TextFormatHelper {
 
         return (splitIndex > 0) ? splitIndex : maxLength;
     }
+
+    /**
+     * Takes in a string, and returns the last color code present.<br>
+     * If there is no color code present, returns an empty string
+     * @param text text to find color code in
+     * @return returns the color code symbol, or an empty string
+     */
+    public static String returnColorFormatSymbol(String text) {
+        int i = text.lastIndexOf("§");
+
+        if (i != -1 && i < text.length() - 1) {
+            return text.substring(i, i + 2);
+        }
+        return "";
+    }
 }

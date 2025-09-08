@@ -14,6 +14,7 @@
 
   "koalalib.main.config.fancyTransitions": "Fancy Transitions",
   "koalalib.main.config.checkForUpdates": "Check for Updates",
+  "koalalib.main.config.enderDragonDrops": "Dragon Drops Souls",
   "koalalib.magic_bar.config.manaBarPositionX": "Magic Bar X",
   "koalalib.magic_bar.config.manaBarPositionY": "Magic Bar Y",
   "koalalib.magic_bar.config.manaBarTextOffsetX": "Magic Bar Offset X",
@@ -25,12 +26,13 @@
   "koalalib.magic_bar.enum.manaBarRenderType.Never": "Never",
 
   "koalalib.main.config.fancyTransitions.desc": "If True, the config menu will have nice sliding transitions",
-  "koalalib.main.config.checkForUpdates.desc": "If True, Mods using this library will be able to check if newer versions are available, and notify you about them",
+  "koalalib.main.config.checkForUpdates.desc": "If True, Mods using this library will be able to check if newer versions are available, and notify you about them!",
+  "koalalib.main.config.enderDragonDrops.desc": "If True, the Ender Dragon will drop Ender Souls. \n\n§a(This will only apply if a mod utilizes Ender Souls)",
   "koalalib.magic_bar.config.manaBarPositionX.desc": "The X-Postion of the on-screen Magic Bar",
   "koalalib.magic_bar.config.manaBarPositionY.desc": "The Y-Postion of the on-screen Magic Bar",
-  "koalalib.magic_bar.config.manaBarTextOffsetX.desc": "The X-Postion of the Magic Text Relative to the Magic Bar",
-  "koalalib.magic_bar.config.manaBarTextOffsetY.desc": "The Y-Postion of the Magic Text Relative to the Magic Bar",
-  "koalalib.magic_bar.config.manaBarRenderType.desc": "Determines how the Magic Bar will display on the screen (If the Magic Bar is present)",
+  "koalalib.magic_bar.config.manaBarTextOffsetX.desc": "The X-Postion of the Magic Text §nRelative§r to the Magic Bar",
+  "koalalib.magic_bar.config.manaBarTextOffsetY.desc": "The Y-Postion of the Magic Text §nRelative§r to the Magic Bar",
+  "koalalib.magic_bar.config.manaBarRenderType.desc": "Determines how the Magic Bar will display on the screen",
 
   "chat.koalalib.update": "There is a new update out for %s!",
   "chat.koalalib.update.prompt": "You can download the latest version by clicking %s\n",
