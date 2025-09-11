@@ -2,7 +2,7 @@ package net.deadlydiamond98.koalalib;
 
 import net.deadlydiamond98.koalalib.common.items.ModSharedItems;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
-import net.deadlydiamond98.koalalib.config.configs.MagicBarConfigs;
+import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ItemGroups;
 
@@ -36,7 +36,7 @@ public class ToggleableContent {
     // Call this if you want to enable the Magic Bar in your mod
     public static void enableMagicBar() {
         if (!magicBar) {
-            KoalaConfigCreator.addModConfigCategory(KoalaLib.MOD_ID, "magic_bar", MagicBarConfigs.class);
+            KoalaConfigCreator.addModConfigCategory(KoalaLib.MOD_ID, "magic_bar", KoalaLibConfigs.MagicBar.class);
             magicBar = true;
         }
     }

@@ -1,7 +1,7 @@
 package net.deadlydiamond98.koalalib.client.screen.config.entry;
 
 import net.deadlydiamond98.koalalib.client.screen.config.ConfigScrollBar;
-import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
+import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.util.math.MathHelper;
@@ -24,7 +24,7 @@ public class OldScreenPartsEntries {
 
     public void render(DrawContext context, int mouseX, int mouseY, float delta, int width, int height) {
 
-        if (MainConfigs.fancyTransitions) {
+        if (KoalaLibConfigs.Main.fancyTransitions) {
             for (int i = this.entries.size() - 1; i >= 0; i--) {
                 ClickableWidget element = this.entries.get(i);
 

@@ -4,7 +4,6 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.deadlydiamond98.koalalib.KoalaLib;
-import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
 import net.fabricmc.loader.api.FabricLoader;
 import oshi.util.tuples.Pair;
 
@@ -171,7 +170,7 @@ public class KoalaConfigCreator {
         logger("\n");
         logger("------------------------------------------------------------------------------");
         try {
-            for (Field field : MainConfigs.class.getFields()) {
+            for (Field field : KoalaLibConfigs.Main.class.getFields()) {
                 logger(field.getName() + " | " + field.get(field.getName()));
             }
         } catch (Exception ignored) {}

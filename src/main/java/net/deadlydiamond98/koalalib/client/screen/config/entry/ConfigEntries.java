@@ -1,12 +1,12 @@
 package net.deadlydiamond98.koalalib.client.screen.config.entry;
 
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.BooleanButton;
-import net.deadlydiamond98.koalalib.client.screen.config.inputs.ConfigTextInput;
+import net.deadlydiamond98.koalalib.client.screen.config.inputs.text.*;
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.EnumButton;
 import net.deadlydiamond98.koalalib.client.screen.config.inputs.IConfigEntry;
 import net.deadlydiamond98.koalalib.config.CFGProperties;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
-import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
+import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -30,7 +30,7 @@ public class ConfigEntries {
 
     public void renderEntries(DrawContext context, int mouseX, int mouseY, float delta, int width, int height) {
         this.entries.forEach(widget -> {
-            if (MainConfigs.fancyTransitions) {
+            if (KoalaLibConfigs.Main.fancyTransitions) {
                 widget.setX((int) MathHelper.lerp(0.1, widget.getX(), width - 100));
             } else {
                 widget.setX(width - 100);
@@ -92,7 +92,7 @@ public class ConfigEntries {
                     value = bl.getBool();
                 } else if (entry instanceof EnumButton enumm) {
                     value = enumm.getEnum();
-                } else if (entry instanceof ConfigTextInput input) {
+                } else if (entry instanceof StringInput input) {
                     String tempVal = input.getText();
                     if (type == int.class) {
                         value = Integer.parseInt(tempVal);
@@ -129,17 +129,17 @@ public class ConfigEntries {
 
         ClickableWidget entry;
         if (type == int.class) {
-            entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, (int)value);
+            entry = new NumberInput(translation, textRenderer, x, y, width, height, (int)value);
         } else if (type == double.class) {
-            entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, (double)value);
+            entry = new DoubleInput(translation, textRenderer, x, y, width, height, (double)value);
         } else if (type == float.class) {
-            entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, (float)value);
+            entry = new FloatInput(translation, textRenderer, x, y, width, height, (float)value);
         } else if (type == boolean.class) {
             entry = new BooleanButton(translation, x, y, width, height, (boolean)value);
         } else if (type.isEnum()) {
             entry = new EnumButton(translation, x, y, width, height, type, (Enum<?>) value, modID + ".enum." + field.getName() + ".");
         } else {
-            entry = new ConfigTextInput(translation, textRenderer, x, y, width, height, value.toString());
+            entry = new StringInput(translation, textRenderer, x, y, width, height, value.toString());
         }
 
         if (field.isAnnotationPresent(CFGProperties.class)) {
@@ -155,7 +155,7 @@ public class ConfigEntries {
             configEntry.enableDesc(cfgProperties.hasDesc());
         }
 
-        if (entry instanceof ConfigTextInput configTextInput) {
+        if (entry instanceof StringInput configTextInput) {
             configTextInput.setMaxNumber(cfgProperties.max());
             configTextInput.setMinNumber(cfgProperties.min());
         }

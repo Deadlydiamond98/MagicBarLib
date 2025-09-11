@@ -3,7 +3,7 @@ package net.deadlydiamond98.koalalib.client.events;
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.common.blocks.interaction.IHitBlockAction;
 import net.deadlydiamond98.koalalib.common.items.interaction.ISwingAction;
-import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
+import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.deadlydiamond98.koalalib.networking.packets.c2s.LeftClickItemC2SPacket;
 import net.deadlydiamond98.koalalib.networking.packets.c2s.PunchBlockC2SPacket;
 import net.deadlydiamond98.koalalib.updater.KoalaUpdateChecker;
@@ -55,7 +55,7 @@ public class KoalaClientTickEvents {
 
             // Update Chat Message
 
-            if (!updateTipSent && MainConfigs.checkForUpdates && !KoalaUpdateChecker.MOD_UPDATE_LIST.isEmpty() && updateTipTimer++ > 100) {
+            if (!updateTipSent && KoalaLibConfigs.Main.checkForUpdates && !KoalaUpdateChecker.MOD_UPDATE_LIST.isEmpty() && updateTipTimer++ > 100) {
                 player.sendMessage(Text.translatable("chat.koalalib.update.disable",
                         Text.literal("Koala Lib").formatted(Formatting.YELLOW)
                 ).formatted(Formatting.GREEN));

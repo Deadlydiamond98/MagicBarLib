@@ -2,10 +2,12 @@ package net.deadlydiamond98.koalalib.common.blocksets;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.data.client.BlockStateModelGenerator;
+import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class AbstractBlockset {
     protected final List<Block> blocks = new ArrayList<>();
@@ -42,6 +45,7 @@ public class AbstractBlockset {
     public final void generateTranslations(FabricLanguageProvider.TranslationBuilder translation) {
         this.blocks.forEach(block -> generateTranslation(translation, block));
     }
+
     /**
      * Used to determine the translation a block uses, can be overriden to change the way it works for some blocks
      */
@@ -78,6 +82,11 @@ public class AbstractBlockset {
             lootTableProvider.addDrop(block);
         }
     }
+
+    /**
+     * Call this to add recipes for the blocks
+     */
+    public void generateRecipes(Consumer<RecipeJsonProvider> exporter) {}
 
     /**
      * Call this in creative tab method to add all the blocks to a creative tab<br><br>
@@ -166,15 +175,6 @@ public class AbstractBlockset {
      */
     protected final void registerBlockItem(Identifier id, Block block) {
         Registry.register(Registries.ITEM, id, new BlockItem(block, new FabricItemSettings()));
-    }
-
-    /**
-     * Lists holding various block types for some auto-tag creation
-     */
-    public static class BlocksetTagLists {
-        public static final List<Block> SLABS = new ArrayList<>();
-        public static final List<Block> STAIRS = new ArrayList<>();
-        public static final List<Block> WALLS = new ArrayList<>();
     }
 
     @FunctionalInterface

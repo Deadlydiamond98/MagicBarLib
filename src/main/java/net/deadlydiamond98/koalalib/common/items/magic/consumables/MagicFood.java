@@ -10,7 +10,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 public class MagicFood extends MagicReplenisher {
-    private int amountToGive;
+    private final int amountToGive;
     /**
      * @param amountToGive, amount of mana to replenish to the player
      * <p>

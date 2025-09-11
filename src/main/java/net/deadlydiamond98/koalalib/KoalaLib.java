@@ -3,13 +3,13 @@ package net.deadlydiamond98.koalalib;
 
 import net.deadlydiamond98.koalalib.common.blocks.ModSharedBlocks;
 import net.deadlydiamond98.koalalib.common.commands.MagicBarCommands;
+import net.deadlydiamond98.koalalib.common.events.KoalaOnJoinServerEvent;
 import net.deadlydiamond98.koalalib.common.misc.ModSharedSounds;
 import net.deadlydiamond98.koalalib.common.events.KoalaAfterDeathEvents;
 import net.deadlydiamond98.koalalib.common.events.KoalaAfterRespawnEvents;
 import net.deadlydiamond98.koalalib.common.items.ModSharedItems;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
-import net.deadlydiamond98.koalalib.config.configs.MagicBarConfigs;
-import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
+import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.deadlydiamond98.koalalib.networking.KoalaPackets;
 import net.deadlydiamond98.koalalib.updater.KoalaUpdateChecker;
 import net.fabricmc.api.ModInitializer;
@@ -26,17 +26,19 @@ public class KoalaLib implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		KoalaConfigCreator.addModConfig(MOD_ID, MainConfigs.class);
+		KoalaConfigCreator.addModConfig(MOD_ID, KoalaLibConfigs.Main.class);
 		KoalaUpdateChecker.addModUpdateChecker(KoalaLib.MOD_ID);
 
 		ModSharedItems.register();
 		ModSharedBlocks.register();
 		ModSharedSounds.register();
+		MagicBarCommands.register();
+		KoalaPackets.registerC2SPackets();
 
 		KoalaAfterRespawnEvents.register();
 		KoalaAfterDeathEvents.register();
-		MagicBarCommands.register();
-		KoalaPackets.registerC2SPackets();
+		KoalaOnJoinServerEvent.register();
+
 		LOGGER.info("KoalaLib finished Loading");
 	}
 

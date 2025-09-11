@@ -1,7 +1,6 @@
-package net.deadlydiamond98.koalalib.common.events;
+package net.deadlydiamond98.koalalib.client.events;
 
-import net.deadlydiamond98.koalalib.client.events.KoalaClientTickEvents;
-import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
+import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.deadlydiamond98.koalalib.updater.KoalaUpdateChecker;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
@@ -10,13 +9,13 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class KoalaOnJoinEvent {
+public class KoalaOnJoinClientEvent {
     public static void register() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> promptModUpdates(client));
     }
 
     private static void promptModUpdates(MinecraftClient client) {
-        if (MainConfigs.checkForUpdates && client.player != null) {
+        if (KoalaLibConfigs.Main.checkForUpdates && client.player != null) {
 
             KoalaClientTickEvents.updateTipTimer = 0;
             KoalaClientTickEvents.updateTipSent = false;

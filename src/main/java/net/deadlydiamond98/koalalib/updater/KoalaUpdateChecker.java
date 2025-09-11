@@ -4,7 +4,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.gson.*;
 import net.deadlydiamond98.koalalib.KoalaLib;
-import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
+import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModOrigin;
@@ -36,7 +36,7 @@ public class KoalaUpdateChecker {
      * @param modid Mod ID for the mod that will be checked
      */
     public static void addModUpdateChecker(String modid) {
-        if (MainConfigs.checkForUpdates) {
+        if (KoalaLibConfigs.Main.checkForUpdates) {
             Optional<ModContainer> optional = FabricLoader.getInstance().getModContainer(modid);
 
             if (optional.isPresent()) {

@@ -2,7 +2,7 @@ package net.deadlydiamond98.koalalib.client.screen.config;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
-import net.deadlydiamond98.koalalib.config.configs.MainConfigs;
+import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -84,13 +84,13 @@ public class ModSelectionListWidget extends AlwaysSelectedEntryListWidget<ModSel
         super.render(context, mouseX, mouseY, delta);
 
         if (this.getSelectedOrNull() != null) {
-            if (MainConfigs.fancyTransitions) {
+            if (KoalaLibConfigs.Main.fancyTransitions) {
                 this.width = (int) MathHelper.lerp(0.1, this.width, this.screenWidth / 2.0);
             } else {
                 this.width = (int) (this.screenWidth / 2.0);
             }
         } else {
-            if (MainConfigs.fancyTransitions) {
+            if (KoalaLibConfigs.Main.fancyTransitions) {
                 this.width = (int) MathHelper.lerp(0.1, this.width, this.screenWidth);
             } else {
                 this.width = this.screenWidth;
