@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.common.blocksets;
 
 import net.deadlydiamond98.koalalib.util.datagen.BlockModelDatagenUtil;
+import net.deadlydiamond98.koalalib.util.datagen.RecipeDatagenUtil;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
@@ -71,8 +72,8 @@ public class BaseStairSlabBlockset extends AbstractBlockset {
     @Override
     public void generateRecipes(Consumer<RecipeJsonProvider> exporter) {
         super.generateRecipes(exporter);
-        RecipeProvider.createStairsRecipe(this.stair, Ingredient.ofItems(this.base));
         RecipeProvider.offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.slab, this.base);
+        RecipeDatagenUtil.createStairRecipe(exporter, this.stair, this.base);
     }
 
     /**
