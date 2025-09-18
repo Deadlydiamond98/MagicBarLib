@@ -18,7 +18,7 @@ public class KoalaItemTooltipEvents {
     private static void magicItemTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
         if (stack.getItem() instanceof IMagicItem magicItem) {
             int manaCost = magicItem.getManaCost(stack);
-            Text attributeText = Text.literal(" " + manaCost).append(Text.translatable("attribute.koalalib.magic_cost")).formatted(Formatting.DARK_GREEN);
+            Text attributeText = Text.translatable("attribute.koalalib.magic_cost", " " + manaCost).formatted(Formatting.DARK_GREEN);
             int insertIndex = findInsertIndex(lines);
             boolean hasMainHandText = lines.stream()
                     .anyMatch(text -> text.getString().equals(Text.translatable("item.modifiers.mainhand").getString()));

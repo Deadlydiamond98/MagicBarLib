@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "koalalib:item/striped_spawn_egg",
+    "layer1": "koalalib:item/striped_spawn_egg_overlay"
+  }
+}

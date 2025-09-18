@@ -4,8 +4,9 @@
   "advancements.koalalib.into_ender": "Into Ender",
   "advancements.koalalib.into_ender.desc": "Relieve an Ender creature of their Soul",
   "item.koalalib.ender_soul": "Ender Soul",
+  "lore.koalalib.ender_soul": "A rare item dropped by Ender creatures. It's used as a material for various recipes",
 
-  "attribute.koalalib.magic_cost": " Magic Cost",
+  "attribute.koalalib.magic_cost": "%s Magic Cost",
   "commands.koalalib.manaSet.success.single": "%s Mana set to %s",
   "commands.koalalib.manaSet.success.multiple": "%s Mana set to %s",
 
