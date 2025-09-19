@@ -32,6 +32,13 @@ public interface ISpriteIconItem {
     }
 
     /**
+     * If false, the icon won't be displayed on screen!
+     */
+    default boolean showIcon(PlayerEntity player, ItemStack stack) {
+        return true;
+    }
+
+    /**
      * This returns the GUICorner, which is used to determine the default position of the Icon
      */
     default GUICorner getGUICorner() {
