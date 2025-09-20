@@ -1,38 +1,68 @@
 package net.deadlydiamond98.koalalib.util;
 
-import net.minecraft.util.math.MathHelper;
 
 public class ColorHelper {
 
-    public static int lerpHexColor(int startColor, int endColor, float tickDelta) {
-        return lerpHexColor(startColor, endColor, tickDelta, 1.0f);
+    /**
+     * Blends two hex colors together
+     * @param start the first color
+     * @param end the second color
+     * @param step how close the color should be to b (numbers closer to 1 are closer to b)
+     * @return the blended color
+     */
+    public static int blendHexColors(int start, int end, float step) {
+        int[] startARGB = HexToARGB(start);
+        int[] endARGB = HexToARGB(end);
+
+        int cA = blendARGBValue(startARGB[0], endARGB[0], step);
+        int cR = blendARGBValue(startARGB[1], endARGB[1], step);
+        int cG = blendARGBValue(startARGB[2], endARGB[2], step);
+        int cB = blendARGBValue(startARGB[3], endARGB[3], step);
+
+        return ARGBToHex(cA, cR, cG, cB);
     }
 
-    public static int lerpHexColor(int startColor, int endColor, float tickDelta, float alpha) {
-        int startA = (startColor >> 24) & 0xFF;
-        int startR = (startColor >> 16) & 0xFF;
-        int startG = (startColor >> 8) & 0xFF;
-        int startB = startColor & 0xFF;
+    /**
+     * Blends a single value from an ARGB Color (ex: blending Blue Value from both)
+     * @param start the value from the first ARGB color
+     * @param end the value from the second ARGB color
+     * @param step how close the color should be to b (numbers closer to 1 are closer to b)
+     * @return returns the blended value
+     */
+    public static int blendARGBValue(int start, int end, float step) {
+        if (step > 1) {
+            step = 1;
+        } else if (step < 0) {
+            step = 0;
+        }
+        float iRatio = 1 - step;
 
-        int endA = (endColor >> 24) & 0xFF;
-        int endR = (endColor >> 16) & 0xFF;
-        int endG = (endColor >> 8) & 0xFF;
-        int endB = endColor & 0xFF;
-
-        int a = (int) (MathHelper.lerp(tickDelta, startA, endA * alpha));
-        int r = MathHelper.lerp(tickDelta, startR, endR);
-        int g = MathHelper.lerp(tickDelta, startG, endG);
-        int b = MathHelper.lerp(tickDelta, startB, endB);
-
-        return (a << 24) | (r << 16) | (g << 8) | b;
+        return ((int)(start * iRatio) + (int)(end * step));
     }
 
-    public static int[] hexToARGB(int hexColor) {
-        int a = (hexColor >> 24) & 0xFF;
-        int r = (hexColor >> 16) & 0xFF;
-        int g = (hexColor >> 8) & 0xFF;
-        int b = hexColor & 0xFF;
+    /**
+     * Converts hex to ARGB
+     * @param hex hex color
+     * @return hex color in ARGB form
+     */
+    public static int[] HexToARGB(int hex) {
+        int a = (hex >> 24) & 0xFF;
+        int r = (hex >> 16) & 0xFF;
+        int g = (hex >> 8) & 0xFF;
+        int b = hex & 0xFF;
 
         return new int[]{a, r, g, b};
+    }
+
+    /**
+     * Converts ARGB to Hex color
+     * @param a alpha value
+     * @param r red value
+     * @param g green value
+     * @param b blue value
+     * @return Hex Color
+     */
+    public static int ARGBToHex(int a, int r, int g, int b) {
+        return (a << 24) | (r << 16) | (g << 8) | b;
     }
 }

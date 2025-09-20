@@ -5,44 +5,43 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.List;
 
 public class KoalaItemTooltipEvents {
+
+    private static final Text MAINHAND_TITLE = Text.translatable("item.modifiers.mainhand").formatted(Formatting.GRAY);
+    private static int index = 1;
+
     public static void register() {
         ItemTooltipCallback.EVENT.register(KoalaItemTooltipEvents::magicItemTooltip);
     }
 
     private static void magicItemTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
-        if (stack.getItem() instanceof IMagicItem magicItem) {
-            int manaCost = magicItem.getManaCost(stack);
-            Text attributeText = Text.translatable("attribute.koalalib.magic_cost", " " + manaCost).formatted(Formatting.DARK_GREEN);
-            int insertIndex = findInsertIndex(lines);
-            boolean hasMainHandText = lines.stream()
-                    .anyMatch(text -> text.getString().equals(Text.translatable("item.modifiers.mainhand").getString()));
-            if (!hasMainHandText) {
-                Text mainHandText = Text.translatable("item.modifiers.mainhand").formatted(Formatting.GRAY);
-                lines.add(insertIndex, Text.empty());
-                insertIndex++;
-                lines.add(insertIndex, mainHandText);
-                insertIndex++;
+        if (stack.getItem() instanceof IMagicItem magicItem && magicItem.showTooltip(stack)) {
+
+            int mana = magicItem.getManaCost(stack);
+
+            if (lines.stream().noneMatch(text -> text.getString().equals(MAINHAND_TITLE.getString()))) {
+                insertLine(lines, ScreenTexts.EMPTY);
+                insertLine(lines, MAINHAND_TITLE);
+            } else {
+                for (int i = 1; i < lines.size(); i++) {
+                    if (lines.get(i).contains(Text.translatable("attribute.name.generic.attack_speed"))) {
+                        index = i + 1;
+                        break;
+                    }
+                }
             }
-            lines.add(insertIndex, attributeText);
+            insertLine(lines, ScreenTexts.space().append(Text.translatable("attribute.koalalib.magic_cost", mana).formatted(Formatting.DARK_GREEN)));
+            index = 1;
         }
     }
 
-    private static int findInsertIndex(List<Text> lines) {
-        int insertIndex = lines.size();
-        for (int i = 0; i < lines.size(); i++) {
-            String lineString = lines.get(i).getString();
-            if (lineString.contains("Attack Speed") || lineString.contains("Attack Damage")) {
-                insertIndex = i + 1;
-            } else if (lineString.contains("NBT") || lineString.contains(":")) {
-                insertIndex = Math.min(insertIndex, i);
-            }
-        }
-        return insertIndex;
+    private static void insertLine(List<Text> lines, Text text) {
+        lines.add(index++, text);
     }
 }

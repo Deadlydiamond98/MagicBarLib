@@ -83,9 +83,11 @@ public class MagicBarHud implements HudRenderCallback {
         );
 
         RenderSystem.disableBlend();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, globalAlpha);
 
         renderMagicBarText(drawContext, matrices, client, posX, posY);
+
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         matrices.pop();
     }
@@ -149,8 +151,8 @@ public class MagicBarHud implements HudRenderCallback {
      * Get the hex color of the Magic Bar Text
      */
     private int getTextColor(MinecraftClient client) {
-        int end = getManaLvl(client) >= getMaxMana(client) ? END_COLOR : START_COLOR;
-        currentColor = ColorHelper.lerpHexColor(currentColor, end, LERP_VALUE, Math.max(0.05f, globalAlpha));
+        int endHex = getManaLvl(client) >= getMaxMana(client) ? END_COLOR : START_COLOR;
+        currentColor = ColorHelper.blendHexColors(currentColor, endHex, LERP_VALUE);
         return currentColor;
     }
 
