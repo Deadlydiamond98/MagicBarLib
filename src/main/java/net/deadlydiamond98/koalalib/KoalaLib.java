@@ -29,8 +29,6 @@ public class KoalaLib implements ModInitializer {
 		KoalaConfigCreator.addModConfig(MOD_ID, KoalaLibConfigs.Main.class);
 		KoalaUpdateChecker.addModUpdateChecker(KoalaLib.MOD_ID);
 
-		ToggleableContent.enableMagicBar();
-
 		ModSharedItems.register();
 		ModSharedBlocks.register();
 		ModSharedSounds.register();
