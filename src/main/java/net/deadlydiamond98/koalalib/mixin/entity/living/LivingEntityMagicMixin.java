@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.mixin.entity.magic;
+package net.deadlydiamond98.koalalib.mixin.entity.living;
 
 import net.deadlydiamond98.koalalib.ToggleableContent;
 import net.deadlydiamond98.koalalib.common.items.magic.IShowsMagicBar;

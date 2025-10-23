@@ -27,10 +27,13 @@ public class KoalaLib implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		KoalaConfigCreator.addModConfig(MOD_ID, KoalaLibConfigs.Main.class);
-		KoalaUpdateChecker.addModUpdateChecker(KoalaLib.MOD_ID);
+		KoalaUpdateChecker.addModUpdateChecker(MOD_ID);
+
+		if (isDev()) {
+			KoalaLibDebug.initDebugging();
+		}
 
 		ModSharedItems.register();
-		ModSharedBlocks.register();
 		ModSharedSounds.register();
 		MagicBarCommands.register();
 		KoalaPackets.registerC2SPackets();
@@ -42,7 +45,14 @@ public class KoalaLib implements ModInitializer {
 		LOGGER.info("KoalaLib finished Loading");
 	}
 
-
+	/**
+	 * Returns true if in Dev Environment and when there's exactly 59 mods loaded <br>
+	 * (which would mean this mod is being used as a dependency)
+	 */
+	public static boolean isDev() {
+		FabricLoader loader = FabricLoader.getInstance();
+		return loader.isDevelopmentEnvironment() && loader.getAllMods().size() == 59;
+	}
 
 	public static boolean isModLoaded(String modid) {
 		return FabricLoader.getInstance().isModLoaded(modid);

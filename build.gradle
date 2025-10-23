@@ -20,16 +20,9 @@ repositories {
 		url = "https://api.modrinth.com/maven"
 	}
 }
-//loom {
-//	splitEnvironmentSourceSets()
-//
-//	mods {
-//		"modid" {
-//			sourceSet sourceSets.main
-//			sourceSet sourceSets.client
-//		}
-//	}
-//}
+loom {
+	accessWidenerPath = file("src/main/resources/koalalib.accesswidener")
+}
 
 dependencies {
 	// To change the versions see the gradle.properties file

@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.mixin.entity;
+package net.deadlydiamond98.koalalib.mixin.entity.item;
 
 import net.deadlydiamond98.koalalib.common.items.interaction.IFloating;
 import net.deadlydiamond98.koalalib.common.items.interaction.IPickupSound;
