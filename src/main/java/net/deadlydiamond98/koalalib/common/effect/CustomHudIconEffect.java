@@ -40,7 +40,7 @@ public class CustomHudIconEffect extends StatusEffect {
         CUSTOM_HUD_RENDER_EFFECTS.add(index, this);
     }
 
-    public final Identifier getTexture(PlayerEntity player) {
+    public Identifier getTexture(PlayerEntity player) {
         return DEBUG_HUD_ICONS;
     }
 
