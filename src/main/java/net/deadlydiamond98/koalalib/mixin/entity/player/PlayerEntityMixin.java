@@ -24,6 +24,7 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
     // Variables
 
     @Unique private boolean koalalib$hasAdvancement;
+    @Unique private boolean koalalib$isAttacking;
     @Unique private DamageSource koalalib$shieldSource;
 
     // Shadowed Methods
@@ -31,6 +32,11 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
     @Shadow public abstract ItemCooldownManager getItemCooldownManager();
 
     // Shield Related Things
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void koalalib$tick(CallbackInfo ci) {
+        this.koalalib$isAttacking = false;
+    }
 
     @Inject(method = "damage", at = @At("HEAD"))
     private void koalalib$getSheildDamageSource(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
@@ -76,5 +82,15 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
     @Override
     public void koalalib$updateAdvancementClient(boolean hasAdvancement) {
         this.koalalib$hasAdvancement = hasAdvancement;
+    }
+
+    @Override
+    public boolean koalalib$isAttacking() {
+        return this.koalalib$isAttacking;
+    }
+
+    @Override
+    public void koalalib$setAttacking(boolean attacking) {
+        this.koalalib$isAttacking = attacking;
     }
 }

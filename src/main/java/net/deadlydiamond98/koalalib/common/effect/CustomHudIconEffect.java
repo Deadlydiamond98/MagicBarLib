@@ -49,7 +49,7 @@ public class CustomHudIconEffect extends StatusEffect {
     }
 
     public boolean customHeartOutline() {
-        return true;
+        return false;
     }
 
     public boolean customShankOutline() {

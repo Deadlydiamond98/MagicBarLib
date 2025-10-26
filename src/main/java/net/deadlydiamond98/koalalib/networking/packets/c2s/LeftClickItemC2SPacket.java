@@ -2,6 +2,7 @@ package net.deadlydiamond98.koalalib.networking.packets.c2s;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.common.items.interaction.ISwingAction;
+import net.deadlydiamond98.koalalib.util.mixindata.player.IPlayerOtherMixinData;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -29,6 +30,7 @@ public class LeftClickItemC2SPacket {
 
                 if (item instanceof ISwingAction leftClickItem) {
                     leftClickItem.attack(world, player);
+                    ((IPlayerOtherMixinData) player).koalalib$setAttacking(true);
                 }
             });
         }

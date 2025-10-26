@@ -9,11 +9,9 @@ import net.minecraft.util.Identifier;
 
 public class ModSharedItems {
 
-    public static final Item ENDER_SOUL = registerItem("ender_soul", new FloatingItem(new Item.Settings()));
+    public static final Item ENDER_SOUL = register("ender_soul", new FloatingItem(new Item.Settings()));
 
-//    public static final Item TEST = registerItem("test", new TestItem(new Item.Settings()));
-
-    public static Item registerItem(String itemName, Item item) {
+    public static Item register(String itemName, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(KoalaLib.MOD_ID, itemName), item);
     }
 
