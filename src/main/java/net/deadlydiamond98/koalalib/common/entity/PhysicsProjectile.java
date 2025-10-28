@@ -73,7 +73,7 @@ public class PhysicsProjectile extends ProjectileEntity {
         }
     }
 
-    private void hitWall(boolean hitXAxis, boolean hitZAxis) {
+    protected void hitWall(boolean hitXAxis, boolean hitZAxis) {
         if (hitXAxis) {
             this.setVelocity(this.getVelocity().multiply(-getBounciness(), 1, 1));
         }
@@ -82,7 +82,7 @@ public class PhysicsProjectile extends ProjectileEntity {
         }
     }
 
-    private void hitFloor(Block block) {
+    protected void hitFloor(Block block) {
         float slipperiness = block.getSlipperiness();
         this.setVelocity(this.getVelocity().multiply(slipperiness, -getBounciness(), slipperiness));
     }
@@ -271,7 +271,7 @@ public class PhysicsProjectile extends ProjectileEntity {
         }
     }
 
-    private Vec3d adjustMovementForCollisionsCopied(Vec3d movement) {
+    protected Vec3d adjustMovementForCollisionsCopied(Vec3d movement) {
         Box box = this.getBoundingBox();
         List<VoxelShape> list = this.getWorld().getEntityCollisions(this, box.stretch(movement));
         Vec3d vec3d = movement.lengthSquared() == 0.0 ? movement : adjustMovementForCollisions(this, movement, box, this.getWorld(), list);
