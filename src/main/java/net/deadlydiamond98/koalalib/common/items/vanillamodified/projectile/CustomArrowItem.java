@@ -7,7 +7,9 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomArrowItem extends ArrowItem implements ICustomProjectile {
     private final EntityType<?> type;
@@ -19,7 +21,7 @@ public class CustomArrowItem extends ArrowItem implements ICustomProjectile {
 
     @Override
     public PersistentProjectileEntity createArrow(World world, ItemStack stack, LivingEntity shooter) {
-        Entity entity = getProjectile((ServerWorld) world, shooter.getBlockPos(), stack, shooter, false);
+        Entity entity = getProjectile((ServerWorld) world, shooter.getBlockPos(), stack, shooter, null, false);
         if (entity instanceof PersistentProjectileEntity projectile) {
             return projectile;
         }
@@ -27,8 +29,8 @@ public class CustomArrowItem extends ArrowItem implements ICustomProjectile {
     }
 
     @Override
-    public void initProjectile(Entity entity, ItemStack stack, LivingEntity owner) {
-        ICustomProjectile.super.initProjectile(entity, stack, owner);
+    public void initProjectile(Entity entity, ItemStack stack, LivingEntity owner, @Nullable Hand hand) {
+        ICustomProjectile.super.initProjectile(entity, stack, owner, hand);
         entity.setPosition(entity.getPos().subtract(0, 0.10000000149011612, 0));
     }
 

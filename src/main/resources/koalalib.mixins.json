@@ -10,6 +10,8 @@
     "client.SplashScreenMixin"
   ],
   "mixins": [
+    "enchanting.EnchantmentHelperMixin",
+    "enchanting.EnchantmentMixin",
     "entity.EntityGlowingMixin",
     "entity.item.EntityMixin",
     "entity.item.ItemEntityMixin",

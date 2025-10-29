@@ -62,7 +62,7 @@ public abstract class PhysicsItemProjectile extends PhysicsProjectile implements
     @Override
     public void handleStatus(byte status) {
         if (status == 3) {
-            ParticleEffect particleEffect = new ItemStackParticleEffect(ParticleTypes.ITEM, this.getDefaultItem().getDefaultStack());
+            ParticleEffect particleEffect = new ItemStackParticleEffect(ParticleTypes.ITEM, this.getItem());
 
             for(int i = 0; i < 8; ++i) {
                 this.getWorld().addParticle(particleEffect, this.getX(), this.getY(), this.getZ(),

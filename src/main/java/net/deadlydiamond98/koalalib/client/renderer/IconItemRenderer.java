@@ -1,6 +1,5 @@
-package net.deadlydiamond98.koalalib.util;
+package net.deadlydiamond98.koalalib.client.renderer;
 
-import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.common.items.other.IAnimatedSpriteIconItem;
 import net.deadlydiamond98.koalalib.common.items.other.ISpriteIconItem;
 import net.minecraft.client.render.*;
@@ -14,8 +13,7 @@ import org.joml.Matrix4f;
 
 import java.util.HashMap;
 
-public class IconItemHelper {
-
+public class IconItemRenderer {
     public static final HashMap<String, Pair<Integer, Long>> ICON_ANIMATIONS = new HashMap<>();
 
     /**

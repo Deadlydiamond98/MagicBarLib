@@ -1,7 +1,7 @@
 package net.deadlydiamond98.koalalib.mixin.client;
 
+import net.deadlydiamond98.koalalib.client.renderer.IconItemRenderer;
 import net.deadlydiamond98.koalalib.common.items.other.ISpriteIconItem;
-import net.deadlydiamond98.koalalib.util.IconItemHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -34,9 +34,9 @@ public class ItemRendererMixin {
         matrices.push();
         if (renderMode == ModelTransformationMode.GUI) {
             if (item instanceof ISpriteIconItem spriteIconItem) {
-                IconItemHelper.renderIcon(matrices, vertexConsumers, spriteIconItem, player, stack);
+                IconItemRenderer.renderIcon(matrices, vertexConsumers, spriteIconItem, player, stack);
             } else if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof ISpriteIconItem spriteIconItem) {
-                IconItemHelper.renderIcon(matrices, vertexConsumers, spriteIconItem, player, stack);
+                IconItemRenderer.renderIcon(matrices, vertexConsumers, spriteIconItem, player, stack);
             }
         }
         matrices.pop();

@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.common.items.vanillamodified;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
+import net.deadlydiamond98.koalalib.util.KoalaNbtHelper;
 import net.minecraft.client.item.BundleTooltipData;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.item.TooltipData;
@@ -269,7 +270,7 @@ public class CustomBundleItem extends Item {
         if (!nbtList.isEmpty()) {
             List<ItemStack> stacks = new ArrayList<>();
             for (NbtElement nbt : nbtList) {
-                stacks.add(largeItemStackFromNBT((NbtCompound) nbt));
+                stacks.add(KoalaNbtHelper.largeItemStackFromNBT((NbtCompound) nbt));
             }
             return stacks;
         }
@@ -285,7 +286,7 @@ public class CustomBundleItem extends Item {
         NbtList nbtList = new NbtList();
         for (ItemStack stack : stacks) {
             if (!stack.isEmpty()) {
-                nbtList.add(largeItemStackToNBT(stack));
+                nbtList.add(KoalaNbtHelper.largeItemStackToNBT(stack));
             }
         }
         putInventory(nbtList, bundle);
@@ -330,51 +331,6 @@ public class CustomBundleItem extends Item {
         nbtCompound.put("Items", nbtList);
     }
 
-    /**
-     * Custom method for writing ItemStack to NBT since ItemStack.toNbt() turns count into a byte
-     * @param stack the ItemStack
-     * @return returns the NBT Compound
-     */
-    protected static NbtCompound largeItemStackToNBT(ItemStack stack) {
-        NbtCompound nbt = new NbtCompound();
-        Identifier identifier = Registries.ITEM.getId(stack.getItem());
-        nbt.putString("id", identifier.toString());
-        nbt.putInt("Count", stack.getCount());
-        if (stack.getNbt() != null) {
-            nbt.put("tag", stack.getNbt().copy());
-        }
-        return nbt;
-    }
-
-    /**
-     * Custom method for reading ItemStack from NBT since ItemStack.fromNbt() reads count as a byte
-     * @param nbt the NBT to read from
-     * @return returns the ItemStack
-     */
-    protected static ItemStack largeItemStackFromNBT(NbtCompound nbt) {
-        try {
-            Item item = Registries.ITEM.get(new Identifier(nbt.getString("id")));
-            int count = nbt.getInt("Count");
-
-            Optional<NbtCompound> itemNBT = Optional.empty();
-            if (nbt.contains("tag", 10)) {
-                itemNBT = Optional.of(nbt.getCompound("tag"));
-                item.postProcessNbt(itemNBT.get());
-            }
-
-            ItemStack stack = new ItemStack(item, count);
-            itemNBT.ifPresent(stack::setNbt);
-
-            if (stack.getItem().isDamageable()) {
-                stack.setDamage(stack.getDamage());
-            }
-
-            return stack;
-        } catch (RuntimeException exception) {
-            KoalaLib.LOGGER.debug("Tried to load invalid item: {}", nbt, exception);
-            return ItemStack.EMPTY;
-        }
-    }
 
     // GUI /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

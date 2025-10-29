@@ -13,6 +13,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomProjectileItem extends Item  implements ICustomProjectile {
     private final EntityType<?> type;
@@ -26,7 +27,7 @@ public class CustomProjectileItem extends Item  implements ICustomProjectile {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         if (world instanceof ServerWorld server) {
-            if (createProjectile(server, user.getBlockPos(), stack, user)) {
+            if (createProjectile(server, user.getBlockPos(), stack, user, hand)) {
                 onProjectileThrown(world, user, stack);
             }
         }
@@ -42,8 +43,8 @@ public class CustomProjectileItem extends Item  implements ICustomProjectile {
 
 
     @Override
-    public void initProjectile(Entity entity, ItemStack stack, LivingEntity owner) {
-        ICustomProjectile.super.initProjectile(entity, stack, owner);
+    public void initProjectile(Entity entity, ItemStack stack, LivingEntity owner, @Nullable Hand hand) {
+        ICustomProjectile.super.initProjectile(entity, stack, owner, hand);
         entity.setYaw(owner.getYaw());
         entity.setVelocity(owner.getRotationVector());
     }

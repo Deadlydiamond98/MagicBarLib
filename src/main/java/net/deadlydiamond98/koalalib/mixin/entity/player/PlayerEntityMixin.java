@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.mixin.entity.player;
 
 import net.deadlydiamond98.koalalib.common.items.vanillamodified.CustomShieldItem;
+import net.deadlydiamond98.koalalib.events.PlayerAttackingCallback;
 import net.deadlydiamond98.koalalib.networking.packets.s2c.HasAdvancementS2CPacket;
 import net.deadlydiamond98.koalalib.util.mixindata.player.IPlayerOtherMixinData;
 import net.minecraft.advancement.Advancement;
@@ -35,7 +36,10 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void koalalib$tick(CallbackInfo ci) {
-        this.koalalib$isAttacking = false;
+        if (this.koalalib$isAttacking) {
+            PlayerAttackingCallback.EVENT.invoker().interact((PlayerEntity) (Object) this);
+            this.koalalib$isAttacking = false;
+        }
     }
 
     @Inject(method = "damage", at = @At("HEAD"))

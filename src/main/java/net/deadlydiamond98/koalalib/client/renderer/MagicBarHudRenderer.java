@@ -20,7 +20,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameMode;
 
-public class MagicBarHud implements HudRenderCallback {
+public class MagicBarHudRenderer implements HudRenderCallback {
 
     private static final Identifier MAGIC_BAR_TEXTURE = new Identifier(KoalaLib.MOD_ID, "textures/gui/magic_bar.png");
     private static float displayedManaLvl;
