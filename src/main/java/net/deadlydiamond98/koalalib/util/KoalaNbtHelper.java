@@ -15,17 +15,30 @@ import java.util.Optional;
  */
 public class KoalaNbtHelper {
 
-    public static void writeVec3d(String name, Vec3d vec, NbtCompound nbt) {
-        nbt.putDouble(name + "X", vec.x);
-        nbt.putDouble(name + "Y", vec.y);
-        nbt.putDouble(name + "Z", vec.z);
+    public static NbtCompound vec3dToNBT(Vec3d vec) {
+        NbtCompound nbt = new NbtCompound();
+        nbt.putDouble("X", vec.x);
+        nbt.putDouble("Y", vec.y);
+        nbt.putDouble("Z", vec.z);
+        return nbt;
     }
 
-    public static Vec3d readVec3d(String name, NbtCompound nbt) {
-        double x = nbt.getDouble(name + "X");
-        double y = nbt.getDouble(name + "Y");
-        double z = nbt.getDouble(name + "Z");
+    public static Vec3d vec3dFromNBT(NbtCompound nbt) {
+        double x = nbt.getDouble("X");
+        double y = nbt.getDouble("Y");
+        double z = nbt.getDouble("Z");
         return new Vec3d(x, y, z);
+    }
+
+    public static NbtCompound identifierToNBT(Identifier identifier) {
+        NbtCompound nbt = new NbtCompound();
+        nbt.putString("Namespace", identifier.getNamespace());
+        nbt.putString("Path", identifier.getPath());
+        return nbt;
+    }
+
+    public static Identifier identifierFromNBT(NbtCompound nbt) {
+        return new Identifier(nbt.getString("Namespace"), nbt.getString("Path"));
     }
 
     /**

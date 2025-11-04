@@ -31,6 +31,8 @@ public class PhysicsProjectile extends ProjectileEntity {
     private static final TrackedData<Float> DRAG = DataTracker.registerData(PhysicsProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> BOUNCINESS = DataTracker.registerData(PhysicsProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Float> GRAVITY = DataTracker.registerData(PhysicsProjectile.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Float> BUOYANCY = DataTracker.registerData(PhysicsProjectile.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Float> WATER_DRAG = DataTracker.registerData(PhysicsProjectile.class, TrackedDataHandlerRegistry.FLOAT);
     protected boolean canEnterPortals = true;
     protected int maxLife = 100;
     private int despawnTimer;
@@ -66,7 +68,12 @@ public class PhysicsProjectile extends ProjectileEntity {
     protected void tickMovement() {
         this.moveWithBounce(MovementType.SELF, this.getVelocity());
 
-        this.setVelocity(this.getVelocity().multiply(getDrag()));
+        if (this.isTouchingWater()) {
+            this.setVelocity(this.getVelocity().add(0.0, getBuoyancy(), 0.0));
+            this.setVelocity(this.getVelocity().multiply(getFluidDrag()));
+        } else {
+            this.setVelocity(this.getVelocity().multiply(getDrag()));
+        }
 
         if (!this.hasNoGravity()) {
             this.setVelocity(this.getVelocity().add(0.0, -getGravity(), 0.0));
@@ -143,19 +150,39 @@ public class PhysicsProjectile extends ProjectileEntity {
         this.dataTracker.set(BOUNCINESS, bounce);
     }
 
+    public float getBuoyancy() {
+        return this.dataTracker.get(BUOYANCY);
+    }
+
+    public void setBuoyancy(float buoyancy) {
+        this.dataTracker.set(BUOYANCY, buoyancy);
+    }
+
+    public float getFluidDrag() {
+        return this.dataTracker.get(WATER_DRAG);
+    }
+
+    public void setWaterDrag(float drag) {
+        this.dataTracker.set(WATER_DRAG, drag);
+    }
+
     @Override
     protected void initDataTracker() {
         this.dataTracker.startTracking(DRAG, 0.98f);
+        this.dataTracker.startTracking(WATER_DRAG, 0.75f);
         this.dataTracker.startTracking(GRAVITY, 0.03f);
         this.dataTracker.startTracking(BOUNCINESS, 0.75f);
+        this.dataTracker.startTracking(BUOYANCY, 0.07f);
     }
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putFloat("PhysicsDrag", getDrag());
+        nbt.putFloat("PhysicsWaterDrag", getFluidDrag());
         nbt.putFloat("PhysicsGravity", getGravity());
         nbt.putFloat("PhysicsBounce", getBounciness());
+        nbt.putFloat("PhysicsBuoyancy", getBuoyancy());
         nbt.putInt("PhysicsDespawnTimer", this.despawnTimer);
         nbt.putInt("PhysicsMaxDespawnTimer", this.maxLife);
     }
@@ -164,8 +191,10 @@ public class PhysicsProjectile extends ProjectileEntity {
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         setDrag(nbt.getFloat("PhysicsDrag"));
+        setWaterDrag(nbt.getFloat("PhysicsWaterDrag"));
         setGravity(nbt.getFloat("PhysicsGravity"));
         setBounciness(nbt.getFloat("PhysicsBounce"));
+        setBuoyancy(nbt.getFloat("PhysicsBuoyancy"));
         this.despawnTimer = nbt.getInt("PhysicsDespawnTimer");
         this.maxLife = nbt.getInt("PhysicsMaxDespawnTimer");
     }
