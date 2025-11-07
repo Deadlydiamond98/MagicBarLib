@@ -2,6 +2,7 @@ package net.deadlydiamond98.koalalib.networking;
 
 import net.deadlydiamond98.koalalib.networking.packets.c2s.LeftClickItemC2SPacket;
 import net.deadlydiamond98.koalalib.networking.packets.c2s.PunchBlockC2SPacket;
+import net.deadlydiamond98.koalalib.networking.packets.c2s.PunchEntityC2SPacket;
 import net.deadlydiamond98.koalalib.networking.packets.s2c.CustomHudRendererS2CPacket;
 import net.deadlydiamond98.koalalib.networking.packets.s2c.EntityMagicUpdateS2CPacket;
 import net.deadlydiamond98.koalalib.networking.packets.s2c.HasAdvancementS2CPacket;
@@ -19,5 +20,6 @@ public class KoalaPackets {
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(LeftClickItemC2SPacket.ID, LeftClickItemC2SPacket.Handler::receive);
         ServerPlayNetworking.registerGlobalReceiver(PunchBlockC2SPacket.ID, PunchBlockC2SPacket.Handler::receive);
+        ServerPlayNetworking.registerGlobalReceiver(PunchEntityC2SPacket.ID, PunchEntityC2SPacket.Handler::receive);
     }
 }
