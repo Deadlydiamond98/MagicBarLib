@@ -73,7 +73,7 @@ public class KoalaClientTickEvents {
 
     private static void handleTargetAtkAction(MinecraftClient client, World world) {
         HitResult hitResult = client.crosshairTarget;
-        if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
+        if (hitResult != null) {
             if (hitResult.getType() == HitResult.Type.BLOCK) {
                 BlockPos pos = ((BlockHitResult)  hitResult).getBlockPos();
                 BlockState state = world.getBlockState(pos);
