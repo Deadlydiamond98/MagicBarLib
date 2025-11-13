@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.common.blocks;
+package net.deadlydiamond98.koalalib.common.blocks.misc;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;

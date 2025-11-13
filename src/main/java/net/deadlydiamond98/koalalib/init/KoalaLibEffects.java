@@ -1,8 +1,7 @@
-package net.deadlydiamond98.koalalib.common.effect;
+package net.deadlydiamond98.koalalib.init;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -10,7 +9,7 @@ import net.minecraft.util.Identifier;
 /**
  * Currently there are no shared effects, this purely exists for debugging
  */
-public class ModSharedEffects {
+public class KoalaLibEffects {
 
 //    public static final StatusEffect DEBUG_EFFECT = register("debug_effecta",
 //            new TestEffect(StatusEffectCategory.HARMFUL, 0xFFFFFF, 0x00ffaa, true)

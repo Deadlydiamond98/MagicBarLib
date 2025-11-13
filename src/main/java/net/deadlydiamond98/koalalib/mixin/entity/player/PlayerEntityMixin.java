@@ -1,5 +1,7 @@
 package net.deadlydiamond98.koalalib.mixin.entity.player;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.deadlydiamond98.koalalib.common.items.vanillamodified.CustomShieldItem;
 import net.deadlydiamond98.koalalib.events.PlayerAttackingCallback;
 import net.deadlydiamond98.koalalib.networking.packets.s2c.HasAdvancementS2CPacket;
@@ -26,7 +28,6 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
 
     @Unique private boolean koalalib$hasAdvancement;
     @Unique private boolean koalalib$isAttacking;
-    @Unique private DamageSource koalalib$shieldSource;
 
     // Shadowed Methods
 
@@ -40,17 +41,6 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
             PlayerAttackingCallback.EVENT.invoker().interact((PlayerEntity) (Object) this);
             this.koalalib$isAttacking = false;
         }
-    }
-
-    @Inject(method = "damage", at = @At("HEAD"))
-    private void koalalib$getSheildDamageSource(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        this.koalalib$shieldSource = source;
-    }
-
-    @Inject(method = "damageShield", at = @At("HEAD"))
-    private void koalalib$shieldDurability(float amount, CallbackInfo ci) {
-        PlayerEntity player = (PlayerEntity) (Object) this;
-        CustomShieldItem.attemptDamageSheild(player, player.getActiveItem(), amount, this.koalalib$shieldSource);
     }
 
     @Inject(method = "disableShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;clearActiveItem()V"))
@@ -87,6 +77,8 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
     public void koalalib$updateAdvancementClient(boolean hasAdvancement) {
         this.koalalib$hasAdvancement = hasAdvancement;
     }
+
+    // Attack Checking Methods /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public boolean koalalib$isAttacking() {

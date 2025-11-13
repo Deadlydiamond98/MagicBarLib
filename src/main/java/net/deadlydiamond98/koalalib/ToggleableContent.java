@@ -1,6 +1,6 @@
 package net.deadlydiamond98.koalalib;
 
-import net.deadlydiamond98.koalalib.common.items.ModSharedItems;
+import net.deadlydiamond98.koalalib.init.KoalaLibItems;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
 import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -26,7 +26,7 @@ public class ToggleableContent {
     // Call this if you want to enable Ender Souls as a material in your mod
     public static void enableEnderSouls() {
         if (!enderSoul) {
-            ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> entries.add(ModSharedItems.ENDER_SOUL));
+            ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> entries.add(KoalaLibItems.ENDER_SOUL));
             enderSoul = true;
         }
     }

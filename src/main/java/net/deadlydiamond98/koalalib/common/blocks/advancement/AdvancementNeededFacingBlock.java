@@ -1,10 +1,9 @@
 package net.deadlydiamond98.koalalib.common.blocks.advancement;
 
-import net.deadlydiamond98.koalalib.common.blocks.KoalaBlockProperties;
+import net.deadlydiamond98.koalalib.init.KoalaLibBlockProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
-import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -21,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  * This block is only breakable if the block is placed by a player in survival or the player breaking it has the given advancement
  */
 public class AdvancementNeededFacingBlock extends FacingBlock implements IAdvancementNeeded {
-    public static final BooleanProperty PLAYERMADE = KoalaBlockProperties.PLAYER_MADE_PROPERY;
+    public static final BooleanProperty PLAYERMADE = KoalaLibBlockProperties.PLAYER_MADE_PROPERY;
     private final String advancementID;
 
     public AdvancementNeededFacingBlock(Settings settings, Identifier advancementID) {

@@ -35,14 +35,12 @@ public class MagicItem extends Item implements IMagicItem {
         return this.manaCost;
     }
 
-
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (MagicBarHelper.removeMana(user, this.manaCost) || user.isCreative()) {
+        if (user.isCreative() || MagicBarHelper.removeMana(user, this.manaCost)) {
             doManaAction(user, world);
             return TypedActionResult.success(user.getStackInHand(hand));
-        }
-        else {
+        } else {
             doNoManaEvent(user, world);
         }
         return super.use(world, user, hand);

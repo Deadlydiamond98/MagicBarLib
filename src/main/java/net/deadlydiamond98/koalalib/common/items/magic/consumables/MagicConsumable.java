@@ -1,50 +1,85 @@
 package net.deadlydiamond98.koalalib.common.items.magic.consumables;
 
+import net.deadlydiamond98.koalalib.common.items.magic.IShowsMagicBar;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-public class MagicConsumable extends MagicReplenisher {
-    private final int amountToGive;
-    private final boolean consumed;
+public class MagicConsumable extends Item implements IShowsMagicBar {
+    private final int magic;
     private final int cooldown;
 
-    /**
-     * @param amountToGive, amount of mana to replenish to the player
-     * @param consumed, Whether the item is consumed on use
-     * @param cooldown, Item use Cooldown, if any
-     *
-     * Use this Item if you don't want to make the player eat the item like food, otherwise
-     *
-     * @see MagicFood
-     */
-    public MagicConsumable(Settings settings, int amountToGive, boolean consumed, int cooldown) {
+    public MagicConsumable(Settings settings, int magic) {
+        this(settings, magic, 0);
+    }
+
+    public MagicConsumable(Settings settings, int magic, int cooldown) {
         super(settings);
-        this.amountToGive = amountToGive;
-        this.consumed = consumed;
+        this.magic = magic;
         this.cooldown = cooldown;
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient()) {
-            MagicBarHelper.addMana(user, this.amountToGive);
-            if (this.consumed) {
-                user.getStackInHand(hand).decrement(1);
-            }
+        ItemStack consumable = user.getStackInHand(hand);
+
+        if (isFood()) {
+            return eatItem(consumable, world, user, hand);
+        } else {
+            return consumeItem(consumable, world, user, hand);
+        }
+    }
+
+    /**
+     * Handles consuming the item if a food component isn't attached
+     */
+    protected TypedActionResult<ItemStack> consumeItem(ItemStack consumable, World world, PlayerEntity user, Hand hand) {
+        if (canUse(consumable, world, user, hand)) {
             if (this.cooldown > 0) {
                 user.getItemCooldownManager().set(this, this.cooldown);
             }
-            afterUse(user);
-            return TypedActionResult.success(user.getStackInHand(hand));
+            if (!user.isCreative()) {
+                consumable.decrement(1);
+            }
+            finishUsing(consumable, world, user);
+            return TypedActionResult.success(consumable);
         }
-        return super.use(world, user, hand);
+        return TypedActionResult.fail(consumable);
     }
 
-    protected void afterUse(PlayerEntity user) {
+    /**
+     * Handles eating the item if a food component is attached to the item
+     */
+    protected TypedActionResult<ItemStack> eatItem(ItemStack consumable, World world, PlayerEntity user, Hand hand) {
+        if (user.canConsume(this.getFoodComponent().isAlwaysEdible()) || canUse(consumable, world, user, hand)) {
+            user.setCurrentHand(hand);
+            return TypedActionResult.consume(consumable);
+        } else {
+            return TypedActionResult.fail(consumable);
+        }
+    }
 
+    /**
+     * If true, the player can consume the item
+     */
+    protected boolean canUse(ItemStack consumable, World world, PlayerEntity user, Hand hand) {
+        return MagicBarHelper.canAddMana(user, this.magic);
+    }
+
+    @Override
+    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        MagicBarHelper.addMana(user, this.magic);
+        return super.finishUsing(stack, world, user);
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.EAT;
     }
 }

@@ -1,7 +1,6 @@
 package net.deadlydiamond98.koalalib.client.events;
 
 import net.deadlydiamond98.koalalib.common.items.magic.IMagicItem;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
@@ -22,7 +21,6 @@ public class KoalaItemTooltipEvents {
 
     private static void magicItemTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
         if (stack.getItem() instanceof IMagicItem magicItem && magicItem.showTooltip(stack)) {
-
             int mana = magicItem.getManaCost(stack);
 
             if (lines.stream().noneMatch(text -> text.getString().equals(MAINHAND_TITLE.getString()))) {

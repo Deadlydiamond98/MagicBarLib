@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.common.misc;
+package net.deadlydiamond98.koalalib.init;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.minecraft.registry.Registries;
@@ -6,7 +6,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
-public class ModSharedSounds {
+public class KoalaLibSounds {
     // APRIL FOOLS
     public static final SoundEvent BAGEL = registerSoundEvent("aprilfools.bagel");
 

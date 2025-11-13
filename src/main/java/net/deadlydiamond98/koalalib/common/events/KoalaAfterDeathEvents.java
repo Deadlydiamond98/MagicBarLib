@@ -2,7 +2,7 @@ package net.deadlydiamond98.koalalib.common.events;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.ToggleableContent;
-import net.deadlydiamond98.koalalib.common.misc.KoalalibTags;
+import net.deadlydiamond98.koalalib.init.KoalaLibTags;
 import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.deadlydiamond98.koalalib.util.LootTableHelper;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -32,10 +32,10 @@ public class KoalaAfterDeathEvents {
      */
     private static void dropEnderSouls(LivingEntity entity, DamageSource damageSource) {
         if (ToggleableContent.areEnderSoulsEnabled()) {
-            if (entity.getType().isIn(KoalalibTags.Entities.ENDER_MOB)) {
+            if (entity.getType().isIn(KoalaLibTags.Entities.ENDER_MOB)) {
                 LootTableHelper.addLootToMob(entity, damageSource, SOUL);
             }
-            else if (entity.getType().isIn(KoalalibTags.Entities.ENDER_MINI_BOSS)) {
+            else if (entity.getType().isIn(KoalaLibTags.Entities.ENDER_MINI_BOSS)) {
                 LootTableHelper.addLootToMob(entity, damageSource, SOUL_MINIBOSS);
             }
             else if (entity instanceof EnderDragonEntity dragon && KoalaLibConfigs.Main.enderDragonDrops) {

@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.deadlydiamond98.koalalib.common.items.vanillamodified.IExtraEnchantments;
-import net.deadlydiamond98.koalalib.common.misc.TableCompatEnchant;
+import net.deadlydiamond98.koalalib.common.enchant.TableCompatEnchant;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentTarget;

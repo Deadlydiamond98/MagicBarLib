@@ -1,13 +1,12 @@
 package net.deadlydiamond98.koalalib;
 
 
-import net.deadlydiamond98.koalalib.common.blocks.ModSharedBlocks;
 import net.deadlydiamond98.koalalib.common.commands.MagicBarCommands;
 import net.deadlydiamond98.koalalib.common.events.KoalaOnJoinServerEvent;
-import net.deadlydiamond98.koalalib.common.misc.ModSharedSounds;
+import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
 import net.deadlydiamond98.koalalib.common.events.KoalaAfterDeathEvents;
 import net.deadlydiamond98.koalalib.common.events.KoalaAfterRespawnEvents;
-import net.deadlydiamond98.koalalib.common.items.ModSharedItems;
+import net.deadlydiamond98.koalalib.init.KoalaLibItems;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
 import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
 import net.deadlydiamond98.koalalib.networking.KoalaPackets;
@@ -33,8 +32,8 @@ public class KoalaLib implements ModInitializer {
 			KoalaLibDebug.initDebugging();
 		}
 
-		ModSharedItems.register();
-		ModSharedSounds.register();
+		KoalaLibItems.register();
+		KoalaLibSounds.register();
 		MagicBarCommands.register();
 		KoalaPackets.registerC2SPackets();
 

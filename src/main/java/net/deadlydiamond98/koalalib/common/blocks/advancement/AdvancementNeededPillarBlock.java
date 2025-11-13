@@ -1,6 +1,6 @@
 package net.deadlydiamond98.koalalib.common.blocks.advancement;
 
-import net.deadlydiamond98.koalalib.common.blocks.KoalaBlockProperties;
+import net.deadlydiamond98.koalalib.init.KoalaLibBlockProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  */
 
 public class AdvancementNeededPillarBlock extends PillarBlock implements IAdvancementNeeded {
-    public static final BooleanProperty PLAYERMADE = KoalaBlockProperties.PLAYER_MADE_PROPERY;
+    public static final BooleanProperty PLAYERMADE = KoalaLibBlockProperties.PLAYER_MADE_PROPERY;
     private final String advancementID;
 
     public AdvancementNeededPillarBlock(Settings settings, Identifier advancementID) {

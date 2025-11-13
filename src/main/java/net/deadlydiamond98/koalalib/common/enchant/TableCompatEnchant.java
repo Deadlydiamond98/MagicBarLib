@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.common.misc;
+package net.deadlydiamond98.koalalib.common.enchant;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;

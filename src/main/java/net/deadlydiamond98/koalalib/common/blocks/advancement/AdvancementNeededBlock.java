@@ -1,6 +1,6 @@
 package net.deadlydiamond98.koalalib.common.blocks.advancement;
 
-import net.deadlydiamond98.koalalib.common.blocks.KoalaBlockProperties;
+import net.deadlydiamond98.koalalib.init.KoalaLibBlockProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
  * This block is only breakable if the block is placed by a player in survival or the player breaking it has the given advancement
  */
 public class AdvancementNeededBlock extends Block implements IAdvancementNeeded {
-    public static final BooleanProperty PLAYERMADE = KoalaBlockProperties.PLAYER_MADE_PROPERY;
+    public static final BooleanProperty PLAYERMADE = KoalaLibBlockProperties.PLAYER_MADE_PROPERY;
     private final String advancementID;
 
     public AdvancementNeededBlock(Settings settings, Identifier advancementID) {

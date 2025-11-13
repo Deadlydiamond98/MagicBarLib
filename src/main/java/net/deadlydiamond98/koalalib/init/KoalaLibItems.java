@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.common.items;
+package net.deadlydiamond98.koalalib.init;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.common.items.interaction.FloatingItem;
@@ -7,7 +7,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
-public class ModSharedItems {
+public class KoalaLibItems {
 
     public static final Item ENDER_SOUL = register("ender_soul", new FloatingItem(new Item.Settings()));
 

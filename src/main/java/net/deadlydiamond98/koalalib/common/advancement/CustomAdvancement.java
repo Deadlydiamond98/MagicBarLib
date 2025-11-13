@@ -1,10 +1,11 @@
-package net.deadlydiamond98.koalalib.common.misc;
+package net.deadlydiamond98.koalalib.common.advancement;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,15 +19,17 @@ public class CustomAdvancement extends AbstractCriterion<CustomAdvancement.Condi
         this.id = id;
     }
 
-    public void trigger(ServerPlayerEntity player) {
-        Advancement advancement = player.getServer().getAdvancementLoader().get(this.getId());
-        if (advancement != null) {
-            AdvancementProgress progress = player.getAdvancementTracker().getProgress(advancement);
-            if (progress.isDone()) {
-                return;
+    public void trigger(PlayerEntity player) {
+        if (player instanceof ServerPlayerEntity serverPlayer) {
+            Advancement advancement = serverPlayer.getServer().getAdvancementLoader().get(this.getId());
+            if (advancement != null) {
+                AdvancementProgress progress = serverPlayer.getAdvancementTracker().getProgress(advancement);
+                if (progress.isDone()) {
+                    return;
+                }
             }
+            this.trigger(serverPlayer, (conditions) -> true);
         }
-        this.trigger(player, (conditions) -> true);
     }
 
     @Override
