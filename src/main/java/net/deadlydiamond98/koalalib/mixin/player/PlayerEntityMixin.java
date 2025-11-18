@@ -1,13 +1,10 @@
-package net.deadlydiamond98.koalalib.mixin.entity.player;
+package net.deadlydiamond98.koalalib.mixin.player;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.deadlydiamond98.koalalib.common.items.vanillamodified.CustomShieldItem;
 import net.deadlydiamond98.koalalib.events.PlayerAttackingCallback;
-import net.deadlydiamond98.koalalib.networking.packets.s2c.HasAdvancementS2CPacket;
+import net.deadlydiamond98.koalalib.networking.s2c.HasAdvancementS2CPacket;
 import net.deadlydiamond98.koalalib.util.mixindata.player.IPlayerOtherMixinData;
 import net.minecraft.advancement.Advancement;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -19,17 +16,12 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
 
-    // Variables
-
     @Unique private boolean koalalib$hasAdvancement;
     @Unique private boolean koalalib$isAttacking;
-
-    // Shadowed Methods
 
     @Shadow public abstract ItemCooldownManager getItemCooldownManager();
 

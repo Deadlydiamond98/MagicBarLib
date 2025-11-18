@@ -14,12 +14,7 @@ public class FanfareAdvancement extends CustomAdvancement {
     }
 
     @Override
-    public void trigger(PlayerEntity player) {
-        super.trigger(player);
-        playSound(player);
-    }
-
-    protected void playSound(PlayerEntity player) {
+    public void doWhenTriggered(PlayerEntity player) {
         if (player.getWorld().isClient()) {
             player.playSound(this.soundEvent, SoundCategory.MASTER, 1, 1);
         }

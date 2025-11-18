@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.mixin.entity.player;
+package net.deadlydiamond98.koalalib.mixin.player;
 
 import net.deadlydiamond98.koalalib.common.items.vanillamodified.CustomBundleItem;
 import net.deadlydiamond98.koalalib.compat.KoalaCompatServices;

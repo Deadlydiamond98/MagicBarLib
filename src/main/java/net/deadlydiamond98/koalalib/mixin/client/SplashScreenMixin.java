@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.mixin.client;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.resource.SplashTextResourceSupplier;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.profiler.Profiler;
@@ -27,6 +28,7 @@ public class SplashScreenMixin {
         koalalib$addTryModSplash("healpgood", "Healing Pretty Good");
         koalalib$addTryModSplash("zeldacraft", "The Legend of Steve");
         koalalib$addTryModSplash("familiar_friends", "Familiar Friends");
+        koalalib$addTryModSplash("block_bots", "Block Bots");
         this.splashTexts.addAll(KOALA_CUSTOM_SPLASHES);
         Collections.shuffle(this.splashTexts); // Shuffles so that mine aren't more common than others
     }

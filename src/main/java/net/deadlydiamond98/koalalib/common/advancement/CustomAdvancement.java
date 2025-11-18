@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.common.advancement;
 
 import com.google.gson.JsonObject;
+import net.deadlydiamond98.koalalib.networking.s2c.AdvancementActionS2CPacket;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.advancement.criterion.AbstractCriterion;
@@ -11,15 +12,18 @@ import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class CustomAdvancement extends AbstractCriterion<CustomAdvancement.Conditions> {
+import java.util.HashMap;
 
+public class CustomAdvancement extends AbstractCriterion<CustomAdvancement.Conditions> {
+    public static final HashMap<Identifier, CustomAdvancement> CUSTOM_ADVANCEMENTS = new HashMap<>();
     private final Identifier id;
 
     public CustomAdvancement(Identifier id) {
         this.id = id;
+        CUSTOM_ADVANCEMENTS.put(id, this);
     }
 
-    public void trigger(PlayerEntity player) {
+    public final void trigger(PlayerEntity player) {
         if (player instanceof ServerPlayerEntity serverPlayer) {
             Advancement advancement = serverPlayer.getServer().getAdvancementLoader().get(this.getId());
             if (advancement != null) {
@@ -29,8 +33,12 @@ public class CustomAdvancement extends AbstractCriterion<CustomAdvancement.Condi
                 }
             }
             this.trigger(serverPlayer, (conditions) -> true);
+            AdvancementActionS2CPacket.send(serverPlayer, getId());
+            doWhenTriggered(player);
         }
     }
+
+    public void doWhenTriggered(PlayerEntity player) {}
 
     @Override
     public Identifier getId() {

@@ -55,6 +55,7 @@ public class MagicBarHelper {
                 setMana(entity, 0);
             }
             getBar(entity).koalalib$applyRegenDelay(addDelay);
+            return true;
         }
         return canRemoveMana(entity, amount);
     }

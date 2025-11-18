@@ -1,11 +1,12 @@
 package net.deadlydiamond98.koalalib.networking;
 
-import net.deadlydiamond98.koalalib.networking.packets.c2s.LeftClickItemC2SPacket;
-import net.deadlydiamond98.koalalib.networking.packets.c2s.PunchBlockC2SPacket;
-import net.deadlydiamond98.koalalib.networking.packets.c2s.PunchEntityC2SPacket;
-import net.deadlydiamond98.koalalib.networking.packets.s2c.CustomHudRendererS2CPacket;
-import net.deadlydiamond98.koalalib.networking.packets.s2c.EntityMagicUpdateS2CPacket;
-import net.deadlydiamond98.koalalib.networking.packets.s2c.HasAdvancementS2CPacket;
+import net.deadlydiamond98.koalalib.networking.c2s.LeftClickItemC2SPacket;
+import net.deadlydiamond98.koalalib.networking.c2s.PunchBlockC2SPacket;
+import net.deadlydiamond98.koalalib.networking.c2s.PunchEntityC2SPacket;
+import net.deadlydiamond98.koalalib.networking.s2c.AdvancementActionS2CPacket;
+import net.deadlydiamond98.koalalib.networking.s2c.CustomHudRendererS2CPacket;
+import net.deadlydiamond98.koalalib.networking.s2c.EntityMagicUpdateS2CPacket;
+import net.deadlydiamond98.koalalib.networking.s2c.HasAdvancementS2CPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
@@ -15,6 +16,7 @@ public class KoalaPackets {
         ClientPlayNetworking.registerGlobalReceiver(EntityMagicUpdateS2CPacket.ID, EntityMagicUpdateS2CPacket.Handler::receive);
         ClientPlayNetworking.registerGlobalReceiver(HasAdvancementS2CPacket.ID, HasAdvancementS2CPacket.Handler::receive);
         ClientPlayNetworking.registerGlobalReceiver(CustomHudRendererS2CPacket.ID, CustomHudRendererS2CPacket.Handler::receive);
+        ClientPlayNetworking.registerGlobalReceiver(AdvancementActionS2CPacket.ID, AdvancementActionS2CPacket.Handler::receive);
     }
 
     public static void registerC2SPackets() {

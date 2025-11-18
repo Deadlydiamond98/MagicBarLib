@@ -2,7 +2,7 @@ package net.deadlydiamond98.koalalib.mixin.entity.living;
 
 import net.deadlydiamond98.koalalib.ToggleableContent;
 import net.deadlydiamond98.koalalib.common.items.magic.IShowsMagicBar;
-import net.deadlydiamond98.koalalib.networking.packets.s2c.EntityMagicUpdateS2CPacket;
+import net.deadlydiamond98.koalalib.networking.s2c.EntityMagicUpdateS2CPacket;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
 import net.deadlydiamond98.koalalib.util.mixindata.IMagicBarMixinData;
 import net.minecraft.entity.LivingEntity;

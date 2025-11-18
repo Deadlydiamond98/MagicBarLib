@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.networking.packets.s2c;
+package net.deadlydiamond98.koalalib.networking.s2c;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.util.mixindata.player.ICustomHudBarTextureMixinData;

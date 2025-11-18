@@ -16,9 +16,9 @@
     "entity.item.ItemEntityMixin",
     "entity.living.LivingEntityMagicMixin",
     "entity.living.LivingEntityMixin",
-    "entity.player.PlayerEntityCustomHudMixin",
-    "entity.player.PlayerEntityMixin",
-    "entity.player.PlayerInventoryMixin"
+    "player.PlayerEntityCustomHudMixin",
+    "player.PlayerEntityMixin",
+    "player.PlayerInventoryMixin"
   ],
   "injectors": {
     "defaultRequire": 1
