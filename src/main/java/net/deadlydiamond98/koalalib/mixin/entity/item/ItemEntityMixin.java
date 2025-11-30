@@ -29,7 +29,6 @@ public abstract class ItemEntityMixin extends EntityMixin implements IFloatingIt
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void koalalib$tick(CallbackInfo ci) {
-
         ItemEntity item = (ItemEntity) (Object) this;
 
         if (item.getStack().getItem() instanceof IFloating) {

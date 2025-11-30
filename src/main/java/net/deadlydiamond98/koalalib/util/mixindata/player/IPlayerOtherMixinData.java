@@ -9,4 +9,7 @@ public interface IPlayerOtherMixinData {
     // Is Attacking
     boolean koalalib$isAttacking();
     void koalalib$setAttacking(boolean attacking);
+
+    // Pseudo Random Numbers
+    boolean zeldacraft$getPseudoRandom(String id, float chance, int max);
 }

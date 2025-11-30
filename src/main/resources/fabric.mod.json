@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "https://legacy.curseforge.com/minecraft/mc-mods/koalalib",
-		"sources": "https://github.com/Deadlydiamond98/MagicBarLib"
+		"sources": "https://github.com/Deadlydiamond98/KoalaLib"
 	},
 	"license": "Custom",
 	"icon": "assets/koalalib/icon.png",
