@@ -1,7 +1,12 @@
 package net.deadlydiamond98.koalalib.common.items.interaction;
 
-/**
- * Any Item that has this interface will have no gravity applied in entity form.
- */
-public interface IFloating {
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
+
+@Deprecated(forRemoval = true)
+public interface IFloating extends IAdvancedItemProperties {
+    @Override
+    default boolean hasNoGravity(ItemEntity entity, ItemStack stack) {
+        return true;
+    }
 }

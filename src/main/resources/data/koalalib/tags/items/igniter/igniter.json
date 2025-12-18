@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#koalalib:igniter/igniter_durability",
+    "#koalalib:igniter/igniter_consumable"
+  ]
+}

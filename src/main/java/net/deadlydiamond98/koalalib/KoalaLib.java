@@ -50,7 +50,7 @@ public class KoalaLib implements ModInitializer {
 	 */
 	public static boolean isDev() {
 		FabricLoader loader = FabricLoader.getInstance();
-		return loader.isDevelopmentEnvironment() && loader.getAllMods().size() == 59;
+		return loader.isDevelopmentEnvironment();
 	}
 
 	public static boolean isModLoaded(String modid) {

@@ -1,6 +1,6 @@
 package net.deadlydiamond98.koalalib.util;
 
-import net.deadlydiamond98.koalalib.util.mixindata.player.IPlayerOtherMixinData;
+import net.deadlydiamond98.koalalib.util.mixinterfaces.player.IPlayerOtherMixinData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.random.Random;
@@ -53,7 +53,7 @@ public class PseudoRandom {
 
     public static boolean getPlayerPseudoRandom(PlayerEntity player, String id, float chance, int max) {
         if (player instanceof IPlayerOtherMixinData data) {
-            return data.zeldacraft$getPseudoRandom(id, chance, max);
+            return data.koalalib$getPseudoRandom(id, chance, max);
         }
         return false;
     }

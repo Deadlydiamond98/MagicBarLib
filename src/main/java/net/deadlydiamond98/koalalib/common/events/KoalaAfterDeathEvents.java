@@ -32,10 +32,10 @@ public class KoalaAfterDeathEvents {
      */
     private static void dropEnderSouls(LivingEntity entity, DamageSource damageSource) {
         if (ToggleableContent.areEnderSoulsEnabled()) {
-            if (entity.getType().isIn(KoalaLibTags.Entities.ENDER_MOB)) {
+            if (entity.getType().isIn(KoalaLibTags.ENDER_MOB)) {
                 LootTableHelper.addLootToMob(entity, damageSource, SOUL);
             }
-            else if (entity.getType().isIn(KoalaLibTags.Entities.ENDER_MINI_BOSS)) {
+            else if (entity.getType().isIn(KoalaLibTags.ENDER_MINI_BOSS)) {
                 LootTableHelper.addLootToMob(entity, damageSource, SOUL_MINIBOSS);
             }
             else if (entity instanceof EnderDragonEntity dragon && KoalaLibConfigs.Main.enderDragonDrops) {

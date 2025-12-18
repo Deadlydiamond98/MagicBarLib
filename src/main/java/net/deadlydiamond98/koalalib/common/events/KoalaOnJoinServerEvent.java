@@ -16,6 +16,6 @@ public class KoalaOnJoinServerEvent {
     private static void syncMana(ServerPlayNetworkHandler serverPlayNetworkHandler, PacketSender packetSender, MinecraftServer server) {
         // Sends Packet to player on join to sync their magic meter with the client
         ServerPlayerEntity player = serverPlayNetworkHandler.player;
-        EntityMagicUpdateS2CPacket.send(player, MagicBarHelper.getMana(player), MagicBarHelper.getMaxMana(player));
+        EntityMagicUpdateS2CPacket.send(player, MagicBarHelper.getMana(player));
     }
 }

@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.util.mixindata.player;
+package net.deadlydiamond98.koalalib.util.mixinterfaces.player;
 
 public interface IPlayerOtherMixinData {
 
@@ -11,5 +11,5 @@ public interface IPlayerOtherMixinData {
     void koalalib$setAttacking(boolean attacking);
 
     // Pseudo Random Numbers
-    boolean zeldacraft$getPseudoRandom(String id, float chance, int max);
+    boolean koalalib$getPseudoRandom(String id, float chance, int max);
 }

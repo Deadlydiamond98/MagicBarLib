@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+/**
+ * Used to check for Mod Updates via Modrinth
+ */
 public class KoalaUpdateChecker {
 
     public static final List<UpdatableMod> MOD_UPDATE_LIST = new ArrayList<>();

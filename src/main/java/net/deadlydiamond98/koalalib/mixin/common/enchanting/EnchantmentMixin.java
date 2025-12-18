@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.mixin.enchanting;
+package net.deadlydiamond98.koalalib.mixin.common.enchanting;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.deadlydiamond98.koalalib.common.items.vanillamodified.IExtraEnchantments;

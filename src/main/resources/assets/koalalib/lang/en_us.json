@@ -3,8 +3,13 @@
 
   "advancements.koalalib.into_ender": "Into Ender",
   "advancements.koalalib.into_ender.desc": "Relieve an Ender creature of their Soul",
+
   "item.koalalib.ender_soul": "Ender Soul",
   "lore.koalalib.ender_soul": "A rare item dropped by Ender creatures. It's used as a material for various recipes",
+
+  "subtitles.item.koalalib.generic_thrown": "Thrown Item",
+  "subtitles.item.koalalib.tool_ignite.use": "Block Ignited",
+  "subtitles.item.koalalib.item_ignite.use": "Block Ignited",
 
   "attribute.koalalib.magic_cost": "%s Magic Cost",
   "commands.koalalib.manaSet.success.single": "%s Mana set to %s",

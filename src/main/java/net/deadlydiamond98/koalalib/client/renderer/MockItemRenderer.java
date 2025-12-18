@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class MockItemRenderer {
     private static final Map<Identifier, Boolean[][]> CACHE = new HashMap<>();
-
     public static final float DEFAULT_THICKNESS = 0.065f;
 
     public static void renderItem(MatrixStack poseStack, VertexConsumerProvider bufferSource, int light, Identifier texture) {

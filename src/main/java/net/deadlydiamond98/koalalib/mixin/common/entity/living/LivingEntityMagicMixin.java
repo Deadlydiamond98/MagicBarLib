@@ -1,11 +1,14 @@
-package net.deadlydiamond98.koalalib.mixin.entity.living;
+package net.deadlydiamond98.koalalib.mixin.common.entity.living;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.deadlydiamond98.koalalib.ToggleableContent;
 import net.deadlydiamond98.koalalib.common.items.magic.IShowsMagicBar;
+import net.deadlydiamond98.koalalib.init.KoalaLibEntityAttributes;
 import net.deadlydiamond98.koalalib.networking.s2c.EntityMagicUpdateS2CPacket;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
-import net.deadlydiamond98.koalalib.util.mixindata.IMagicBarMixinData;
+import net.deadlydiamond98.koalalib.util.mixinterfaces.IMagicBarData;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
@@ -17,28 +20,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMagicMixin implements IMagicBarMixinData {
-    // Mana Level
-    @Unique
-    private int koalalib$manaLevel;
-    @Unique
-    private int koalalib$maxManaLevel = 100;
+public abstract class LivingEntityMagicMixin implements IMagicBarData {
+    @Unique private int koalalib$manaLevel;
 
-    // Mana Regeneration
-    @Unique
-    private int koalalib$manaRegenDelay;
-    @Unique
-    private boolean koalalib$hasManaRegen = true;
+    @Unique private int koalalib$manaRegenDelay;
+    @Unique private int koalalib$manaRegenCap = 100;
+    @Unique private boolean koalalib$hasManaRegen = true;
+    @Unique private boolean koalalib$requiresHunger = true;
 
-    // Visuals
-    @Unique
-    private int koalalib$manaBarRenderTime;
+    @Unique private int koalalib$manaBarRenderTime;
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void tick(CallbackInfo ci) {
+    public void koalalib$tick(CallbackInfo ci) {
         if (ToggleableContent.isMagicBarEnabled()) {
             LivingEntity entity = (LivingEntity) (Object) this;
-
             if (!entity.getWorld().isClient) {
                 koalalib$regenManaBar(entity);
             } else {
@@ -47,20 +42,25 @@ public abstract class LivingEntityMagicMixin implements IMagicBarMixinData {
         }
     }
 
+    @ModifyReturnValue(method = "createLivingAttributes", at = @At("RETURN"))
+    private static DefaultAttributeContainer.Builder koalalib$createLivingAttributes(DefaultAttributeContainer.Builder original) {
+        return original.add(KoalaLibEntityAttributes.GENERIC_MAX_MAGIC);
+    }
+
     @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
-    public void onSave(NbtCompound nbt, CallbackInfo info) {
+    public void koalalib$writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
         nbt.putInt("ManaLevelKoalaLib", this.koalalib$manaLevel);
-        nbt.putInt("MaxManaLevelKoalaLib", this.koalalib$maxManaLevel);
+        nbt.putInt("ManaRegenCapKoalaLib", this.koalalib$manaRegenCap);
         nbt.putBoolean("ManaRegenerationEnabledKoalaLib", this.koalalib$hasManaRegen);
     }
 
     @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
-    public void onLoad(NbtCompound nbt, CallbackInfo info) {
+    public void koalalib$readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
         if (nbt.contains("ManaLevelKoalaLib")) {
             this.koalalib$manaLevel = nbt.getInt("ManaLevelKoalaLib");
         }
-        if (nbt.contains("MaxManaLevelKoalaLib")) {
-            this.koalalib$maxManaLevel = nbt.getInt("MaxManaLevelKoalaLib");
+        if (nbt.contains("ManaRegenCapKoalaLib")) {
+            this.koalalib$manaRegenCap = nbt.getInt("ManaRegenCapKoalaLib");
         }
         if (nbt.contains("ManaRegenerationEnabledKoalaLib")) {
             this.koalalib$hasManaRegen = nbt.getBoolean("ManaRegenerationEnabledKoalaLib");
@@ -91,22 +91,20 @@ public abstract class LivingEntityMagicMixin implements IMagicBarMixinData {
             return;
         }
 
+        if (koalalib$getMagicRegenCap() >= MagicBarHelper.getMaxMana(entity)) {
+            return;
+        }
+
         if (entity.age % 12 == 0 && koalalib$isManaRegenEnabled()) {
-            if (entity instanceof PlayerEntity player && player.getHungerManager().isNotFull()) {
+            if (this.koalalib$requiresHunger && entity instanceof PlayerEntity player && player.getHungerManager().isNotFull()) {
                 return;
             }
 
-            int regenRate = (int) Math.max(Math.floor(Math.min(Math.floor(Math.pow((koalalib$getMana() / (double) koalalib$getMaxMana()) *
-                    (koalalib$getMaxMana() / 100.0) * 0.8, -1)), 5)), 1);
-            MagicBarHelper.addMana(entity, regenRate);
-        }
-    }
+            int maxMana = MagicBarHelper.getMaxMana(entity);
 
-    @Unique
-    private void koalalib$sendMagicUpdatePacket() {
-        LivingEntity entity = (LivingEntity) (Object) this;
-        if (!entity.getWorld().isClient() && entity instanceof PlayerEntity player) {
-            EntityMagicUpdateS2CPacket.send((ServerPlayerEntity) player, koalalib$manaLevel, koalalib$maxManaLevel);
+            int regenRate = (int) Math.max(Math.floor(Math.min(Math.floor(Math.pow((koalalib$getMana() / (double) maxMana) *
+                    (maxMana / 100.0) * 0.8, -1)), 5)), 1);
+            MagicBarHelper.addMana(entity, regenRate);
         }
     }
 
@@ -119,23 +117,15 @@ public abstract class LivingEntityMagicMixin implements IMagicBarMixinData {
     @Override
     public void koalalib$setMana(int value) {
         this.koalalib$manaLevel = value;
-        koalalib$sendMagicUpdatePacket();
+        LivingEntity entity = (LivingEntity) (Object) this;
+        if (!entity.getWorld().isClient() && entity instanceof PlayerEntity player) {
+            EntityMagicUpdateS2CPacket.send((ServerPlayerEntity) player, koalalib$manaLevel);
+        }
     }
 
     @Override
     public int koalalib$getMana() {
         return this.koalalib$manaLevel;
-    }
-
-    @Override
-    public void koalalib$setMaxMana(int value) {
-        this.koalalib$maxManaLevel = value;
-        koalalib$sendMagicUpdatePacket();
-    }
-
-    @Override
-    public int koalalib$getMaxMana() {
-        return this.koalalib$maxManaLevel;
     }
 
     @Override
@@ -149,6 +139,33 @@ public abstract class LivingEntityMagicMixin implements IMagicBarMixinData {
     }
 
     @Override
+    public int koalalib$getMagicRegenCap() {
+        return this.koalalib$manaRegenCap;
+    }
+
+    @Override
+    public void koalalib$setMagicRegenCap(int value) {
+        this.koalalib$manaRegenCap = value;
+    }
+
+    @Override
+    public void koalalib$requireFullHungerForMagicRegen(boolean bl) {
+        this.koalalib$requiresHunger = bl;
+    }
+
+    @Override
+    public void koalalib$applyRegenDelay(boolean value) {
+        if (value) {
+            this.koalalib$manaRegenDelay = (int) Math.floor(
+                    Math.min(0.7 * ((1 - (koalalib$getMana() / (double) MagicBarHelper.getMaxMana((PlayerEntity) (Object) this)) * 500 + 45)), -60)
+            );
+        }
+    }
+
+
+    // RENDERING ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
     public void koalalib$setMagicBarRenderTime(int value) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (entity instanceof PlayerEntity) {
@@ -160,14 +177,5 @@ public abstract class LivingEntityMagicMixin implements IMagicBarMixinData {
     public int koalalib$getMagicBarRenderTime() {
         LivingEntity entity = (LivingEntity) (Object) this;
         return entity instanceof PlayerEntity ? this.koalalib$manaBarRenderTime : 0;
-    }
-
-    @Override
-    public void koalalib$applyRegenDelay(boolean value) {
-        if (value) {
-            this.koalalib$manaRegenDelay = (int) Math.floor(
-                    Math.min(0.7 * ((1 - (koalalib$getMana() / (double) koalalib$getMaxMana()) * 500 + 45)), -60)
-            );
-        }
     }
 }

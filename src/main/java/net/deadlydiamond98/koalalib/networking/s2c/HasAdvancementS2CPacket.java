@@ -1,7 +1,7 @@
 package net.deadlydiamond98.koalalib.networking.s2c;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
-import net.deadlydiamond98.koalalib.util.mixindata.player.IPlayerOtherMixinData;
+import net.deadlydiamond98.koalalib.util.mixinterfaces.player.IPlayerOtherMixinData;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

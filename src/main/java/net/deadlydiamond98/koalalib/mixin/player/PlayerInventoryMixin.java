@@ -1,5 +1,6 @@
 package net.deadlydiamond98.koalalib.mixin.player;
 
+import net.deadlydiamond98.koalalib.common.items.interaction.IAdvancedItemProperties;
 import net.deadlydiamond98.koalalib.common.items.vanillamodified.CustomBundleItem;
 import net.deadlydiamond98.koalalib.compat.KoalaCompatServices;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +22,6 @@ public class PlayerInventoryMixin {
 
     @Inject(method = "insertStack(ILnet/minecraft/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     public void koalalib$insertStack(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-
         // Trinkets Compatibility
         for (ItemStack trinket : KoalaCompatServices.TRINKETS_COMPAT.getEquippedTrinkets(this.player)) {
             if (koalalib$addItemToBundle(stack, trinket)) {
@@ -33,6 +33,13 @@ public class PlayerInventoryMixin {
             ItemStack bundleStack = this.player.getInventory().getStack(i);
             if (koalalib$addItemToBundle(stack, bundleStack)) {
                 cir.setReturnValue(true);
+            }
+        }
+
+        if (stack.getItem() instanceof IAdvancedItemProperties properties) {
+            if (properties.onInventoryInsertion(this.player, stack, slot)) {
+                cir.setReturnValue(true);
+                stack.setCount(0);
             }
         }
     }

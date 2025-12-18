@@ -3,46 +3,39 @@ package net.deadlydiamond98.koalalib.common.items.magic.consumers;
 import net.deadlydiamond98.koalalib.common.items.magic.IMagicItem;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class MagicItem extends Item implements IMagicItem {
-    private final int manaCost;
 
-    /**
-     * @param manaCost, The cost of mana from the item's usage
-     */
-    public MagicItem(Settings settings, int manaCost) {
+public class MagicItem extends Item implements IMagicItem {
+    private final int magicCost;
+
+    public MagicItem(Settings settings, int magicCost) {
         super(settings);
-        this.manaCost = manaCost;
+        this.magicCost = magicCost;
     }
 
-    /**
-     * Run when item is using mana
-     */
+    public void onMagicActionSucceed(World world, PlayerEntity user, Hand hand) {}
+
+    @Deprecated(forRemoval = true)
     protected void doManaAction(PlayerEntity user, World world) {}
 
-    /**
-     * Run when item can't use mana
-     */
+    @Deprecated(forRemoval = true)
     protected void doNoManaEvent(PlayerEntity user, World world) {}
 
     @Override
-    public int getManaCost(ItemStack stack) {
-        return this.manaCost;
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (hasEnoughMagic(user, user.getStackInHand(hand))) {
+            onMagicActionSucceed(world, user, hand);
+            return TypedActionResult.success(user.getStackInHand(hand));
+        }
+        return super.use(world, user, hand);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (user.isCreative() || MagicBarHelper.removeMana(user, this.manaCost)) {
-            doManaAction(user, world);
-            return TypedActionResult.success(user.getStackInHand(hand));
-        } else {
-            doNoManaEvent(user, world);
-        }
-        return super.use(world, user, hand);
+    public int getBaseMagicCost(PlayerEntity player, ItemStack stack) {
+        return this.magicCost;
     }
 }

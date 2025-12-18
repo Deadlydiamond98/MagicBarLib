@@ -13,9 +13,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-/**
- * Contains various methods, so I don't have to type as much when registering
- */
+@Deprecated(forRemoval = true)
 public class RegistryHelper {
 
     public static class Blocks {

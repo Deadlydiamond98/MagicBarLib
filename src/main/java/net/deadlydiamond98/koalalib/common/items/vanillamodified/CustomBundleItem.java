@@ -1,6 +1,5 @@
 package net.deadlydiamond98.koalalib.common.items.vanillamodified;
 
-import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.util.KoalaNbtHelper;
 import net.minecraft.client.item.BundleTooltipData;
 import net.minecraft.client.item.TooltipContext;
@@ -12,7 +11,6 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundEvent;
@@ -20,7 +18,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;

@@ -1,12 +1,19 @@
 package net.deadlydiamond98.koalalib.util.magic;
 
-import net.deadlydiamond98.koalalib.util.mixindata.IMagicBarMixinData;
+import net.deadlydiamond98.koalalib.init.KoalaLibEntityAttributes;
+import net.deadlydiamond98.koalalib.util.mixinterfaces.IMagicBarData;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+
+import java.util.UUID;
 
 /**
  * Helper Class used to modify the Mana and Max Mana of the Magic Bar, and other things related to Magic use.
  */
 public class MagicBarHelper {
+
+    // REGULAR MANA VALUES /////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Add Mana to an entity
@@ -84,51 +91,6 @@ public class MagicBarHelper {
     }
 
     /**
-     * Increase an entity's Maximum Mana
-     * @param entity The entity who you want to add more max mana to
-     * @param amount The amount of Mana that the Max Mana should increase by
-     * @param replenish Whether mana the amount of mana that's given should also be added to the entity's current mana
-     */
-    public static boolean increaseMaxMana(LivingEntity entity, int amount, boolean replenish) {
-        if (amount < 0) {
-            return decreaseMaxMana(entity, amount * -1);
-        } else {
-            setMaxMana(entity, getMaxMana(entity) + amount);
-            if (replenish) {
-                addMana(entity, amount);
-            }
-            return true;
-        }
-    }
-
-    /**
-     * Decrease an entity's Maximum Mana
-     * @param entity The entity who you want to remove max mana from
-     * @param amount The amount of Mana that the Max Mana should decrease by
-     */
-    public static boolean decreaseMaxMana(LivingEntity entity, int amount) {
-        if (amount < 0) {
-            return increaseMaxMana(entity, amount * -1, false);
-        } else if (canDecreaseMaxMana(entity, amount)) {
-            setMaxMana(entity, getMaxMana(entity) - amount);
-            if (getMaxMana(entity) < getMana(entity)) {
-                setMana(entity, getMaxMana(entity));
-            }
-        }
-        return canDecreaseMaxMana(entity, amount);
-    }
-
-    /**
-     * Check if an amount of Mana can be decreased (making sure the mana doesn't enter negative numbers)
-     * @param entity The entity who you want to remove mana from
-     * @param amount The amount you want to check for removing
-     * @return Whether the Mana could or couldn't be removed
-     */
-    public static boolean canDecreaseMaxMana(LivingEntity entity, int amount) {
-        return getMaxMana(entity) - amount > 0;
-    }
-
-    /**
      * Set the current amount of Mana an entity has
      * @param entity The entity who's having Mana modified
      * @param amount The amount of Mana the entity should have
@@ -145,28 +107,130 @@ public class MagicBarHelper {
         return getBar(entity).koalalib$getMana();
     }
 
+    // MAX MANA VALUES /////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
-     * Set the maximum amount of Mana an entity can have
-     * @param entity The entity who's having Mana modified
-     * @param amount The maximum amount of Mana the entity should have
+     * Returns an Entity's Max Mana based on the GENERIC_MAX_MAGIC Attribute
+     * @param entity the Entity
      */
-    public static void setMaxMana(LivingEntity entity, int amount) {
-        getBar(entity).koalalib$setMaxMana(amount);
+    public static int getMaxMana(LivingEntity entity) {
+        return (int) entity.getAttributeValue(KoalaLibEntityAttributes.GENERIC_MAX_MAGIC);
     }
 
     /**
-     * Get the maximum amount of Mana an entity can have
-     * @param entity The entity whose max Mana level you want to get
+     * Returns the Base Value of an Entity's Max Mana without Attribute Modifiers
+     * @param entity the Entity
      */
-    public static int getMaxMana(LivingEntity entity) {
-        return getBar(entity).koalalib$getMaxMana();
+    public static int getUnmodifiedMaxMana(LivingEntity entity) {
+        return (int) entity.getAttributeBaseValue(KoalaLibEntityAttributes.GENERIC_MAX_MAGIC);
     }
+
+    /**
+     * Applies an Attribute Modifier to an Entity's Max Mana
+     * @param uuid the Modifier UUID
+     * @param name the Modifier name
+     * @param entity the Entity
+     * @param amount the Amount of Magic added
+     */
+    public static void applyMaxManaModifier(UUID uuid, String name, LivingEntity entity, int amount) {
+        EntityAttributeInstance attribute = entity.getAttributeInstance(KoalaLibEntityAttributes.GENERIC_MAX_MAGIC);
+        if (attribute != null) {
+            removeMaxManaModifier(uuid, entity);
+            EntityAttributeModifier modifier = new EntityAttributeModifier(uuid, name, amount, EntityAttributeModifier.Operation.ADDITION);
+            attribute.addPersistentModifier(modifier);
+        }
+    }
+
+    /**
+     * Removes an Attribute Modifier from the Entity's Max Mana
+     * @param uuid the Modifier UUID
+     * @param entity the Entity
+     */
+    public static void removeMaxManaModifier(UUID uuid, LivingEntity entity) {
+        EntityAttributeInstance attribute = entity.getAttributeInstance(KoalaLibEntityAttributes.GENERIC_MAX_MAGIC);
+        if (attribute != null) {
+            if (attribute.getModifier(uuid) != null) {
+                attribute.removeModifier(uuid);
+            }
+        }
+    }
+
+    // MANA REGEN //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Checks if an entity can passively regenerate Mana
+     * @param entity the Entity
+     */
+    public static boolean canRegenerateMana(LivingEntity entity) {
+        return getBar(entity).koalalib$isManaRegenEnabled();
+    }
+
+    /**
+     * Determines if an entity can passively regenerate Mana
+     * @param entity the Entity
+     * @param bl allow Passive Magic Regen
+     */
+    public static void enableManaRegen(LivingEntity entity, boolean bl) {
+        getBar(entity).koalalib$setManaRegenAbility(bl);
+    }
+
+    /**
+     * Setting the value here changes if Passive Mana regen requires full hunger
+     * @param entity the Entity
+     * @param bl stop Regen if not full Hunger
+     */
+    public static void requiteFullHungerForPassiveRegen(LivingEntity entity, boolean bl) {
+        getBar(entity).koalalib$requireFullHungerForMagicRegen(bl);
+    }
+
+    /**
+     * Gets the Cap for Passive Mana Regen
+     * @param entity the Entity
+     */
+    public static int getManaRegenCap(LivingEntity entity) {
+        return getBar(entity).koalalib$getMagicRegenCap();
+    }
+
+    /**
+     * Set the Maximum amount of Mana that can be restored via passive Regen
+     * @param entity the Entity
+     * @param cap the Max amount of Mana before Regen stops
+     */
+    public static void setManaRegenCap(LivingEntity entity, int cap) {
+        getBar(entity).koalalib$setMagicRegenCap(cap);
+    }
+
+    // OTHER ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Helper Method to get the MagicBar without constantly casting entity
      * @param entity The Living Entity who is having magic values changed
      */
-    public static IMagicBarMixinData getBar(LivingEntity entity) {
-        return (IMagicBarMixinData) entity;
+    public static IMagicBarData getBar(LivingEntity entity) {
+        return (IMagicBarData) entity;
     }
+
+    // DEPRECATED //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Methods here will be removed next update, as they became obsolete due to Max Mana now using an Attribute Modifier
+
+    @Deprecated(forRemoval = true)
+    public static void setMaxMana(LivingEntity entity, int amount) {
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean increaseMaxMana(LivingEntity entity, int amount, boolean replenish) {
+        return false;
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean decreaseMaxMana(LivingEntity entity, int amount) {
+        return false;
+    }
+
+    @Deprecated(forRemoval = true)
+    public static boolean canDecreaseMaxMana(LivingEntity entity, int amount) {
+        return false;
+    }
+
 }

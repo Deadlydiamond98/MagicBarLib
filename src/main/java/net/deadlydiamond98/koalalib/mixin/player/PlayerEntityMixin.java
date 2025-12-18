@@ -4,7 +4,7 @@ import net.deadlydiamond98.koalalib.common.items.vanillamodified.CustomShieldIte
 import net.deadlydiamond98.koalalib.events.PlayerAttackingCallback;
 import net.deadlydiamond98.koalalib.networking.s2c.HasAdvancementS2CPacket;
 import net.deadlydiamond98.koalalib.util.PseudoRandom;
-import net.deadlydiamond98.koalalib.util.mixindata.player.IPlayerOtherMixinData;
+import net.deadlydiamond98.koalalib.util.mixinterfaces.player.IPlayerOtherMixinData;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -126,7 +126,7 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
     // Get PseudoRandom ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public boolean zeldacraft$getPseudoRandom(String id, float chance, int max) {
+    public boolean koalalib$getPseudoRandom(String id, float chance, int max) {
         this.koalalib$pseudoRandoms.putIfAbsent(id, new PseudoRandom(((PlayerEntity) (Object) this).getRandom(), chance, max));
         PseudoRandom pseudoRandom = this.koalalib$pseudoRandoms.get(id);
         pseudoRandom.updateArgs(chance, max);

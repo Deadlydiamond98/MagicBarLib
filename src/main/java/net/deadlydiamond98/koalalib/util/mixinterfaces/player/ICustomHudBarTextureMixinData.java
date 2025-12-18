@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.util.mixindata.player;
+package net.deadlydiamond98.koalalib.util.mixinterfaces.player;
 
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;

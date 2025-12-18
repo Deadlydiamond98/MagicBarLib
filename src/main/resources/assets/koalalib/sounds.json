@@ -4,36 +4,67 @@
       "koalalib:console/back"
     ]
   },
+
   "legacy.gui.craft": {
     "sounds": [
       "koalalib:console/craft"
     ]
   },
+
   "legacy.gui.craftfail": {
     "sounds": [
       "koalalib:console/craftfail"
     ]
   },
+
   "legacy.gui.focus": {
     "sounds": [
       "koalalib:console/focus"
     ]
   },
+
   "legacy.gui.press": {
     "sounds": [
       "koalalib:console/press"
     ]
   },
+
   "legacy.gui.scroll": {
     "sounds": [
       "koalalib:console/scroll"
     ]
   },
 
-
   "aprilfools.bagel": {
     "sounds": [
       "koalalib:joke/bagel"
     ]
+  },
+
+  "magic.negative": {
+    "sounds": [
+      "koalalib:magic/negative"
+    ]
+  },
+
+  "generic.thrown": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.item.koalalib.generic_thrown"
+  },
+
+  "generic.item_ignite": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitles.item.koalalib.item_ignite.use"
+  },
+
+  "generic.tool_ignite": {
+    "sounds": [
+      "fire/ignite"
+    ],
+    "subtitle": "subtitles.item.koalalib.tool_ignite.use"
   }
 }

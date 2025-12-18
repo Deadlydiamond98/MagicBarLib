@@ -1,6 +1,6 @@
 package net.deadlydiamond98.koalalib.util;
 
-import net.deadlydiamond98.koalalib.util.mixindata.player.ICustomHudBarTextureMixinData;
+import net.deadlydiamond98.koalalib.util.mixinterfaces.player.ICustomHudBarTextureMixinData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 

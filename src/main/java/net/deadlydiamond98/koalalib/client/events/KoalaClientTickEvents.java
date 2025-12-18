@@ -8,7 +8,7 @@ import net.deadlydiamond98.koalalib.networking.c2s.LeftClickItemC2SPacket;
 import net.deadlydiamond98.koalalib.networking.c2s.PunchBlockC2SPacket;
 import net.deadlydiamond98.koalalib.networking.c2s.PunchEntityC2SPacket;
 import net.deadlydiamond98.koalalib.updater.KoalaUpdateChecker;
-import net.deadlydiamond98.koalalib.util.mixindata.player.IPlayerOtherMixinData;
+import net.deadlydiamond98.koalalib.util.mixinterfaces.player.IPlayerOtherMixinData;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;

@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.mixin.entity.living;
+package net.deadlydiamond98.koalalib.mixin.common.entity.living;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

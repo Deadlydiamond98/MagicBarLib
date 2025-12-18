@@ -1,5 +1,6 @@
 package net.deadlydiamond98.koalalib.common.items.vanillamodified.projectile;
 
+import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -9,13 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class CustomProjectileItem extends Item  implements ICustomProjectile {
+public class CustomProjectileItem extends Item implements ICustomProjectile {
     private final EntityType<?> type;
 
     public CustomProjectileItem(Settings settings, EntityType<?> type) {
@@ -57,7 +57,7 @@ public class CustomProjectileItem extends Item  implements ICustomProjectile {
     // SFX /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     protected SoundEvent getThrowSound() {
-        return SoundEvents.ENTITY_SNOWBALL_THROW;
+        return KoalaLibSounds.ITEM_THROW;
     }
 
     public final void playThrowSound(PlayerEntity player) {

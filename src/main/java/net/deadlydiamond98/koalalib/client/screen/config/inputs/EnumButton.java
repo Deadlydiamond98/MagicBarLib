@@ -3,10 +3,6 @@ package net.deadlydiamond98.koalalib.client.screen.config.inputs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.ApiStatus;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EnumButton extends ButtonWidget implements IConfigEntry {
     private final int originalY;

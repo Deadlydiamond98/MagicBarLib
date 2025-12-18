@@ -9,6 +9,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+@Deprecated(forRemoval = true)
 public abstract class MaxMagicModifierItem extends Item implements IShowsMagicBar {
     protected final int magicIncrement;
     protected final boolean replenish;
@@ -38,14 +39,14 @@ public abstract class MaxMagicModifierItem extends Item implements IShowsMagicBa
     protected abstract boolean canUse(World world, PlayerEntity user, Hand hand);
 
     protected void updateMaxMagic(World world, PlayerEntity user, Hand hand) {
-        MagicBarHelper.increaseMaxMana(user, this.magicIncrement, this.replenish);
-
-        if (this.cooldown > 0) {
-            user.getItemCooldownManager().set(this, this.cooldown);
-        }
-
-        if (!user.isCreative()) {
-            user.getStackInHand(hand).decrement(1);
-        }
+//        MagicBarHelper.increaseMaxMana(user, this.magicIncrement, this.replenish);
+//
+//        if (this.cooldown > 0) {
+//            user.getItemCooldownManager().set(this, this.cooldown);
+//        }
+//
+//        if (!user.isCreative()) {
+//            user.getStackInHand(hand).decrement(1);
+//        }
     }
 }

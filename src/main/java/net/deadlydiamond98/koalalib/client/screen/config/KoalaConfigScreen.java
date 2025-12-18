@@ -1,6 +1,5 @@
 package net.deadlydiamond98.koalalib.client.screen.config;
 
-import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.client.screen.config.entry.ConfigEntries;
 import net.deadlydiamond98.koalalib.client.screen.config.entry.OldScreenPartsEntries;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
@@ -12,7 +11,6 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;

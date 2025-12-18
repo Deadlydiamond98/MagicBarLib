@@ -9,7 +9,6 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.RecipeProvider;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import org.jetbrains.annotations.Nullable;
 

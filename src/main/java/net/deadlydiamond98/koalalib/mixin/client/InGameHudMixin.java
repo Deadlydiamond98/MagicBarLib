@@ -2,10 +2,11 @@ package net.deadlydiamond98.koalalib.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.deadlydiamond98.koalalib.common.effect.CustomHudIconEffect;
-import net.deadlydiamond98.koalalib.util.mixindata.player.ICustomHudBarTextureMixinData;
+import net.deadlydiamond98.koalalib.common.effect.IHudIconEffect;
+import net.deadlydiamond98.koalalib.util.mixinterfaces.player.ICustomHudBarTextureMixinData;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -78,17 +79,19 @@ public abstract class InGameHudMixin {
             }
         }
 
-        for (CustomHudIconEffect effect : CustomHudIconEffect.CUSTOM_HUD_RENDER_EFFECTS) {
-            if (this.getCameraPlayer().hasStatusEffect(effect) && effect.getIconType().canRender(isHeart)) {
-                if (isOutline) {
-                    if ((effect.customHeartOutline() && isHeart && !blink) || (effect.customShankOutline() && !isHeart)) {
-                        koalalib$renderHudOutline(context, effect.getTexture(this.getCameraPlayer()), x, y, (isHeart ? 0 : 2));
+        for (StatusEffectInstance instance : this.getCameraPlayer().getStatusEffects()) {
+            if (instance.getEffectType() instanceof IHudIconEffect effect) {
+                if (effect.getIconType().canRender(isHeart)) {
+                    if (isOutline) {
+                        if ((effect.customHeartOutline() && isHeart && !blink) || (effect.customShankOutline() && !isHeart)) {
+                            koalalib$renderHudOutline(context, effect.getIconsTexture(this.getCameraPlayer()), x, y, (isHeart ? 0 : 2));
+                            return true;
+                        }
+                        return false;
+                    } else {
+                        koalalib$renderHudPart(context, effect.getIconsTexture(this.getCameraPlayer()), x, y, (isHeart ? 0 : 2), half, blink && effect.canHeartBlink(), hardcore);
                         return true;
                     }
-                    return false;
-                } else {
-                    koalalib$renderHudPart(context, effect.getTexture(this.getCameraPlayer()), x, y, (isHeart ? 0 : 2), half, blink && effect.canHeartBlink(), hardcore);
-                    return true;
                 }
             }
         }
