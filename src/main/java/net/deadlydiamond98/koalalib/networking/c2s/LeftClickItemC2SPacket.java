@@ -1,8 +1,9 @@
-package net.deadlydiamond98.koalalib.networking;
+package net.deadlydiamond98.koalalib.networking.c2s;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.common.items.interaction.ISwingAction;
 import net.deadlydiamond98.koalalib.util.mixinterfaces.player.IPlayerOtherMixinData;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.Item;
 import net.minecraft.network.PacketByteBuf;
@@ -20,7 +21,13 @@ public record LeftClickItemC2SPacket() implements CustomPayload {
         return ID;
     }
 
-    public static void recieve(LeftClickItemC2SPacket payload, ServerPlayNetworking.Context context) {
+    public static class Sender {
+        public static void send() {
+            ClientPlayNetworking.send(new LeftClickItemC2SPacket());
+        }
+    }
+
+    public static void receive(LeftClickItemC2SPacket payload, ServerPlayNetworking.Context context) {
         context.server().execute(() -> {
             World world = context.player().getWorld();
             Item item = context.player().getMainHandStack().getItem();

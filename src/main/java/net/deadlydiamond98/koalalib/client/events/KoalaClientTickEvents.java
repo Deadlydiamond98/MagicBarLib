@@ -4,8 +4,9 @@ import net.deadlydiamond98.koalalib.common.blocks.interaction.IHitBlockAction;
 import net.deadlydiamond98.koalalib.common.entity.IHitEntityAction;
 import net.deadlydiamond98.koalalib.common.items.interaction.ISwingAction;
 import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
-import net.deadlydiamond98.koalalib.networking.oldc2s.PunchBlockC2SPacket;
-import net.deadlydiamond98.koalalib.networking.oldc2s.PunchEntityC2SPacket;
+import net.deadlydiamond98.koalalib.networking.c2s.LeftClickItemC2SPacket;
+import net.deadlydiamond98.koalalib.networking.c2s.PunchBlockC2SPacket;
+import net.deadlydiamond98.koalalib.networking.c2s.PunchEntityC2SPacket;
 import net.deadlydiamond98.koalalib.updater.KoalaUpdateChecker;
 import net.deadlydiamond98.koalalib.util.mixinterfaces.player.IPlayerOtherMixinData;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -67,7 +68,7 @@ public class KoalaClientTickEvents {
             swingAction.attack(world, player);
         }
         ((IPlayerOtherMixinData) player).koalalib$setAttacking(true);
-        LeftClickItemC2SPacket.send();
+        LeftClickItemC2SPacket.Sender.send();
     }
 
     private static void handleTargetAtkAction(MinecraftClient client, World world) {
@@ -79,14 +80,14 @@ public class KoalaClientTickEvents {
 
                 if (state.getBlock() instanceof IHitBlockAction hitBlock) {
                     hitBlock.attemptAttack(wasAttacking, state, pos, world, client.player);
-                    PunchBlockC2SPacket.send(wasAttacking, pos);
+                    PunchBlockC2SPacket.Sender.send(wasAttacking, pos);
                 }
             } else if (hitResult.getType() == HitResult.Type.ENTITY) {
                 Entity entity = ((EntityHitResult) hitResult).getEntity();
 
                 if (entity instanceof IHitEntityAction hitEntity) {
                     hitEntity.attemptAttack(wasAttacking, entity, world, client.player);
-                    PunchEntityC2SPacket.send(wasAttacking, entity);
+                    PunchEntityC2SPacket.Sender.send(wasAttacking, entity);
                 }
             }
         }

@@ -34,7 +34,7 @@ public class KoalaLib implements ModInitializer {
 		KoalaLibItems.register();
 		KoalaLibSounds.register();
 		MagicBarCommands.register();
-		KoalaPackets.registerNetworkingServer();
+		KoalaPackets.Server.registerNetworkingServer();
 
 		KoalaAfterDeathEvents.register();
 		KoalaOnJoinServerEvent.register();

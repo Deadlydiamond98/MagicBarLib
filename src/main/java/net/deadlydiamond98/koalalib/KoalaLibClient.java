@@ -12,7 +12,7 @@ public class KoalaLibClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		KoalaPackets.registerNetworkingClient();
+		KoalaPackets.Client.registerNetworkingClient();
 
 		HudRenderCallback.EVENT.register(new MagicBarHudRenderer());
 		KoalaItemTooltipEvents.register();

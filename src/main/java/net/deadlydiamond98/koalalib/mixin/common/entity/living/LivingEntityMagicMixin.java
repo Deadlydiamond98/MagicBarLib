@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.deadlydiamond98.koalalib.ToggleableContent;
 import net.deadlydiamond98.koalalib.common.items.magic.IShowsMagicBar;
 import net.deadlydiamond98.koalalib.init.KoalaLibEntityAttributes;
-import net.deadlydiamond98.koalalib.networking.olds2c.EntityMagicUpdateS2CPacket;
+import net.deadlydiamond98.koalalib.networking.s2c.EntityMagicUpdateS2CPacket;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
 import net.deadlydiamond98.koalalib.util.mixinterfaces.IMagicBarData;
 import net.minecraft.entity.LivingEntity;
@@ -119,7 +119,7 @@ public abstract class LivingEntityMagicMixin implements IMagicBarData {
         this.koalalib$manaLevel = value;
         LivingEntity entity = (LivingEntity) (Object) this;
         if (!entity.getWorld().isClient() && entity instanceof PlayerEntity player) {
-            EntityMagicUpdateS2CPacket.send((ServerPlayerEntity) player, koalalib$manaLevel);
+            EntityMagicUpdateS2CPacket.Sender.send((ServerPlayerEntity) player, koalalib$manaLevel);
         }
     }
 
