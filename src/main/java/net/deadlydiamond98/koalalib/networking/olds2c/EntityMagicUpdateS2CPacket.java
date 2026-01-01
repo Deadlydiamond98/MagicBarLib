@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.networking.s2c;
+package net.deadlydiamond98.koalalib.networking.olds2c;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;

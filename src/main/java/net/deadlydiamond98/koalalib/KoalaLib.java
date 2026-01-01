@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class KoalaLib implements ModInitializer {
 	public static final String MOD_ID = "koalalib";
 
-	public static final Identifier ZELDA_FONT = new Identifier(MOD_ID, "zeldafont");
+	public static final Identifier ZELDA_FONT = Identifier.of(MOD_ID, "zeldafont");
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
@@ -34,7 +34,7 @@ public class KoalaLib implements ModInitializer {
 		KoalaLibItems.register();
 		KoalaLibSounds.register();
 		MagicBarCommands.register();
-		KoalaPackets.registerC2SPackets();
+		KoalaPackets.registerNetworkingServer();
 
 		KoalaAfterDeathEvents.register();
 		KoalaOnJoinServerEvent.register();

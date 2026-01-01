@@ -12,7 +12,7 @@ public class KoalaLibItems {
     public static final Item ENDER_SOUL = register("ender_soul", new FloatingItem(new Item.Settings()));
 
     public static Item register(String itemName, Item item) {
-        return Registry.register(Registries.ITEM, new Identifier(KoalaLib.MOD_ID, itemName), item);
+        return Registry.register(Registries.ITEM, Identifier.of(KoalaLib.MOD_ID, itemName), item);
     }
 
     public static void register() {}

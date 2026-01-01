@@ -1,3 +1,4 @@
 accessWidener v2 named
 
 accessible class net/minecraft/client/gui/hud/InGameHud$HeartType
+accessible method net/minecraft/component/type/BundleContentsComponent <init> (Ljava/util/List;Lorg/apache/commons/lang3/math/Fraction;)V

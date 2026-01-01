@@ -1,13 +1,15 @@
 package net.deadlydiamond98.koalalib.common.items.vanillamodified;
 
 import net.deadlydiamond98.koalalib.util.KoalaNbtHelper;
-import net.minecraft.client.item.BundleTooltipData;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.item.TooltipData;
+import net.deadlydiamond98.koalalib.util.ItemstackNbtUtil;
+import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.*;
+import net.minecraft.item.tooltip.BundleTooltipData;
+import net.minecraft.item.tooltip.TooltipData;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -19,7 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
+import org.apache.commons.lang3.math.Fraction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -110,7 +112,7 @@ public class CustomBundleItem extends Item {
             }
 
             for (ItemStack bundleStack : stacks) {
-                if (ItemStack.canCombine(bundleStack, putStack)) {
+                if (ItemStack.areItemsAndComponentsEqual(bundleStack, putStack)) {
                     bundleStack.increment(putMax);
                     putStack.decrement(putMax);
                     putItemStacks(bundle, stacks);
@@ -119,7 +121,7 @@ public class CustomBundleItem extends Item {
             }
             if (!putStack.isEmpty()) {
                 ItemStack putStackCopy = new ItemStack(putStack.getItem(), putMax);
-                putStackCopy.setNbt(putStack.getNbt());
+                ItemstackNbtUtil.setNbt(putStackCopy, ItemstackNbtUtil.getNbt(putStack));
                 stacks.add(putStackCopy);
                 putStack.decrement(putMax);
                 putItemStacks(bundle, stacks);
@@ -164,9 +166,9 @@ public class CustomBundleItem extends Item {
             List<ItemStack> stacks = getItemStacks(bundle);
 
             for (ItemStack bundleStack : stacks) {
-                if (ItemStack.canCombine(bundleStack, getStack) && bundleStack.getCount() >= count) {
+                if (ItemStack.areItemsAndComponentsEqual(bundleStack, getStack) && bundleStack.getCount() >= count) {
                     ItemStack removedStack = new ItemStack(bundleStack.getItem(), count);
-                    removedStack.setNbt(bundleStack.getNbt());
+                    ItemstackNbtUtil.setNbt(removedStack, ItemstackNbtUtil.getNbt(bundleStack));
                     bundleStack.decrement(count);
                     if (updateContents) {
                         putItemStacks(bundle, stacks);
@@ -311,7 +313,7 @@ public class CustomBundleItem extends Item {
      */
     @Nullable
     protected static NbtList getInventory(ItemStack bundle) {
-        NbtCompound nbtCompound = bundle.getOrCreateNbt();
+        NbtCompound nbtCompound = ItemstackNbtUtil.getOrCreateNbt(bundle);
         if (nbtCompound.contains("Items")) {
             return nbtCompound.getList("Items", 10);
         }
@@ -324,7 +326,7 @@ public class CustomBundleItem extends Item {
      * @param bundle the bundle
      */
     protected static void putInventory(NbtList nbtList, ItemStack bundle) {
-        NbtCompound nbtCompound = bundle.getOrCreateNbt();
+        NbtCompound nbtCompound = ItemstackNbtUtil.getOrCreateNbt(bundle);
         nbtCompound.put("Items", nbtList);
     }
 
@@ -332,7 +334,7 @@ public class CustomBundleItem extends Item {
     // GUI /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         tooltip.add(Text.translatable("item.minecraft.bundle.fullness", getOccupancy(stack), this.maxStorage).formatted(Formatting.GRAY));
     }
 
@@ -340,7 +342,8 @@ public class CustomBundleItem extends Item {
     public Optional<TooltipData> getTooltipData(ItemStack stack) {
         DefaultedList<ItemStack> bundledItems = DefaultedList.of();
         bundledItems.addAll(getItemStacks(stack));
-        return Optional.of(new BundleTooltipData(bundledItems, isFull(stack) ? 64 : 0));
+        // TODO: THIS IS PROBABLY A REALLY HORRIBLE WAY OF DOING THIS, BUT I CAN RETURN TO THIS LATER!
+        return Optional.of(new BundleContentsComponent(getItemStacks(stack), Fraction.getFraction(getOccupancy(stack))));
     }
 
     @Override

@@ -38,7 +38,7 @@ public class KoalaNbtHelper {
     }
 
     public static Identifier identifierFromNBT(NbtCompound nbt) {
-        return new Identifier(nbt.getString("Namespace"), nbt.getString("Path"));
+        return Identifier.of(nbt.getString("Namespace"), nbt.getString("Path"));
     }
 
     /**
@@ -51,8 +51,8 @@ public class KoalaNbtHelper {
         Identifier identifier = Registries.ITEM.getId(stack.getItem());
         nbt.putString("id", identifier.toString());
         nbt.putInt("Count", stack.getCount());
-        if (stack.getNbt() != null) {
-            nbt.put("tag", stack.getNbt().copy());
+        if (ItemstackNbtUtil.getNbt(stack) != null) {
+            nbt.put("tag", ItemstackNbtUtil.getNbt(stack).copy());
         }
         return nbt;
     }
@@ -64,19 +64,19 @@ public class KoalaNbtHelper {
      */
     public static ItemStack largeItemStackFromNBT(NbtCompound nbt) {
         try {
-            Item item = Registries.ITEM.get(new Identifier(nbt.getString("id")));
+            Item item = Registries.ITEM.get(Identifier.of(nbt.getString("id")));
             int count = nbt.getInt("Count");
 
             Optional<NbtCompound> itemNBT = Optional.empty();
             if (nbt.contains("tag", 10)) {
                 itemNBT = Optional.of(nbt.getCompound("tag"));
-                item.postProcessNbt(itemNBT.get());
+//                item.postProcessNbt(itemNBT.get());
             }
 
             ItemStack stack = new ItemStack(item, count);
-            itemNBT.ifPresent(stack::setNbt);
+            itemNBT.ifPresent(nbtCompound -> ItemstackNbtUtil.setNbt(stack, nbtCompound));
 
-            if (stack.getItem().isDamageable()) {
+            if (stack.isDamageable()) {
                 stack.setDamage(stack.getDamage());
             }
 

@@ -1,6 +1,7 @@
 package net.deadlydiamond98.koalalib.common.items.vanillamodified;
 
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.player.ItemCooldownManager;
@@ -99,7 +100,7 @@ public class CustomShieldItem extends ShieldItem {
         if (amount >= 3) {
             int i = 1 + MathHelper.floor(amount);
             Hand hand = user.getActiveHand();
-            stack.damage(i, user, (player) -> player.sendToolBreakStatus(hand));
+            stack.damage(i, user, LivingEntity.getSlotForHand(hand));
 
             if (stack.isEmpty()) {
                 if (hand == Hand.MAIN_HAND) {

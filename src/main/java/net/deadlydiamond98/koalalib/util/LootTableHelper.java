@@ -7,6 +7,8 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
@@ -33,12 +35,12 @@ public class LootTableHelper {
      */
     public static void addLootToMob(LivingEntity entity, DamageSource damageSource, Identifier lootTableID, Consumer<ItemStack> customDropLootEvent) {
         if (!entity.getWorld().isClient) {
-            LootTable lootTable = entity.getWorld().getServer().getLootManager().getLootTable(lootTableID);
+            LootTable lootTable = entity.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, lootTableID));
             LootContextParameterSet.Builder builder = (new LootContextParameterSet.Builder((ServerWorld)entity.getWorld()))
                     .add(LootContextParameters.THIS_ENTITY, entity).add(LootContextParameters.ORIGIN, entity.getPos())
                     .add(LootContextParameters.DAMAGE_SOURCE, damageSource)
-                    .addOptional(LootContextParameters.KILLER_ENTITY, damageSource.getAttacker())
-                    .addOptional(LootContextParameters.DIRECT_KILLER_ENTITY, damageSource.getSource());
+                    .addOptional(LootContextParameters.THIS_ENTITY, damageSource.getAttacker())
+                    .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, damageSource.getSource());
 
             LootContextParameterSet lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
             lootTable.generateLoot(lootContextParameterSet, entity.getLootTableSeed(), customDropLootEvent);

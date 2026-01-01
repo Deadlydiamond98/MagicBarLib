@@ -12,6 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Style;
@@ -22,7 +23,7 @@ import net.minecraft.world.GameMode;
 
 public class MagicBarHudRenderer implements HudRenderCallback {
 
-    private static final Identifier MAGIC_BAR_TEXTURE = new Identifier(KoalaLib.MOD_ID, "textures/gui/magic_bar.png");
+    private static final Identifier MAGIC_BAR_TEXTURE = Identifier.of(KoalaLib.MOD_ID, "textures/gui/magic_bar.png");
     private static float displayedManaLvl;
 
     private static final float LERP_VALUE = 0.05f;
@@ -39,7 +40,7 @@ public class MagicBarHudRenderer implements HudRenderCallback {
     private static float globalAlpha = 1; // used for transparency for everything
 
     @Override
-    public void onHudRender(DrawContext drawContext, float tickDelta) {
+    public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
         MinecraftClient client = MinecraftClient.getInstance();
         MatrixStack matrices = drawContext.getMatrices();
 
@@ -55,7 +56,7 @@ public class MagicBarHudRenderer implements HudRenderCallback {
         int posX = (width / 2) - 320 + KoalaLibConfigs.MagicBar.manaBarPositionX;
         int posY = height - 42 - KoalaLibConfigs.MagicBar.manaBarPositionY;
 
-        renderMagicBar(drawContext, matrices, client, posX, posY, tickDelta);
+        renderMagicBar(drawContext, matrices, client, posX, posY, tickCounter.getTickDelta(true));
     }
 
     /**

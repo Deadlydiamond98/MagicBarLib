@@ -51,6 +51,9 @@ public class KoalaConfigScreen extends GameOptionsScreen {
     }
 
     @Override
+    protected void addOptions() {}
+
+    @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderDirtBGStuff(context, false);
 
@@ -95,11 +98,11 @@ public class KoalaConfigScreen extends GameOptionsScreen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         if (mouseX > this.width / 2.0 || this.modSelections.getMaxScroll() <= 0) {
-            this.configEntries.scrollEntries(this.scrollBar.scroll(amount, this.height, this.configEntries));
+            this.configEntries.scrollEntries(this.scrollBar.scroll(verticalAmount, this.height, this.configEntries));
         }
-        return super.mouseScrolled(mouseX, mouseY, amount);
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
     private void renderDirtBGStuff(DrawContext context, boolean isShadow) {
@@ -111,7 +114,7 @@ public class KoalaConfigScreen extends GameOptionsScreen {
         if (!isShadow) {
             // Background Texture
             context.setShaderColor(0.125F, 0.125F, 0.125F, 1.0F);
-            context.drawTexture(Screen.OPTIONS_BACKGROUND_TEXTURE, left, top, (float)right, (float)(bottom + (int)this.modSelections.getScrollAmount()),
+            context.drawTexture(Screen.MENU_BACKGROUND_TEXTURE, left, top, (float)right, (float)(bottom + (int)this.modSelections.getScrollAmount()),
                     right - left, bottom - top, 32, 32);
             context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             context.enableScissor(left, top, right, bottom);
@@ -119,8 +122,8 @@ public class KoalaConfigScreen extends GameOptionsScreen {
             // Shadow Things
             context.disableScissor();
             context.setShaderColor(0.25F, 0.25F, 0.25F, 1.0F);
-            context.drawTexture(Screen.OPTIONS_BACKGROUND_TEXTURE, left, 0, 0.0F, 0.0F, this.width, top, 32, 32);
-            context.drawTexture(Screen.OPTIONS_BACKGROUND_TEXTURE, left, bottom, 0.0F, (float)bottom, this.width, this.height - bottom, 32, 32);
+            context.drawTexture(Screen.MENU_BACKGROUND_TEXTURE, left, 0, 0.0F, 0.0F, this.width, top, 32, 32);
+            context.drawTexture(Screen.MENU_BACKGROUND_TEXTURE, left, bottom, 0.0F, (float)bottom, this.width, this.height - bottom, 32, 32);
             context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             context.fillGradient(RenderLayer.getGuiOverlay(), left, top, right, top + 4, -16777216, 0, 0);
             context.fillGradient(RenderLayer.getGuiOverlay(), left, bottom - 4, right, bottom, 0, -16777216, 0);

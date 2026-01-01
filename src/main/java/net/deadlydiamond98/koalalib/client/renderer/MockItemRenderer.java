@@ -52,20 +52,20 @@ public class MockItemRenderer {
         int height = (width > 0) ? pixelData[0].length : 0;
 
         Matrix4f pose = poseStack.peek().getPositionMatrix();
-        Matrix3f normal = poseStack.peek().getNormalMatrix();
+        MatrixStack.Entry entry = poseStack.peek();
 
-        renderItem(pixelData, buffer, pose, normal, halfZ, light, width, height, red, green, blue);
+        renderItem(pixelData, buffer, pose, entry, halfZ, light, width, height, red, green, blue);
 
         poseStack.pop();
     }
 
 
-    private static void renderItem(Boolean[][] pixelData, VertexConsumer buffer, Matrix4f pose, Matrix3f normal,
+    private static void renderItem(Boolean[][] pixelData, VertexConsumer buffer, Matrix4f pose, MatrixStack.Entry entry,
                                    float halfZ, int light, int width, int height, int red, int green, int blue) {
 
         // Front face
         addQuad(
-                buffer, pose, normal,
+                buffer, pose, entry,
                 0, 0, halfZ,
                 1, 0, halfZ,
                 1, 1, halfZ,
@@ -77,7 +77,7 @@ public class MockItemRenderer {
 
         // Back face
         addQuad(
-                buffer, pose, normal,
+                buffer, pose, entry,
                 1, 0, -halfZ,
                 0, 0, -halfZ,
                 0, 1, -halfZ,
@@ -102,7 +102,7 @@ public class MockItemRenderer {
                 if (x == 0 || !pixelData[x - 1][y]) {
                     float[][] sideUV = computeVerticalSliceUV(x, y, y + 1, width, height);
                     addQuad(
-                            buffer, pose, normal,
+                            buffer, pose, entry,
                             scaledX, scaledYNext, halfZ,
                             scaledX, scaledYNext, -halfZ,
                             scaledX, scaledY, -halfZ,
@@ -114,7 +114,7 @@ public class MockItemRenderer {
                 if (x == width - 1 || !pixelData[x + 1][y]) {
                     float[][] sideUV = computeVerticalSliceUV(x, y, y + 1, width, height);
                     addQuad(
-                            buffer, pose, normal,
+                            buffer, pose, entry,
                             scaledXNext, scaledYNext, -halfZ,
                             scaledXNext, scaledYNext, halfZ,
                             scaledXNext, scaledY, halfZ,
@@ -127,7 +127,7 @@ public class MockItemRenderer {
                 if (y == 0 || !pixelData[x][y - 1]) {
                     float[][] sideUV = computeHorizontalSliceUV(x, x + 1, y, width, height);
                     addQuad(
-                            buffer, pose, normal,
+                            buffer, pose, entry,
                             scaledXNext, scaledY, -halfZ,
                             scaledXNext, scaledY, halfZ,
                             scaledX, scaledY, halfZ,
@@ -139,7 +139,7 @@ public class MockItemRenderer {
                 if (y == height - 1 || !pixelData[x][y + 1]) {
                     float[][] sideUV = computeHorizontalSliceUV(x, x + 1, y, width, height);
                     addQuad(
-                            buffer, pose, normal,
+                            buffer, pose, entry,
                             scaledXNext, scaledYNext, halfZ,
                             scaledXNext, scaledYNext, -halfZ,
                             scaledX, scaledYNext, -halfZ,
@@ -186,7 +186,7 @@ public class MockItemRenderer {
         };
     }
 
-    private static void addQuad(VertexConsumer buffer, Matrix4f pose, Matrix3f normalMatrix,
+    private static void addQuad(VertexConsumer buffer, Matrix4f pose, MatrixStack.Entry entry,
                                 float x0, float y0, float z0, float x1, float y1, float z1,
                                 float x2, float y2, float z2, float x3, float y3, float z3,
                                 float[] uv0, float[] uv1, float[] uv2, float[] uv3,
@@ -197,29 +197,25 @@ public class MockItemRenderer {
                 .texture(uv0[0], uv0[1])
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .light(light)
-                .normal(normalMatrix, nx, ny, nz)
-                .next();
+                .normal(entry, nx, ny, nz);
         buffer.vertex(pose, x1, y1, z1)
                 .color(r, g, b, 255)
                 .texture(uv1[0], uv1[1])
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .light(light)
-                .normal(normalMatrix, nx, ny, nz)
-                .next();
+                .normal(entry, nx, ny, nz);
         buffer.vertex(pose, x2, y2, z2)
                 .color(r, g, b, 255)
                 .texture(uv2[0], uv2[1])
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .light(light)
-                .normal(normalMatrix, nx, ny, nz)
-                .next();
+                .normal(entry, nx, ny, nz);
         buffer.vertex(pose, x3, y3, z3)
                 .color(r, g, b, 255)
                 .texture(uv3[0], uv3[1])
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .light(light)
-                .normal(normalMatrix, nx, ny, nz)
-                .next();
+                .normal(entry, nx, ny, nz);
     }
 
     public static Boolean[][] loadPixelData(Identifier texture, int alphaThreshold) {

@@ -19,9 +19,9 @@ import net.minecraft.world.gen.feature.EndPortalFeature;
 public class KoalaAfterDeathEvents {
 
     // Ender Soul Loot Table IDs
-    public static final Identifier SOUL = new Identifier(KoalaLib.MOD_ID, "entities/endersoul_reg_mob");
-    public static final Identifier SOUL_MINIBOSS = new Identifier(KoalaLib.MOD_ID, "entities/endersoul_reg_mob");
-    private static final Identifier SOUL_DRAGON = new Identifier(KoalaLib.MOD_ID, "entities/endersoul_dragon");
+    public static final Identifier SOUL = Identifier.of(KoalaLib.MOD_ID, "entities/endersoul_reg_mob");
+    public static final Identifier SOUL_MINIBOSS = Identifier.of(KoalaLib.MOD_ID, "entities/endersoul_reg_mob");
+    private static final Identifier SOUL_DRAGON = Identifier.of(KoalaLib.MOD_ID, "entities/endersoul_dragon");
 
     public static void register() {
         ServerLivingEntityEvents.AFTER_DEATH.register(KoalaAfterDeathEvents::dropEnderSouls);

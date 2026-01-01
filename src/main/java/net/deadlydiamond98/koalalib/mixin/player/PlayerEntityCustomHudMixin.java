@@ -1,6 +1,6 @@
 package net.deadlydiamond98.koalalib.mixin.player;
 
-import net.deadlydiamond98.koalalib.networking.s2c.CustomHudRendererS2CPacket;
+import net.deadlydiamond98.koalalib.networking.olds2c.CustomHudRendererS2CPacket;
 import net.deadlydiamond98.koalalib.util.mixinterfaces.player.ICustomHudBarTextureMixinData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;

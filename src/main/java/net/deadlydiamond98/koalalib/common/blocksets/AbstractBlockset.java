@@ -2,12 +2,12 @@ package net.deadlydiamond98.koalalib.common.blocksets;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -85,7 +85,7 @@ public class AbstractBlockset {
     /**
      * Call this to add recipes for the blocks
      */
-    public void generateRecipes(Consumer<RecipeJsonProvider> exporter) {}
+    public void generateRecipes(RecipeExporter exporter) {}
 
     /**
      * Call this in creative tab method to add all the blocks to a creative tab<br><br>
@@ -151,7 +151,7 @@ public class AbstractBlockset {
      * @return Returns your registered block!
      */
     protected final Block register(String modID, String id, Block block) {
-        return register(new Identifier(modID, id), block);
+        return register(Identifier.of(modID, id), block);
     }
 
     /**
@@ -173,7 +173,7 @@ public class AbstractBlockset {
      * @param block The block class that's being registered
      */
     protected final void registerBlockItem(Identifier id, Block block) {
-        Registry.register(Registries.ITEM, id, new BlockItem(block, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, id, new BlockItem(block, new Item.Settings()));
     }
 
     @FunctionalInterface

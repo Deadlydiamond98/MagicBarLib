@@ -9,7 +9,7 @@ public interface IHudIconEffect {
     IconType getIconType();
 
     default Identifier getIconsTexture(PlayerEntity player) {
-        return new Identifier(KoalaLib.MOD_ID, "textures/gui/debug_hud_icons.png");
+        return Identifier.of(KoalaLib.MOD_ID, "textures/gui/debug_hud_icons.png");
     }
 
     default boolean canHeartBlink() {

@@ -7,12 +7,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.recipe.book.RecipeCategory;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 public class BaseStairSlabBlockset extends AbstractBlockset {
     private final boolean stripEndS;
@@ -69,7 +67,7 @@ public class BaseStairSlabBlockset extends AbstractBlockset {
     }
 
     @Override
-    public void generateRecipes(Consumer<RecipeJsonProvider> exporter) {
+    public void generateRecipes(RecipeExporter exporter) {
         super.generateRecipes(exporter);
         RecipeProvider.offerSlabRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.slab, this.base);
         RecipeDatagenUtil.createStairRecipe(exporter, this.stair, this.base);
@@ -80,7 +78,7 @@ public class BaseStairSlabBlockset extends AbstractBlockset {
      * @param exporter
      * @param additionalInputs Blocks that aren't the base block that can be turned into block variants (ex: stone -> stone brick slab)
      */
-    public final void generateRecipesStone(Consumer<RecipeJsonProvider> exporter, Block... additionalInputs) {
+    public final void generateRecipesStone(RecipeExporter exporter, Block... additionalInputs) {
         generateRecipes(exporter);
         stoneCutterRecipes(exporter, this.base);
         for (Block block : additionalInputs) {
@@ -93,7 +91,7 @@ public class BaseStairSlabBlockset extends AbstractBlockset {
      * @param exporter
      * @param block Block that is passed in to be cut into variants
      */
-    protected void stoneCutterRecipes(Consumer<RecipeJsonProvider> exporter, Block block) {
+    protected void stoneCutterRecipes(RecipeExporter exporter, Block block) {
         if (block != this.base) {
             RecipeProvider.offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.base, block);
         }

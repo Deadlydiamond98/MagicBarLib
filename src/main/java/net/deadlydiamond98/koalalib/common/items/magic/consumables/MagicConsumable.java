@@ -2,6 +2,8 @@ package net.deadlydiamond98.koalalib.common.items.magic.consumables;
 
 import net.deadlydiamond98.koalalib.common.items.magic.IShowsMagicBar;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -29,8 +31,10 @@ public class MagicConsumable extends Item implements IShowsMagicBar {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack consumable = user.getStackInHand(hand);
 
-        if (isFood()) {
-            return eatItem(consumable, world, user, hand);
+        FoodComponent foodComponent = consumable.get(DataComponentTypes.FOOD);
+
+        if (foodComponent != null) {
+            return eatItem(consumable, world, user, hand, foodComponent);
         } else {
             return consumeItem(consumable, world, user, hand);
         }
@@ -56,8 +60,8 @@ public class MagicConsumable extends Item implements IShowsMagicBar {
     /**
      * Handles eating the item if a food component is attached to the item
      */
-    protected TypedActionResult<ItemStack> eatItem(ItemStack consumable, World world, PlayerEntity user, Hand hand) {
-        if (user.canConsume(this.getFoodComponent().isAlwaysEdible()) || canUse(consumable, world, user, hand)) {
+    protected TypedActionResult<ItemStack> eatItem(ItemStack consumable, World world, PlayerEntity user, Hand hand, FoodComponent foodComponent) {
+        if (user.canConsume(foodComponent.canAlwaysEat()) || canUse(consumable, world, user, hand)) {
             user.setCurrentHand(hand);
             return TypedActionResult.consume(consumable);
         } else {

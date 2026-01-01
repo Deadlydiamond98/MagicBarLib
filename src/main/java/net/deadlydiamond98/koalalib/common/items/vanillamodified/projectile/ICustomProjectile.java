@@ -11,6 +11,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 public interface ICustomProjectile {
     EntityType<?> getEntityType();
 
@@ -40,6 +42,6 @@ public interface ICustomProjectile {
 
     @Nullable
     default Entity getEntity(ServerWorld server, BlockPos blockPos) {
-        return getEntityType().create(server, null, null, blockPos, SpawnReason.DISPENSER, false, false);
+        return getEntityType().create(server, null, blockPos, SpawnReason.DISPENSER, false, false);
     }
 }

@@ -28,7 +28,7 @@ public interface IMagicItem extends IShowsMagicBar {
      */
     default int getMagicCost(PlayerEntity player, ItemStack stack) {
         MagicCostModifier modifier = new MagicCostModifier();
-        modifier.applyEnchantments(stack);
+//        modifier.applyEnchantments(stack);
         return modifier.calculate(getBaseMagicCost(player, stack));
     }
 
@@ -124,12 +124,12 @@ public interface IMagicItem extends IShowsMagicBar {
         if (titleIndex != -1) {
             int index = titleIndex + 3;
             if (stack.getItem() instanceof ArmorItem armor) {
-                index += armor.getMaterial().getKnockbackResistance() > 0 ? 1 : 0;
+                index += armor.getMaterial().value().knockbackResistance() > 0 ? 1 : 0;
             }
             return index;
         }
         // If no title is currently present, the index will be at the end of the tooltips (but before debug info)
-        return Math.max(0, maxIndex - (debugEnabled ? (stack.hasNbt() ? 2 : 1) : 0));
+        return Math.max(0, maxIndex - (debugEnabled ? (!stack.getComponents().isEmpty() ? 2 : 1) : 0));
     }
 
     @Deprecated(forRemoval = true)

@@ -1,6 +1,5 @@
 package net.deadlydiamond98.koalalib.util.magic;
 
-import net.deadlydiamond98.koalalib.common.enchant.MagicModifierEnchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 
@@ -26,16 +25,16 @@ public class MagicCostModifier {
         }
     }
 
-    public void applyEnchantments(ItemStack stack) {
-        EnchantmentHelper.get(stack).forEach((enchant, lvl) -> {
-            if (enchant instanceof MagicModifierEnchantment magicEnchantment) {
-                applyModifier(
-                        magicEnchantment.getOperationModifer(enchant, lvl),
-                        magicEnchantment.getCostModifier(enchant, lvl)
-                );
-            }
-        });
-    }
+//    public void applyEnchantments(ItemStack stack) {
+//        EnchantmentHelper.get(stack).forEach((enchant, lvl) -> {
+//            if (enchant instanceof MagicModifierEnchantment magicEnchantment) {
+//                applyModifier(
+//                        magicEnchantment.getOperationModifer(enchant, lvl),
+//                        magicEnchantment.getCostModifier(enchant, lvl)
+//                );
+//            }
+//        });
+//    }
 
     public int calculate(int base) {
         double d = base;

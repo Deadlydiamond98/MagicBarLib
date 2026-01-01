@@ -2,10 +2,10 @@ package net.deadlydiamond98.koalalib.mixin.player;
 
 import net.deadlydiamond98.koalalib.common.items.vanillamodified.CustomShieldItem;
 import net.deadlydiamond98.koalalib.events.PlayerAttackingCallback;
-import net.deadlydiamond98.koalalib.networking.s2c.HasAdvancementS2CPacket;
+import net.deadlydiamond98.koalalib.networking.olds2c.HasAdvancementS2CPacket;
 import net.deadlydiamond98.koalalib.util.PseudoRandom;
 import net.deadlydiamond98.koalalib.util.mixinterfaces.player.IPlayerOtherMixinData;
-import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -52,7 +52,7 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
     }
 
     @Inject(method = "disableShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;clearActiveItem()V"))
-    private void koalalib$disableSheild(boolean sprinting, CallbackInfo ci) {
+    private void koalalib$disableSheild(CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
         CustomShieldItem.disableShield(player, this.getItemCooldownManager());
     }
@@ -93,7 +93,7 @@ public abstract class PlayerEntityMixin implements IPlayerOtherMixinData {
                 MinecraftServer server = player.getServer();
 
                 if (server != null) {
-                    Advancement advancement = server.getAdvancementLoader().get(new Identifier(advancementID));
+                    AdvancementEntry advancement = server.getAdvancementLoader().get(Identifier.of(advancementID));
 
                     if (advancement != null) {
                         boolean bl = serverPlayer.getAdvancementTracker().getProgress(advancement).isDone();

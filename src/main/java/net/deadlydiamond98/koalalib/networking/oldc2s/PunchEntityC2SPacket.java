@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.networking.c2s;
+package net.deadlydiamond98.koalalib.networking.oldc2s;
 
 import net.deadlydiamond98.koalalib.KoalaLib;
 import net.deadlydiamond98.koalalib.common.entity.IHitEntityAction;

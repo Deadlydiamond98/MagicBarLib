@@ -62,7 +62,7 @@ public class IgnitionHelper {
         playSound(user, KoalaLibSounds.TOOL_IGNITE, 0.4f, 0.8f);
         if (!user.isCreative()) {
             if (hand != null) {
-                stack.damage(1, user, playerx -> playerx.sendToolBreakStatus(hand));
+                stack.damage(1, user, LivingEntity.getSlotForHand(hand));
             } else {
                 stack.setDamage(stack.getDamage() + 1);
             }

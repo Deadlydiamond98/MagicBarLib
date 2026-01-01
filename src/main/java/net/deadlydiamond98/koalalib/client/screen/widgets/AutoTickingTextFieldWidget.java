@@ -16,10 +16,11 @@ public class AutoTickingTextFieldWidget extends TextFieldWidget {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.renderWidget(context, mouseX, mouseY, delta);
         if (Calendar.getInstance().getTimeInMillis() % 2 == 0) {
-            this.tick(); // This is here to animate the typing
+            // TODO: FIX THIS
+//            this.tick(); // This is here to animate the typing
         }
-        super.render(context, mouseX, mouseY, delta);
     }
 }

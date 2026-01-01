@@ -29,7 +29,7 @@ public class SplashScreenMixin {
         ResourceManager resourceManager = MinecraftClient.getInstance().getResourceManager();
 
         FabricLoader.getInstance().getAllMods().forEach(container -> {
-            Identifier splashFilePath = new Identifier(container.getMetadata().getId(), "koala_splashes.txt");
+            Identifier splashFilePath = Identifier.of(container.getMetadata().getId(), "koala_splashes.txt");
 
             if (resourceManager.getResource(splashFilePath).isPresent()) {
                 try {

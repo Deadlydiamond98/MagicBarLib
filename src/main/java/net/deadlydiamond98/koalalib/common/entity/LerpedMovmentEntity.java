@@ -59,7 +59,7 @@ public abstract class LerpedMovmentEntity extends Entity {
     }
 
     @Override
-    public void updateTrackedPositionAndAngles(double x, double y, double z, float yaw, float pitch, int interpolationSteps, boolean interpolate) {
+    public void updateTrackedPositionAndAngles(double x, double y, double z, float yaw, float pitch, int interpolationSteps) {
         this.serverX = x;
         this.serverY = y;
         this.serverZ = z;

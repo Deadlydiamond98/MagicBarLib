@@ -112,7 +112,7 @@ public class PostProcessingRegistry {
     public static void processEffects(Framebuffer mainTarget, float f) {
         for(PostEffect postEffect : POST_EFFECTS.values()) {
             if (postEffect.isEnabled() && postEffect.postProcessor != null) {
-                postEffect.postProcessor.render(MinecraftClient.getInstance().getTickDelta());
+                postEffect.postProcessor.render(MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true));
                 mainTarget.beginWrite(false);
             }
         }

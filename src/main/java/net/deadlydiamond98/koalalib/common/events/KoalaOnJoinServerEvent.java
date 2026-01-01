@@ -1,6 +1,6 @@
 package net.deadlydiamond98.koalalib.common.events;
 
-import net.deadlydiamond98.koalalib.networking.s2c.EntityMagicUpdateS2CPacket;
+import net.deadlydiamond98.koalalib.networking.olds2c.EntityMagicUpdateS2CPacket;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;

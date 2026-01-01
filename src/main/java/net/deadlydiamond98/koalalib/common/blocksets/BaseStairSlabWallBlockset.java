@@ -6,7 +6,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.WallBlock;
 import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.recipe.book.RecipeCategory;
 import org.jetbrains.annotations.Nullable;
@@ -33,13 +33,13 @@ public class BaseStairSlabWallBlockset extends BaseStairSlabBlockset {
     }
 
     @Override
-    public void generateRecipes(Consumer<RecipeJsonProvider> exporter) {
+    public void generateRecipes(RecipeExporter exporter) {
         super.generateRecipes(exporter);
         RecipeProvider.offerWallRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.wall, this.base);
     }
 
     @Override
-    protected void stoneCutterRecipes(Consumer<RecipeJsonProvider> exporter, Block block) {
+    protected void stoneCutterRecipes(RecipeExporter exporter, Block block) {
         super.stoneCutterRecipes(exporter, block);
         RecipeProvider.offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.wall, block);
     }

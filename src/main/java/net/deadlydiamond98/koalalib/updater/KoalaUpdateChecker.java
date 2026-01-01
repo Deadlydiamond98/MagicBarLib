@@ -28,7 +28,7 @@ public class KoalaUpdateChecker {
     private static final String MODRINTH_URL = "https://api.modrinth.com/v2/version_file/";
 
     // Version and Loader have a variable so that when I inevitably port the mod, things will be easier
-    private static final String VERSION = "1.20.1";
+    private static final String VERSION = "1.21.1";
     private static final String LOADER = "fabric";
 
     public record UpdatableMod(String name, String url) {}

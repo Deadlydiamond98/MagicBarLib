@@ -76,7 +76,7 @@ public class PhysicsProjectile extends ProjectileEntity {
         }
 
         if (!this.hasNoGravity()) {
-            this.setVelocity(this.getVelocity().add(0.0, -getGravity(), 0.0));
+            this.setVelocity(this.getVelocity().add(0.0, -getPhysicsGravity(), 0.0));
         }
     }
 
@@ -98,20 +98,20 @@ public class PhysicsProjectile extends ProjectileEntity {
         HitResult hitResult = ProjectileUtil.getCollision(this, this::canHit);
         boolean collidedWithPortal = false;
 
-        if (hitResult.getType() == HitResult.Type.BLOCK && this.canEnterPortals) {
-            BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
-            BlockState blockState = this.getWorld().getBlockState(blockPos);
-            if (blockState.isOf(Blocks.NETHER_PORTAL)) {
-                this.setInNetherPortal(blockPos);
-                collidedWithPortal = true;
-            } else if (blockState.isOf(Blocks.END_GATEWAY)) {
-                BlockEntity blockEntity = this.getWorld().getBlockEntity(blockPos);
-                if (blockEntity instanceof EndGatewayBlockEntity && EndGatewayBlockEntity.canTeleport(this)) {
-                    EndGatewayBlockEntity.tryTeleportingEntity(this.getWorld(), blockPos, blockState, this, (EndGatewayBlockEntity) blockEntity);
-                }
-                collidedWithPortal = true;
-            }
-        }
+//        if (hitResult.getType() == HitResult.Type.BLOCK && this.canEnterPortals) {
+//            BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
+//            BlockState blockState = this.getWorld().getBlockState(blockPos);
+//            if (blockState.isOf(Blocks.NETHER_PORTAL)) {
+//                this.setInNetherPortal(blockPos);
+//                collidedWithPortal = true;
+//            } else if (blockState.isOf(Blocks.END_GATEWAY)) {
+//                BlockEntity blockEntity = this.getWorld().getBlockEntity(blockPos);
+//                if (blockEntity instanceof EndGatewayBlockEntity && EndGatewayBlockEntity.canTeleport(this)) {
+//                    EndGatewayBlockEntity.tryTeleportingEntity(this.getWorld(), blockPos, blockState, this, (EndGatewayBlockEntity) blockEntity);
+//                }
+//                collidedWithPortal = true;
+//            }
+//        }
 
         if (hitResult.getType() != HitResult.Type.MISS && !collidedWithPortal) {
             this.onCollision(hitResult);
@@ -134,7 +134,7 @@ public class PhysicsProjectile extends ProjectileEntity {
         this.dataTracker.set(DRAG, drag);
     }
 
-    public float getGravity() {
+    public float getPhysicsGravity() {
         return this.dataTracker.get(GRAVITY);
     }
 
@@ -167,12 +167,12 @@ public class PhysicsProjectile extends ProjectileEntity {
     }
 
     @Override
-    protected void initDataTracker() {
-        this.dataTracker.startTracking(DRAG, 0.98f);
-        this.dataTracker.startTracking(WATER_DRAG, 0.75f);
-        this.dataTracker.startTracking(GRAVITY, 0.03f);
-        this.dataTracker.startTracking(BOUNCINESS, 0.75f);
-        this.dataTracker.startTracking(BUOYANCY, 0.07f);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        builder.add(DRAG, 0.98f);
+        builder.add(WATER_DRAG, 0.75f);
+        builder.add(GRAVITY, 0.03f);
+        builder.add(BOUNCINESS, 0.75f);
+        builder.add(BUOYANCY, 0.07f);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class PhysicsProjectile extends ProjectileEntity {
         super.writeCustomDataToNbt(nbt);
         nbt.putFloat("PhysicsDrag", getDrag());
         nbt.putFloat("PhysicsWaterDrag", getFluidDrag());
-        nbt.putFloat("PhysicsGravity", getGravity());
+        nbt.putFloat("PhysicsGravity", getPhysicsGravity());
         nbt.putFloat("PhysicsBounce", getBounciness());
         nbt.putFloat("PhysicsBuoyancy", getBuoyancy());
         nbt.putInt("PhysicsDespawnTimer", this.despawnTimer);

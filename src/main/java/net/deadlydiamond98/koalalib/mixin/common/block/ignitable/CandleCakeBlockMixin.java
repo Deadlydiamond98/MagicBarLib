@@ -8,9 +8,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.CandleCakeBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,13 +22,13 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(CandleCakeBlock.class)
 public class CandleCakeBlockMixin {
 
-    @WrapMethod(method = "onUse")
-    private ActionResult koalalib$onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, Operation<ActionResult> original) {
+    @WrapMethod(method = "onUseWithItem")
+    private ItemActionResult koalalib$onUse(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, Operation<ItemActionResult> original) {
         if (IgnitionHelper.canUseIgniterNonVanilla(state, world, pos, player, hand) && CampfireBlock.canBeLit(state)) {
             world.setBlockState(pos, state.with(Properties.LIT, true));
             world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-            return ActionResult.success(world.isClient);
+            return ItemActionResult.success(world.isClient);
         }
-        return original.call(state, world, pos, player, hand, hit);
+        return original.call(stack, state, world, pos, player, hand, hit);
     }
 }

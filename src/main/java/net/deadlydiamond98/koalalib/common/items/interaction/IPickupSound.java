@@ -15,7 +15,7 @@ public interface IPickupSound extends IAdvancedItemProperties {
         long currentTime = System.currentTimeMillis();
         long lastPickupTime = PickupSoundItem.LAST_PICKUP_TIME.getOrDefault(player, 0L);
         if (currentTime - lastPickupTime > 500) {
-            player.playSound(getSound(stack, player), SoundCategory.PLAYERS, getVolume(stack, player), getPitch(stack, player));
+            player.playSound(getSound(stack, player), getVolume(stack, player), getPitch(stack, player));
             PickupSoundItem.LAST_PICKUP_TIME.put(player, currentTime);
         }
     }

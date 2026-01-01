@@ -21,6 +21,6 @@ public class KoalaLibTags {
     public static final TagKey<EntityType<?>> ENDER_MINI_BOSS = create("endersoul_dropping_miniboss", RegistryKeys.ENTITY_TYPE);
 
     private static <T> TagKey<T> create(String name, RegistryKey<Registry<T>> key) {
-        return TagKey.of(key, new Identifier(KoalaLib.MOD_ID, name));
+        return TagKey.of(key, Identifier.of(KoalaLib.MOD_ID, name));
     }
 }

@@ -1,9 +1,13 @@
 package net.deadlydiamond98.koalalib.common.blocks.advancement;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.deadlydiamond98.koalalib.init.KoalaLibBlockProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
+import net.minecraft.block.PistonBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -16,21 +20,29 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiFunction;
+
 /**
  * This block is only breakable if the block is placed by a player in survival or the player breaking it has the given advancement
  */
 public class AdvancementNeededFacingBlock extends FacingBlock implements IAdvancementNeeded {
+    public static final MapCodec<AdvancementNeededFacingBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(Codec.STRING.fieldOf("advancementID").forGetter(block -> block.advancementID), createSettingsCodec()).apply(instance, AdvancementNeededFacingBlock::new));
     public static final BooleanProperty PLAYERMADE = KoalaLibBlockProperties.PLAYER_MADE_PROPERY;
     private final String advancementID;
 
-    public AdvancementNeededFacingBlock(Settings settings, Identifier advancementID) {
-        this(settings, advancementID.toString());
+    public AdvancementNeededFacingBlock(Identifier advancementID, Settings settings) {
+        this(advancementID.toString(), settings);
     }
 
-    public AdvancementNeededFacingBlock(Settings settings, String advancementID) {
+    public AdvancementNeededFacingBlock(String advancementID, Settings settings) {
         super(settings);
         this.advancementID = advancementID;
         this.setDefaultState((this.stateManager.getDefaultState()).with(FACING, Direction.DOWN).with(PLAYERMADE, false));
+    }
+
+    @Override
+    protected MapCodec<? extends AdvancementNeededFacingBlock> getCodec() {
+        return CODEC;
     }
 
     @Nullable

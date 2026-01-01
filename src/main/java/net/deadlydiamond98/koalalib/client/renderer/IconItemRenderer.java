@@ -38,7 +38,6 @@ public class IconItemRenderer {
 
             MatrixStack.Entry entry = matrices.peek();
             Matrix4f modelMatrix = entry.getPositionMatrix();
-            Matrix3f normalMatrix = entry.getNormalMatrix();
 
             VertexConsumer vertexConsumer;
             vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(icon.getTexture(player, stack)));
@@ -67,10 +66,10 @@ public class IconItemRenderer {
             }
 
             int light = LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE;
-            vertexConsumer.vertex(modelMatrix, 1,  1, 0).color(255, 255, 255, 255).texture(1, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(normalMatrix, 0, 1, 0).next();
-            vertexConsumer.vertex(modelMatrix,  -1,  1, 0).color(255, 255, 255, 255).texture(0, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(normalMatrix, 0, 1, 0).next();
-            vertexConsumer.vertex(modelMatrix,  -1, -1, 0).color(255, 255, 255, 255).texture(0, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(normalMatrix, 0, 1, 0).next();
-            vertexConsumer.vertex(modelMatrix, 1, -1, 0).color(255, 255, 255, 255).texture(1, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(normalMatrix, 0, 1, 0).next();
+            vertexConsumer.vertex(modelMatrix, 1,  1, 0).color(255, 255, 255, 255).texture(1, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(entry, 0, 1, 0);
+            vertexConsumer.vertex(modelMatrix,  -1,  1, 0).color(255, 255, 255, 255).texture(0, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(entry, 0, 1, 0);
+            vertexConsumer.vertex(modelMatrix,  -1, -1, 0).color(255, 255, 255, 255).texture(0, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(entry, 0, 1, 0);
+            vertexConsumer.vertex(modelMatrix, 1, -1, 0).color(255, 255, 255, 255).texture(1, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(entry, 0, 1, 0);
         }
     }
 }

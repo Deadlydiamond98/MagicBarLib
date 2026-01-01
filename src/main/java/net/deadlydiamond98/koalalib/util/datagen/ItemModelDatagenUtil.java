@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class ItemModelDatagenUtil {
 
-    public static final Model SPAWN_EGG = new Model(Optional.of(new Identifier("item/template_spawn_egg")), Optional.empty());
+    public static final Model SPAWN_EGG = new Model(Optional.of(Identifier.of("item/template_spawn_egg")), Optional.empty());
 
     public static void registerGenerated(ItemModelGenerator itemModelGenerator, Item... items) {
         bulkItemModelRegister(itemModelGenerator, Models.GENERATED, items);

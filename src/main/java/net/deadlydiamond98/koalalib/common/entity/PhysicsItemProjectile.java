@@ -9,6 +9,7 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -23,9 +24,7 @@ public abstract class PhysicsItemProjectile extends PhysicsProjectile implements
     }
 
     public void setItem(ItemStack item) {
-        if (!item.isOf(this.getDefaultItem()) || item.hasNbt()) {
-            this.getDataTracker().set(ITEM, item.copyWithCount(1));
-        }
+        this.getDataTracker().set(ITEM, item.copyWithCount(1));
     }
 
     protected abstract Item getDefaultItem();
@@ -40,23 +39,28 @@ public abstract class PhysicsItemProjectile extends PhysicsProjectile implements
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        this.dataTracker.startTracking(ITEM, ItemStack.EMPTY);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(ITEM, ItemStack.EMPTY);
     }
 
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         ItemStack itemStack = this.getItem();
         if (!itemStack.isEmpty()) {
-            nbt.put("Item", itemStack.writeNbt(new NbtCompound()));
+            nbt.put("Item", this.getStack().encode(this.getRegistryManager()));
         }
     }
 
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        ItemStack itemStack = ItemStack.fromNbt(nbt.getCompound("Item"));
-        this.setItem(itemStack);
+        if (nbt.contains("Item", NbtElement.COMPOUND_TYPE)) {
+            this.setItem(ItemStack.fromNbt(this.getRegistryManager(), nbt.getCompound("Item")).orElseGet(
+                    () -> new ItemStack(this.getDefaultItem()))
+            );
+        } else {
+            this.setItem(new ItemStack(this.getDefaultItem()));
+        }
     }
 
     @Override

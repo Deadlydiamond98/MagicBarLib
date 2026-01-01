@@ -5,6 +5,7 @@ import net.deadlydiamond98.koalalib.util.mixinterfaces.IMagicBarData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
@@ -127,30 +128,29 @@ public class MagicBarHelper {
 
     /**
      * Applies an Attribute Modifier to an Entity's Max Mana
-     * @param uuid the Modifier UUID
-     * @param name the Modifier name
+     * @param id the Modifier id
      * @param entity the Entity
      * @param amount the Amount of Magic added
      */
-    public static void applyMaxManaModifier(UUID uuid, String name, LivingEntity entity, int amount) {
+    public static void applyMaxManaModifier(Identifier id, LivingEntity entity, int amount) {
         EntityAttributeInstance attribute = entity.getAttributeInstance(KoalaLibEntityAttributes.GENERIC_MAX_MAGIC);
         if (attribute != null) {
-            removeMaxManaModifier(uuid, entity);
-            EntityAttributeModifier modifier = new EntityAttributeModifier(uuid, name, amount, EntityAttributeModifier.Operation.ADDITION);
+            removeMaxManaModifier(id, entity);
+            EntityAttributeModifier modifier = new EntityAttributeModifier(id, amount, EntityAttributeModifier.Operation.ADD_VALUE);
             attribute.addPersistentModifier(modifier);
         }
     }
 
     /**
      * Removes an Attribute Modifier from the Entity's Max Mana
-     * @param uuid the Modifier UUID
+     * @param id the Modifier id
      * @param entity the Entity
      */
-    public static void removeMaxManaModifier(UUID uuid, LivingEntity entity) {
+    public static void removeMaxManaModifier(Identifier id, LivingEntity entity) {
         EntityAttributeInstance attribute = entity.getAttributeInstance(KoalaLibEntityAttributes.GENERIC_MAX_MAGIC);
         if (attribute != null) {
-            if (attribute.getModifier(uuid) != null) {
-                attribute.removeModifier(uuid);
+            if (attribute.getModifier(id) != null) {
+                attribute.removeModifier(id);
             }
         }
     }

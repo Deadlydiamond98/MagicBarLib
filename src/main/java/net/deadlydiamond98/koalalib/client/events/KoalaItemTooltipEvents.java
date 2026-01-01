@@ -3,9 +3,10 @@ package net.deadlydiamond98.koalalib.client.events;
 import net.deadlydiamond98.koalalib.common.items.magic.IMagicItem;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -18,7 +19,7 @@ public class KoalaItemTooltipEvents {
         ItemTooltipCallback.EVENT.register(KoalaItemTooltipEvents::magicItemTooltip);
     }
 
-    private static void magicItemTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
+    private static void magicItemTooltip(ItemStack stack, Item.TooltipContext tooltipContext, TooltipType tooltipType, List<Text> lines) {
         MinecraftClient client = MinecraftClient.getInstance();
         boolean debug = client.options.advancedItemTooltips;
         PlayerEntity player = client.player;
