@@ -210,27 +210,4 @@ public class MagicBarHelper {
         return (IMagicBarData) entity;
     }
 
-    // DEPRECATED //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Methods here will be removed next update, as they became obsolete due to Max Mana now using an Attribute Modifier
-
-    @Deprecated(forRemoval = true)
-    public static void setMaxMana(LivingEntity entity, int amount) {
-    }
-
-    @Deprecated(forRemoval = true)
-    public static boolean increaseMaxMana(LivingEntity entity, int amount, boolean replenish) {
-        return false;
-    }
-
-    @Deprecated(forRemoval = true)
-    public static boolean decreaseMaxMana(LivingEntity entity, int amount) {
-        return false;
-    }
-
-    @Deprecated(forRemoval = true)
-    public static boolean canDecreaseMaxMana(LivingEntity entity, int amount) {
-        return false;
-    }
-
 }

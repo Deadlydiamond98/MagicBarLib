@@ -14,6 +14,7 @@
   "attribute.koalalib.magic_cost": "%s Magic Cost",
   "commands.koalalib.manaSet.success.single": "%s Mana set to %s",
   "commands.koalalib.manaSet.success.multiple": "%s Mana set to %s",
+  "commands.koalalib.maxmana.msg": "Max Mana is now handled by attributes!",
 
   "koalalib.main.config.category": "Koala Lib",
   "koalalib.magic_bar.config.category": "Magic Bar Options",

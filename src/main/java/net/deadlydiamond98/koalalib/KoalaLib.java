@@ -5,7 +5,6 @@ import net.deadlydiamond98.koalalib.common.commands.MagicBarCommands;
 import net.deadlydiamond98.koalalib.common.events.KoalaOnJoinServerEvent;
 import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
 import net.deadlydiamond98.koalalib.common.events.KoalaAfterDeathEvents;
-import net.deadlydiamond98.koalalib.common.events.KoalaAfterRespawnEvents;
 import net.deadlydiamond98.koalalib.init.KoalaLibItems;
 import net.deadlydiamond98.koalalib.config.KoalaConfigCreator;
 import net.deadlydiamond98.koalalib.config.KoalaLibConfigs;
@@ -37,7 +36,6 @@ public class KoalaLib implements ModInitializer {
 		MagicBarCommands.register();
 		KoalaPackets.registerC2SPackets();
 
-		KoalaAfterRespawnEvents.register();
 		KoalaAfterDeathEvents.register();
 		KoalaOnJoinServerEvent.register();
 
@@ -51,6 +49,10 @@ public class KoalaLib implements ModInitializer {
 	public static boolean isDev() {
 		FabricLoader loader = FabricLoader.getInstance();
 		return loader.isDevelopmentEnvironment();
+	}
+
+	public static String getVersion() {
+		return FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString();
 	}
 
 	public static boolean isModLoaded(String modid) {

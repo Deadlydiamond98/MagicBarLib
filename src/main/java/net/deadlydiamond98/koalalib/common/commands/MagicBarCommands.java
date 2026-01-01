@@ -52,7 +52,7 @@ public class MagicBarCommands {
             if (settingReg) {
                 MagicBarHelper.setMana(player, Math.min(count, MagicBarHelper.getMaxMana(player)));
             } else {
-                MagicBarHelper.setMaxMana(player, count);
+                player.sendMessage(Text.translatable("commands.koalalib.maxmana.msg"));
             }
         }
 

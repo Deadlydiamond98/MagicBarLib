@@ -82,11 +82,15 @@ public class KoalaUpdateChecker {
         http.setRequestMethod("POST");
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/json");
+        http.setRequestProperty("User-Agent", getContact());
         String data = "{\"loaders\":[\"" + LOADER + "\"],\"game_versions\":[\"" + VERSION + "\"]}";
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
         OutputStream stream = http.getOutputStream();
         stream.write(out);
-        return new BufferedReader(new InputStreamReader(http.getInputStream())).readLine();
+
+        String str = new BufferedReader(new InputStreamReader(http.getInputStream())).readLine();
+        http.disconnect();
+        return str;
     }
 
     /**
@@ -132,5 +136,14 @@ public class KoalaUpdateChecker {
         }
 
         return null;
+    }
+
+    /**
+     * Gets Contact to send to Modrinth User Agent so that Modrinth doesn't send a Hitman after me and so they can contact
+     * me if too many requests are sent
+     * @return returns contact info
+     */
+    private static String getContact() {
+        return "Deadlydiamond98/KoalaLib/" + KoalaLib.getVersion() + " (diamonderrick1@gmail.com)";
     }
 }
