@@ -116,7 +116,7 @@ public class AbstractBlockset {
      */
     public final void addToCreative(ItemGroup.Entries entry) {
         this.blocks.forEach(entry::add);
-        addToCreative(entry);
+        addAdditionalToCreative(entry);
     }
 
     /**
