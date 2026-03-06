@@ -7,7 +7,6 @@ package net.deadlydiamond98.koalalib;
 public class KoalaLibDebug {
 
     public static void initDebugging() {
-        ToggleableContent.enableMagicBar();
         KoalaLib.LOGGER.info("Testing mode is enabled for KoalaLib!!!");
     }
 }

@@ -118,6 +118,8 @@ public class PhysicsProjectile extends ProjectileEntity {
     }
 
     protected void tickMovement() {
+        this.velocityDirty = true;
+
         this.moveWithBounce(MovementType.SELF, this.getVelocity());
 
         if (this.isTouchingWater()) {
