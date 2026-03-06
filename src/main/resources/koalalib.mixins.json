@@ -7,13 +7,17 @@
     "client.ClientPlayNetworkHandlerMixin",
     "client.InGameHudMixin",
     "client.ItemRendererMixin",
-    "client.OptionsScreenConfigMixin",
     "client.SplashScreenMixin",
+    "client.TexturedRenderLayersMixin",
+    "client.rendering.block.HangingSignBlockEntityRendererMixin",
+    "client.rendering.block.SignBlockEntityRendererMixin",
+    "client.screen.OptionsScreenConfigMixin",
+    "client.screen.SignEditScreenMixin",
     "client.shaders.PostEffectPassMixin",
-    "client.shaders.PostEffectProcessorMixin",
     "client.shaders.WorldRendererMixin"
   ],
   "mixins": [
+    "common.BlockEntityTypeMixin",
     "common.block.ignitable.CampfireBlockMixin",
     "common.block.ignitable.CandleBlockMixin",
     "common.block.ignitable.CandleCakeBlockMixin",
@@ -25,6 +29,7 @@
     "common.entity.item.ItemEntityMixin",
     "common.entity.living.LivingEntityMagicMixin",
     "common.entity.living.LivingEntityMixin",
+    "common.entity.living.piglin.PiglinBrainMixin",
     "player.PlayerEntityCustomHudMixin",
     "player.PlayerEntityMixin",
     "player.PlayerInventoryMixin"

@@ -24,14 +24,14 @@ public class PlayerInventoryMixin {
     public void koalalib$insertStack(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         // Trinkets Compatibility
         for (ItemStack trinket : KoalaCompatServices.TRINKETS_COMPAT.getEquippedTrinkets(this.player)) {
-            if (koalalib$addItemToBundle(stack, trinket)) {
+            if (koalalib$addItemToBundle(this.player, stack, trinket, -1)) {
                 cir.setReturnValue(true);
             }
         }
 
         for (int i = 0; i < this.player.getInventory().size(); i++) {
             ItemStack bundleStack = this.player.getInventory().getStack(i);
-            if (koalalib$addItemToBundle(stack, bundleStack)) {
+            if (koalalib$addItemToBundle(this.player, stack, bundleStack, i)) {
                 cir.setReturnValue(true);
             }
         }
@@ -45,8 +45,8 @@ public class PlayerInventoryMixin {
     }
 
     @Unique
-    private boolean koalalib$addItemToBundle(ItemStack stack, ItemStack bundleStack) {
-        if (bundleStack.getItem() instanceof CustomBundleItem bundle && bundle.canInsertOnPickup()) {
+    private boolean koalalib$addItemToBundle(PlayerEntity player, ItemStack stack, ItemStack bundleStack, int i) {
+        if (bundleStack.getItem() instanceof CustomBundleItem bundle && bundle.canInsertOnPickup(player, i)) {
             int max = bundle.getMaxInsertables(bundleStack);
             int count = stack.getCount();
             if (CustomBundleItem.addToBundle(bundleStack, stack)) {

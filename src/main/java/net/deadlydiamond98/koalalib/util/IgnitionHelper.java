@@ -15,6 +15,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.function.Function;
+
 /**
  * Helper Class for Using Custom Ignition Items on blocks
  */
@@ -28,19 +30,33 @@ public class IgnitionHelper {
      * @param hand the hand
      * @return will return true if the item isn't a flint and steel, and is in the Igniter Tag
      */
-    public static boolean canUseIgniterNonVanilla(BlockState state, World world, BlockPos pos, LivingEntity user, Hand hand) {
+    public static boolean canUseIgniterOnBlockNonVanilla(BlockState state, World world, BlockPos pos, LivingEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        return !stack.isOf(Items.FLINT_AND_STEEL) && !stack.isOf(Items.FIRE_CHARGE) && canUseIgniter(state, world, pos, user, hand);
+        return !stack.isOf(Items.FLINT_AND_STEEL) && !stack.isOf(Items.FIRE_CHARGE) && canUseIgniterOnBlock(state, world, pos, user, hand);
     }
 
-    public static boolean canUseIgniter(BlockState state, World world, BlockPos pos, LivingEntity user, Hand hand) {
+    /**
+     * Call this to try lighting a block with an igniter
+     */
+    public static boolean canUseIgniterOnBlock(BlockState state, World world, BlockPos pos, LivingEntity user, Hand hand) {
+        return canUseIgniter(world, pos, user, hand, iLighter -> iLighter.onIgniteBlock(state, world, pos, user.getStackInHand(hand), user, hand));
+    }
+
+    /**
+     * Call this to try using an igniter that's not on a block
+     */
+    public static boolean canUseIgniter(World world, BlockPos pos, LivingEntity user, Hand hand) {
+        return canUseIgniter(world, pos, user, hand, iLighter -> iLighter.onIgnite(world, pos, user.getStackInHand(hand), user, hand));
+    }
+
+    private static boolean canUseIgniter(World world, BlockPos pos, LivingEntity user, Hand hand, Function<ILighter, Boolean> lightingFunction) {
         ItemStack stack = user.getStackInHand(hand);
 
         if (stack.isIn(KoalaLibTags.IGNITER) && user instanceof PlayerEntity player) {
             boolean bl = true;
 
             if (stack.getItem() instanceof ILighter lighter) {
-                bl = lighter.onIgnite(state, world, pos, stack, user, hand);
+                bl = lightingFunction.apply(lighter);
             } else {
                 if (stack.isIn(KoalaLibTags.IGNITER_TOOL) && stack.isDamageable()) {
                     doFlintAndSteelAction(stack, player, hand);

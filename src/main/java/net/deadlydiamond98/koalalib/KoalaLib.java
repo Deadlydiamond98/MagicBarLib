@@ -3,6 +3,7 @@ package net.deadlydiamond98.koalalib;
 
 import net.deadlydiamond98.koalalib.common.commands.MagicBarCommands;
 import net.deadlydiamond98.koalalib.common.events.KoalaOnJoinServerEvent;
+import net.deadlydiamond98.koalalib.init.KoalaLibEntityAttributes;
 import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
 import net.deadlydiamond98.koalalib.common.events.KoalaAfterDeathEvents;
 import net.deadlydiamond98.koalalib.init.KoalaLibItems;
@@ -33,6 +34,7 @@ public class KoalaLib implements ModInitializer {
 
 		KoalaLibItems.register();
 		KoalaLibSounds.register();
+		KoalaLibEntityAttributes.register();
 		MagicBarCommands.register();
 		KoalaPackets.registerC2SPackets();
 

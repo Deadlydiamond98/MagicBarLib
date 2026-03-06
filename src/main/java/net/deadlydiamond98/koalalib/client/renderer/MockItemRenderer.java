@@ -22,11 +22,11 @@ public class MockItemRenderer {
     private static final Map<Identifier, Boolean[][]> CACHE = new HashMap<>();
     public static final float DEFAULT_THICKNESS = 0.065f;
 
-    public static void renderItem(MatrixStack poseStack, VertexConsumerProvider bufferSource, int light, Identifier texture) {
+    public static void renderItem(MatrixStack poseStack, VertexConsumer bufferSource, int light, Identifier texture) {
         renderTintedItem(poseStack, bufferSource, light, texture, 0xFFFFFF);
     }
 
-    public static void renderTintedItem(MatrixStack poseStack, VertexConsumerProvider bufferSource, int light, Identifier texture, int tint) {
+    public static void renderTintedItem(MatrixStack poseStack, VertexConsumer bufferSource, int light, Identifier texture, int tint) {
         int red = (tint >> 16) & 0xFF;
         int green = (tint >> 8) & 0xFF;
         int blue = tint & 0xFF;
@@ -34,16 +34,13 @@ public class MockItemRenderer {
         renderTintedItem(poseStack, bufferSource, light, texture, red, green, blue);
     }
 
-    public static void renderTintedItem(MatrixStack poseStack, VertexConsumerProvider bufferSource, int light, Identifier texture, int red, int green, int blue) {
+    public static void renderTintedItem(MatrixStack poseStack, VertexConsumer bufferSource, int light, Identifier texture, int red, int green, int blue) {
         Boolean[][] pixelData = loadPixelData(texture, 16);
 
         renderItem(pixelData, poseStack, bufferSource, light, texture, DEFAULT_THICKNESS, red, green, blue);
     }
 
-    public static void renderItem(Boolean[][] pixelData, MatrixStack poseStack, VertexConsumerProvider bufferSource, int light, Identifier texture, float thickness, int red, int green, int blue) {
-
-        VertexConsumer buffer = bufferSource.getBuffer(RenderLayer.getEntityCutout(texture));
-
+    public static void renderItem(Boolean[][] pixelData, MatrixStack poseStack, VertexConsumer buffer, int light, Identifier texture, float thickness, int red, int green, int blue) {
         poseStack.push();
 
         float halfZ = thickness * 0.5f;

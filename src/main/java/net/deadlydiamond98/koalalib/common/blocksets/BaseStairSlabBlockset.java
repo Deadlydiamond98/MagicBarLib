@@ -9,9 +9,15 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.RecipeProvider;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class BaseStairSlabBlockset extends AbstractBlockset {
@@ -45,8 +51,8 @@ public class BaseStairSlabBlockset extends AbstractBlockset {
         super(modID, id);
         this.stripEndS = stripEndS;
         this.base = register(modID, id(), new Block(settings));
-        this.slab = register(modID, id(stripEndS()) + "_slab", new SlabBlock(settings));
         this.stair = register(modID, id(stripEndS()) + "_stairs", new StairsBlock(this.base.getDefaultState(), settings));
+        this.slab = register(modID, id(stripEndS()) + "_slab", new SlabBlock(settings));
     }
 
     @Override
@@ -80,7 +86,7 @@ public class BaseStairSlabBlockset extends AbstractBlockset {
      * @param exporter
      * @param additionalInputs Blocks that aren't the base block that can be turned into block variants (ex: stone -> stone brick slab)
      */
-    public final void generateRecipesStone(Consumer<RecipeJsonProvider> exporter, Block... additionalInputs) {
+    public void generateRecipesStone(Consumer<RecipeJsonProvider> exporter, Block... additionalInputs) {
         generateRecipes(exporter);
         stoneCutterRecipes(exporter, this.base);
         for (Block block : additionalInputs) {
@@ -99,6 +105,20 @@ public class BaseStairSlabBlockset extends AbstractBlockset {
         }
         RecipeProvider.offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.stair, block);
         RecipeProvider.offerStonecuttingRecipe(exporter, RecipeCategory.BUILDING_BLOCKS, this.slab, block, 2);
+    }
+
+    @Override
+    public void generateBlockTags(BiConsumer<TagKey<Block>, Block> tagConsumer, TagKey<Block>... mineableTags) {
+        super.generateBlockTags(tagConsumer, mineableTags);
+        tagConsumer.accept(BlockTags.SLABS, this.slab);
+        tagConsumer.accept(BlockTags.STAIRS, this.stair);
+    }
+
+    @Override
+    public void generateItemTags(BiConsumer<TagKey<Item>, ItemConvertible> tagConsumer) {
+        super.generateItemTags(tagConsumer);
+        tagConsumer.accept(ItemTags.SLABS, this.slab);
+        tagConsumer.accept(ItemTags.STAIRS, this.stair);
     }
 
     protected String stripEndS() {

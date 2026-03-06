@@ -25,7 +25,7 @@ public class TntBlockMixin {
 
     @WrapMethod(method = "onUse")
     private ActionResult koalalib$onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, Operation<ActionResult> original) {
-        if (IgnitionHelper.canUseIgniterNonVanilla(state, world, pos, player, hand)) {
+        if (IgnitionHelper.canUseIgniterOnBlockNonVanilla(state, world, pos, player, hand)) {
             koalalib$primeTnt(world, pos, player);
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
             return ActionResult.success(world.isClient);

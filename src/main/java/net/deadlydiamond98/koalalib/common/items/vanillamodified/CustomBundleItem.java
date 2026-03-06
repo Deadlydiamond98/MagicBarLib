@@ -88,7 +88,7 @@ public class CustomBundleItem extends Item {
     /**
      * If true, items will automatically enter the bag when picked up from the ground
      */
-    public boolean canInsertOnPickup() {
+    public boolean canInsertOnPickup(PlayerEntity player, int slot) {
         return this.insertOnPickup;
     }
 

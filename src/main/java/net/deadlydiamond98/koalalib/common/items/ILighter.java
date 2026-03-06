@@ -14,7 +14,12 @@ import net.minecraft.world.World;
  * Used for allowing an item to ignite vanilla blocks, and other blocks that use IgnitionHelper.canUseIgniter()
  */
 public interface ILighter {
-    default boolean onIgnite(BlockState state, World world, BlockPos pos, ItemStack stack, LivingEntity user, Hand hand) {
+    default boolean onIgniteBlock(BlockState state, World world, BlockPos pos, ItemStack stack, LivingEntity user, Hand hand) {
+        world.playSound(user, user.getBlockPos(), getIgniteSound(), SoundCategory.BLOCKS, getVolume(), getPitch(world));
+        return true;
+    }
+
+    default boolean onIgnite(World world, BlockPos pos, ItemStack stack, LivingEntity user, Hand hand) {
         world.playSound(user, user.getBlockPos(), getIgniteSound(), SoundCategory.BLOCKS, getVolume(), getPitch(world));
         return true;
     }

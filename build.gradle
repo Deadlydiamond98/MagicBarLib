@@ -35,7 +35,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Trinket's Compatibility Thing
-	modImplementation "dev.emi:trinkets:${trinkets_version}"
+	modCompileOnly "dev.emi:trinkets:${trinkets_version}"
 }
 
 processResources {

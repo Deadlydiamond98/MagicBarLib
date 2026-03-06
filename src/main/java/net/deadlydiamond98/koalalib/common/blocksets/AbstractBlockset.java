@@ -4,19 +4,24 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class AbstractBlockset {
@@ -75,7 +80,9 @@ public class AbstractBlockset {
      * Used to determine the loot table a block uses, can be overriden to add additional cases
      */
     protected void generateLootTable(FabricBlockLootTableProvider lootTableProvider, Block block) {
-        if (block instanceof SlabBlock) {
+        if (block instanceof DoorBlock) {
+            lootTableProvider.addDrop(block, lootTableProvider.doorDrops(block));
+        } else if (block instanceof SlabBlock) {
             lootTableProvider.addDrop(block, lootTableProvider.slabDrops(block));
         } else {
             lootTableProvider.addDrop(block);
@@ -88,12 +95,35 @@ public class AbstractBlockset {
     public void generateRecipes(Consumer<RecipeJsonProvider> exporter) {}
 
     /**
+     * Used to add all the blocks to appropriate Block Tags
+     */
+    public void generateBlockTags(BiConsumer<TagKey<Block>, Block> tagConsumer, TagKey<Block>... mineableTags) {
+        for (TagKey<Block> minableTag : mineableTags) {
+            for (Block block : this.blocks) {
+                tagConsumer.accept(minableTag, block);
+            }
+        }
+    }
+
+    /**
+     * Used to add all the blocks to appropriate Item Tags
+     */
+    public void generateItemTags(BiConsumer<TagKey<Item>, ItemConvertible> tagConsumer) {}
+
+    /**
      * Call this in creative tab method to add all the blocks to a creative tab<br><br>
      * The order of blocks in the creative menu is determined by the order the blocks are registered in the constructor
      */
     public final void addToCreative(ItemGroup.Entries entry) {
         this.blocks.forEach(entry::add);
+        addToCreative(entry);
     }
+
+    /**
+     * Used to add additional Blocks to Creative
+     * @param entry
+     */
+    protected void addAdditionalToCreative(ItemGroup.Entries entry) {}
 
     /**
      * Get all of the blocks from the blockset as a list
@@ -174,6 +204,18 @@ public class AbstractBlockset {
      */
     protected final void registerBlockItem(Identifier id, Block block) {
         Registry.register(Registries.ITEM, id, new BlockItem(block, new FabricItemSettings()));
+    }
+
+    protected final Item registerItem(Identifier id, Item item) {
+        return Registry.register(Registries.ITEM, id, item);
+    }
+
+    protected final Block registerNoItem(String modID, String id, Block block) {
+        return registerNoItem(new Identifier(modID, id), block);
+    }
+
+    protected final Block registerNoItem(Identifier id, Block block) {
+        return Registry.register(Registries.BLOCK, id, block);
     }
 
     @FunctionalInterface

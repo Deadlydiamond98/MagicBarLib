@@ -1,4 +1,4 @@
-package net.deadlydiamond98.koalalib.mixin.client;
+package net.deadlydiamond98.koalalib.mixin.client.screen;
 
 import net.deadlydiamond98.koalalib.client.screen.config.KoalaConfigScreen;
 import net.minecraft.client.gui.screen.Screen;

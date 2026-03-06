@@ -20,7 +20,7 @@ public class CampfireBlockMixin {
 
     @WrapMethod(method = "onUse")
     private ActionResult koalalib$onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, Operation<ActionResult> original) {
-        if (IgnitionHelper.canUseIgniterNonVanilla(state, world, pos, player, hand) && CampfireBlock.canBeLit(state)) {
+        if (IgnitionHelper.canUseIgniterOnBlockNonVanilla(state, world, pos, player, hand) && CampfireBlock.canBeLit(state)) {
             world.setBlockState(pos, state.with(Properties.LIT, true));
             world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
             return ActionResult.success(world.isClient);

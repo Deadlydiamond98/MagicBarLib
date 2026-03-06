@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:logs",
+    "#minecraft:planks",
+    "#minecraft:wooden_doors",
+    "#minecraft:wooden_fences",
+    "#minecraft:fence_gates",
+    "#minecraft:all_hanging_signs",
+    "#minecraft:signs",
+    "#minecraft:wooden_stairs",
+    "#minecraft:wooden_trapdoors",
+    "minecraft:ladder",
+    "minecraft:mangrove_roots",
+    "minecraft:crafting_table",
+    "minecraft:barrel",
+    "minecraft:bamboo_mosaic",
+    "minecraft:trapped_chest",
+    "minecraft:chest",
+    "minecraft:target",
+    "minecraft:fletching_table",
+    "minecraft:cartography_table",
+    "minecraft:lectern",
+    "minecraft:bookshelf",
+    "minecraft:chiseled_bookshelf"
+  ]
+}
