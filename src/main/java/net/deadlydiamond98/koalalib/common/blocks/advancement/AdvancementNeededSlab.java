@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  */
 
 public class AdvancementNeededSlab extends SlabBlock implements IAdvancementNeeded {
-    public static final BooleanProperty PLAYERMADE = KoalaLibBlockProperties.PLAYER_MADE_PROPERY;
+    public static final BooleanProperty PLAYERMADE = KoalaLibBlockProperties.PLAYER_MADE_PROPERTY;
     private final String advancementID;
 
     public AdvancementNeededSlab(Settings settings, Identifier advancementID) {

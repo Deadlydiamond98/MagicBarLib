@@ -1,27 +1,19 @@
 package net.deadlydiamond98.koalalib.mixin.common.entity.living;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.deadlydiamond98.koalalib.ToggleableContent;
 import net.deadlydiamond98.koalalib.common.items.magic.IShowsMagicBar;
 import net.deadlydiamond98.koalalib.init.KoalaLibEntityAttributes;
 import net.deadlydiamond98.koalalib.networking.s2c.EntityMagicUpdateS2CPacket;
 import net.deadlydiamond98.koalalib.util.magic.MagicBarHelper;
 import net.deadlydiamond98.koalalib.util.mixinterfaces.IMagicBarData;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
