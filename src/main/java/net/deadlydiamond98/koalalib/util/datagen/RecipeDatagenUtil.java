@@ -10,11 +10,16 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class RecipeDatagenUtil {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // BUILDING BLOCKS /////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public static void createStairRecipe(Consumer<RecipeJsonProvider> exporter, Block stair, Block base) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, stair)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, stair, 4)
                 .pattern("#  ")
                 .pattern("## ")
                 .pattern("###")
@@ -34,7 +39,7 @@ public class RecipeDatagenUtil {
     }
 
     public static void createGateRecipe(Consumer<RecipeJsonProvider> exporter, Block gate, Block base) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, gate, 3)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, gate)
                 .pattern("s#s")
                 .pattern("s#s")
                 .input('#', base)
